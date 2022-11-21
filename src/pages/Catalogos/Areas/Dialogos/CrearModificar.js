@@ -67,7 +67,8 @@ const CrearModificar = ({
                 value={product.idPlanta} 
                 options={plantasDisponibles} 
                 onChange={(e) => {
-                    updateField(e.value, "idPlanta")   
+                    updateField(e.value, "idPlanta");
+                    setBoton(false);   
                 }} 
                 placeholder="--Selecciona una planta--"
                 />

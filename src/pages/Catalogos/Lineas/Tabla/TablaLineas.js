@@ -29,12 +29,12 @@ const TablaLineas = ({BotonesCabezal,ExportarRegistros,dt,products,selectedProdu
             responsiveLayout="scroll"
             >
                 {/* // CAMBIAR.............. */}
-                <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}/>
-                <Column field="linea" header="Linea" sortable style={{ minWidth: '7rem',textAlign:'center' }}/>
-                <Column field="area" header="Area" sortable style={{ minWidth: '7rem',textAlign:'center' }}/>
-                {/* <Column field="estatus" header="Estatus" sortable style={{ minWidth: '7rem',textAlign:'center' }}/> */}
-                <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
-                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: '3rem' }}/>
+                <Column selectionMode="multiple" headerStyle={{ width:"5%", minWidth:'3rem' }} exportable={false}/>
+                <Column field="linea" header="Linea" sortable style={{ width:"25%" , minWidth: '7rem',textAlign:'center' }}/>
+                <Column field="area" header="Area" sortable style={{width:"20%", minWidth: '7rem',textAlign:'center' }}/>
+                <Column field="estatus" header="Estatus" sortable style={{ width:"15%", minWidth: '7rem',textAlign:'center' }}/>
+                <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{width:"20%", minWidth: '3rem',textAlign:'center' }}/>
+                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"15%", minWidth: '3rem' }}/>
             </DataTable>
         </div>
     )

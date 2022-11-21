@@ -11,11 +11,12 @@ const getRoute = Environment();
 
 const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateField, saveProduct }) => {
     //--------------------| Validar campos  |--------------------
-    const [validarNombre, setValidarNombre] = useState(""); // Validar nombre de planta
+    const [validarNombre, setValidarNombre] = useState("");
+    const [validarAbr, setValidarAbr] = useState(""); // Validar nombre de planta
     const [boton, setBoton] = useState(false); // Activar o desactivar boton
     const Advertencia=(<p style={{color:"red", marginTop:"20px", textAlign:"center"}}>Campos no validos</p>); 
     const expresion = /^[a-zA-Z0-9._-\s]{1,40}$/; // Todo menos ','
-    
+    const exprChar =  /^[a-zA-Z0-9._-\s]{1,40}$/; 
 
     //--------------------| Dropdown dinamico|--------------------
     //---> Plantas
@@ -23,22 +24,40 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
     useEffect(() => {
         Axios.get(getRoute+"/plantas/list").then((res) => setPlantasDisponibles(res.data));
     }, []);
+
     //---> Areas
     const [areasDisponibles, setAreasDisponibles] = useState([]);
     useEffect(() => {
-        if (product.idPlanta !== undefined) {
+        if (product.idPlanta !== undefined && product.idPlanta !== "" ) {
             Axios.get(getRoute+`/areas/planta/${product.idPlanta}`).then((res) => setAreasDisponibles(res.data));
         }
     }, [product.idPlanta]);
     //--> Dropdown Lineas Calling rs
     const [lineasDisponibles, setLineasDisponibles] = useState([]);
     useEffect(() => {
-        if (product.idArea !== undefined) {
+        if (product.idArea !== undefined && product.idArea !== "") {
             Axios.get(getRoute+`/lineas/area/${product.idArea}`).then((res) => setLineasDisponibles(res.data));
         }
     }, [product.idArea]);
+    // -> Dropdown Caquinas calling rs
+
+    const [maquinasDisponibles, setMaquinasDisponibles] = useState([]);
+    useEffect(() => {
+        if (product.idLinea !== undefined  && product.idLinea !== "") {
+            Axios.post(getRoute+`/maquinas/linea/${product.idLinea}`,).then((res) => setMaquinasDisponibles(res.data));
+        }
+    }, [product.idLinea]);
 
 
+    const VerificarAbr = (texto) => {
+        if (!exprChar.test(texto) || Object.values(texto).includes(" ")) {
+            setValidarAbr("p-invalid");
+            setBoton(true);
+        } else {
+            setValidarAbr("");
+            setBoton(false);
+        }
+    };
 
     const Verificar = (texto) => {
         if (!expresion.test(texto) || Object.values(texto).includes(" ")) {
@@ -101,22 +120,54 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
                     placeholder="--Selecciona una linea--"
                 />
             </div>
+            {/* Dropdown Maquinas */}
+            <div className="field">
+                <label>Maquinas</label>
+                <Dropdown
+                    optionLabel="maquina"
+                    optionValue="id"
+                    value={product.idMaquina}
+                    options={maquinasDisponibles}
+                    onChange={(e) => {
+                        updateField(e.value, "idMaquina");
+                        setBoton(false);
+                    }}
+                    placeholder="--Selecciona una Maquina--"
+                />
+            </div>
 
             <div className="field">
-                <label htmlFor="nombreMaquinas">                    
-                    Maquina
+                <label htmlFor="variable">                    
+                    Variable
                 </label>
                 <InputText
-                    id="maquina" // CAMBIAR...
-                    value={product.maquina} // CAMBIAR...
+                    id="variable" // CAMBIAR...
+                    value={product.variable} // CAMBIAR...
                     onChange={(e) => {
-                        updateField(e.target.value.trim(), "maquina"); // CAMBIAR...
+                        updateField(e.target.value, "variable"); // CAMBIAR...
                         Verificar(e.target.value);
                     }}
                     required
                     autoFocus
                     className={validarNombre}
-                    maxLength="30"
+                    maxLength="40"
+                />
+            </div>            
+            <div className="field">
+                <label htmlFor="unidad">                    
+                    Unidad
+                </label>
+                <InputText
+                    id="unidad" // CAMBIAR...
+                    value={product.unidad} // CAMBIAR...
+                    onChange={(e) => {
+                        updateField(e.target.value.trim(), "unidad"); // CAMBIAR...
+                        VerificarAbr(e.target.value);
+                    }}
+                    required
+                    autoFocus
+                    className={validarAbr}
+                    maxLength="10"
                 />
                 {boton && Advertencia}
             </div>

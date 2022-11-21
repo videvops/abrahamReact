@@ -30,11 +30,11 @@ const TablaModoFalla = ({ BotonesCabezal, ExportarRegistros, dt, products, selec
                 responsiveLayout="scroll"
             >
                 {/* // CAMBIAR.............. */}
-                <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} exportable={false} />
-                <Column field="modoFalla" header="Modos de falla" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
-                <Column field="fechaCreacion" header="Fecha de Creacion" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
-                <Column field="planta" header="Planta " sortable style={{ minWidth: "16rem", textAlign: "center" }} />
-                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: "3rem" }} />
+                <Column selectionMode="multiple" headerStyle={{ width:"3%" }} exportable={false} />
+                <Column field="modoFalla" header="Modos de falla" sortable style={{ width:"30%" , textAlign: "center" }} />
+                <Column field="fechaCreacion" header="Fecha de Creacion" sortable style={{ width:"15%" , textAlign: "center" }} />
+                <Column field="planta" header="Planta " sortable style={{ width:"30%", textAlign: "center" }} />
+                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"15%" }} />
             </DataTable>
         </div>
     );

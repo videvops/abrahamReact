@@ -22,10 +22,13 @@ import CatalogoPlantas from "../pages/Catalogos/Plantas/CatalogoPlantas";
 import CatalogoProducto from "../pages/Catalogos/Productos/CatalogoProducto";
 import CatalogoMaquinas from "../pages/Catalogos/Maquinas/CatalogoMaquinas";
 import CatalogoModoFalla from "../pages/Catalogos/ModoFalla/CatalogoModoFalla"
+import CatalogoVariables from "../pages/Catalogos/VariablesDelProceso/CatalogoVariables";
 
 import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
 import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
 import Desperdicio from  '../components/desperdicio/Desperdicio'
+
+
 
 import MonitorDeLineasTiempoReal from "../components/monitorDeLineas/tiempoReal/MonitorDeLineasTiempoReal"
 
@@ -215,6 +218,7 @@ const Home = ({ setLogueado }) => {
                         { label: "Turnos", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTurnos" },
                         // { label: "Usuarios", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoUsuarios" },
                         {label: "Modo de Falla",icon: "pi pi-fw pi-table text-blue-500", to:"/catalogoModoFalla"},
+                        {label:"Variables del Proceso", icon:"pi pi-fw pi-table text-blue-500", to:"/catalogoVariables"}
                     ],
                 },
             ],
@@ -288,6 +292,7 @@ const Home = ({ setLogueado }) => {
                     <Route path="/monitorDeLineas" component= {MonitorDeLineas}/>
                     <Route path="/monitorDeLineasTiempoReal" component={MonitorDeLineasTiempoReal}/>
                     <Route path="/variablesDelProceso" component={VariablesDelProceso}/>
+                    <Route path="/catalogoVariables" component={CatalogoVariables}/>
                 </div>
 
                 {/* <AppFooter layoutColorMode={layoutColorMode} /> */}

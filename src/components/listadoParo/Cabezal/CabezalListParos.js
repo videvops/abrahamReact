@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Axios from 'axios'
 import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
@@ -7,6 +7,7 @@ import { MultiSelect } from 'primereact/multiselect'
 import { formatearFecha } from '../../helpers/funciones'
 import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
 import Environment from "../../../Environment";
+import { Toast } from 'primereact/toast';
 
 const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
 //--------------------| MultiSelect de Plantas  |--------------------
@@ -79,7 +80,6 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
             return;                                                     // No permite avanzar
         }
         const nuevaFechaInicio = formatearFecha(fechaInicio)
-        // console.log(nuevaFechaInicio)
         const nuevaFechaFin = formatearFecha(fechaFin)
         const objeto = { page: 0, total: 10, todasLineas: false, maquinas: [...maquinas], fechaInc: nuevaFechaInicio, fechaFin: nuevaFechaFin }
         enviarDatos(objeto)
@@ -107,6 +107,44 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
         );
     }
 
+    const downloadData = (blob) => {
+        import("file-saver").then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8";
+                const data = new Blob([blob], {
+                    type: EXCEL_TYPE,
+                });
+                module.default.saveAs(data, "Listado_de_paros" + "_export_" + new Date().getTime());
+            }
+        });
+    }
+
+    const toast = useRef(null)
+    
+    const loadFilter = () => {
+        if(fechaFin === null || fechaInicio === null){
+            toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${"Por favor selecciona una fecha"}`, life: 3000 });
+            return ;
+        }
+        if (maquinas.length === 0){
+            toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${"Por favor selecciona las maquinas"}`, life: 3000 });
+            return ;
+        }
+        const filtrosDownload = {
+            fechaInc:formatearFecha(fechaInicio),//'2022-11-21 15:37:21',   
+            fechaFin:formatearFecha(fechaFin), //'2022-11-26 11:47:17' ,  //
+            page:0,
+            total:500,
+            maquinas:maquinas
+        }
+        Axios.post(`${getRoute}/reportes/listadoParos`,filtrosDownload,{responseType: 'blob'}).then(res =>{
+            toast.current.show({ severity: 'success', summary: 'Descargando!', detail: `${"Por favor guarda tu archivo"}`, life: 3000 });
+            downloadData(res.data)
+        })
+        .catch( e => console.log(e))
+
+    }
+
 //--------------------| Valor que regresara  |--------------------
     return (
         <div className="col-12 ">
@@ -115,14 +153,18 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
                     Listado de Paros
                 </span>
             </div>
+            <Toast ref={toast} />
             <br/>
-            <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
-            <Dialog
-                header="Filtro para listado de paros"
-                visible={dialogo}
-                footer={botonesAccion}
-                onHide={() => setDialogo(false)}
-            >
+            <div className='clas col-12 md:col-12 flex justify-content-between '>
+                <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
+                <Button label="Excel" icon="pi pi-file-excel" className="p-button-success mr-2" onClick={loadFilter} />
+            </div>
+                <Dialog
+                    header="Filtro para listado de paros"
+                    visible={dialogo}
+                    footer={botonesAccion}
+                    onHide={() => setDialogo(false)}
+                >
                 <div className="grid p-fluid">
                     <div className="col-12 md:col-4">
                         <label className="font-bold">Planta</label>

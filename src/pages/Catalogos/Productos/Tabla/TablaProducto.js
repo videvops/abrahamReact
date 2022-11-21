@@ -95,7 +95,7 @@ const TablaProducto = ({
                     field="producto"
                     header="Producto"
                     sortable
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center',width:"3%" }}
                     filter filterPlaceholder="Buscar"
                 />
                 <Column
@@ -109,21 +109,21 @@ const TablaProducto = ({
                     field="planta"
                     header="Planta"
                     sortable
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center', width:"25%" }}
                     filter filterPlaceholder="Buscar"
                 />
                 <Column
                     field="fechaCreacion"
                     header="Fecha de creación"
                     sortable
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center',width:"20%" }}
                     filter filterPlaceholder="Buscar"
                 />
                 <Column
                     header="Editar"
                     body={actionBodyTemplate}
                     exportable={false}
-                    style={{ minWidth: '3rem' }}
+                    style={{ width:"20%" }}
                 />
             </DataTable>
             <Paginator

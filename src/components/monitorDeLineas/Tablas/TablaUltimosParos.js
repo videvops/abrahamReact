@@ -15,7 +15,7 @@ const TablaUltimosParos = ({registros}) => {
             <CardGeneral>
                 <CardTabla>
                     <TablaDesing datos={registros} >
-                        <Column field="idMaquina" header="Maquina" style={{ textAlign: "center", minWidth: '12rem' }} sortable />
+                        <Column field="idMaquina" header="Maquina" style={{ textAlign: "center", width: '20%' }} sortable />
                         <Column field="falla" header="Modo de Falla" style={{ textAlign: "center" }} sortable/>
                         <Column field="fecha" header="Fecha" style={{ textAlign: "center" }} sortable/>
                         <Column field="incParo" header="Inicio de paro" style={{ textAlign: "center" }} sortable/>

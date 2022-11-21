@@ -126,11 +126,11 @@ const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selecte
                 responsiveLayout="scroll"
             >
                 {/* // CAMBIAR.............. */}
-                <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} exportable={false} />
-                <Column field="planta" header="Planta" sortable style={{ minWidth: "7rem", textAlign: "center" }} />
-                {/* <Column field="estatus" header="Estatus" sortable style={{ minWidth: "7rem", textAlign: "center" }} /> */}
-                <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{ minWidth: "3rem", textAlign: "center" }} />
-                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: "3rem" }} />
+                <Column selectionMode="multiple" headerStyle={{ width:"5%"}} exportable={false} />
+                <Column field="planta" header="Planta" sortable style={{width:"30%", minWidth: "7rem", textAlign: "center" }} />
+                <Column field="estatus" header="Estatus" sortable style={{ width:"15%", minWidth: "7rem", textAlign: "center" }} />
+                <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{width:"30%",minWidth: "3rem", textAlign: "center" }} />
+                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"15%", minWidth: "3rem" }} />
             </DataTable>
         </div>
     );

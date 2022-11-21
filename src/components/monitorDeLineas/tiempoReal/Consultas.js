@@ -12,70 +12,74 @@ const Consultas =  ({filtros}) =>{
 
     const [registrosUltimosParos, setRegistrosUltimosParos] = useState([]);
     const [registrosTopFive, setRegistrosTopFive] = useState([]);
-    const [filtroTacometro, setFiltroTacometro] = useState([]);
+    const [tacometrosData, setTacometrosData] = useState([]);
+    const [datosDeConsulta, setDatosDeConsulta] = useState({});
 
-    const [datosDeConsulta, setDatosDeConsulta] = useState({})
-
-
-
-
-
-    const nuevaFechaInicio = "2022-11-20 15:37:21"//formatearFecha(fechaInicio)
-    const nuevaFechaFin = "2022-11-28 11:47:17"//formatearFecha(fechaFin)
-
-
-    useEffect(()=>{
-        if(Object.entries(filtros).length === 0){
-            if(Object.entries(datosDeConsulta).length === 0){
-                lineaService.readAll()
-                .then((data)=>{
-                    const obj ={linea:data[0].id, fechaInicio: nuevaFechaInicio, fechaFin: nuevaFechaFin}
-                    setDatosDeConsulta(obj)
-                })
-                .catch((e)=>{console.error(e)})
-            }
-        }else{
-            const obj ={linea:filtros.lineas, fechaInicio: nuevaFechaInicio, fechaFin: nuevaFechaFin}
-            setDatosDeConsulta(obj)
+    const intervalos = async (id,tag) =>{
+        const objIntervalos = {
+            idLinea:id,
+            indicador:tag
         }
-    },[filtros])
+        try{
+            const res = await Axios.post(`${getRoute}/utilerias/getFechasForLiveScreen`,objIntervalos);
+            const obj = {
+                fechaInicio: res.data.fechaInicio,
+                fechaFin: res.data.fechaFin,
+                linea:id
+            }
+            setDatosDeConsulta(obj)
+        } catch(e){
+            console.log(e)
+        }
+    }
 
-    let  urlUltimosParos="";
-    let  urlTopFive ="";
+    const getData = () =>{
+        if(Object.entries(filtros).length === 0 || Object.entries(datosDeConsulta).length === 0){
+            lineaService.readAll().then(res =>  intervalos (res[0].id,"TURNO_ACTUAL") ).catch(e => console.log(e));
+        }else{
+            intervalos (filtros.linea,filtros.indicador)
+        }
+    }
+
+
+
+    let urlUltimosParos="";
+    let urlTopFive ="";
+    let urlTacometros="";
+
     if(Object.entries(datosDeConsulta).length > 0){
         urlUltimosParos =`${getRoute}/paros/ultimosParos/linea/${datosDeConsulta.linea}`;
         urlTopFive = `${getRoute}/paros/topFive/linea/${datosDeConsulta.linea}`;
+        urlTacometros=`${getRoute}/indicadores/monitor/linea/${datosDeConsulta.linea}`;
     }
 
+    console.log(datosDeConsulta)
+    useEffect(()=>{
+        getData();
+    },[filtros])
+
     const [reload,setReload] =useState(0);
-    useEffect(() =>{
+    useEffect(()=>{
         setTimeout(()=>{
+            getData();
             setReload(Date.now())            
-        },10000)
+        },1000)
     },[reload])
 
 
     useEffect(()=>{
-        Axios.post(urlUltimosParos,datosDeConsulta).then((data)=>{
-            setRegistrosUltimosParos(data.data)
-        }).catch((e)=>{
-            console.log(e)
-        });
-        Axios.post(urlTopFive,datosDeConsulta).then((data)=>{
-            setRegistrosTopFive(data.data)
-        }).catch((e)=>{
-            console.log(e)
-        });
-        setFiltroTacometro(datosDeConsulta)
+        if(Object.entries(datosDeConsulta).length !== 0){
+            Axios.post(urlUltimosParos,datosDeConsulta).then( res => setRegistrosUltimosParos(res.data) ).catch (e=>console.log(e) );
+            Axios.post(urlTopFive,datosDeConsulta).then( res => setRegistrosTopFive(res.data) ).catch(e=>console.log(e) );
+            Axios.post(urlTacometros,datosDeConsulta).then(res => setTacometrosData(res.data) ).catch(e=>console.log(e));
+        }
     },[urlTopFive,reload])
-
-
 
     return (
         <>
             <div className="col-12 md:col-12 mt-5">
                 <Tacometros
-                    filtros={filtroTacometro}
+                    data={tacometrosData}
                 />
             </div>
             <br></br>
@@ -104,5 +108,4 @@ const Consultas =  ({filtros}) =>{
         </>
     )
 }
-
 export default Consultas ; 

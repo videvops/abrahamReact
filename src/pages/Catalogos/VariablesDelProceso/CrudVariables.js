@@ -1,27 +1,22 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-
-//CAMBIAR...
-import Spinner from "../../../components/loader/Spinner";
+import { VariablesService } from "../../../service/VariablesService";
+import { emptyProduct } from "./Objetos/ProductoVacio";
 import Exportar from "./Botones/Exportar";
-import TablaModoFalla from "./Tabla/TablaModoFalla";
-import EliminarUno from "./Dialogos/EliminarUno";
-import EliminarVarios from "./Dialogos/EliminarVarios";
-import CrearModificar from "./Dialogos/CrearModificar";
 import { leftToolbarTemplate } from "../ComponentsCat/Botones/AgregarEliminar";
 import { ProductContext } from "../ComponentsCat/Contexts/ProductContext";
 import { renderHeader } from "../ComponentsCat/Buscador/Cabezal";
-//CAMBIAR...
-import { ModoFallaService } from "../../../service/ModoFallaService";
-
-import { emptyProduct } from "./Objetos/ProductoVacio";
+import EliminarVarios from "./Dialogos/EliminarVarios";
+import EliminarUno from "./Dialogos/EliminarUno";
+import CrearModificar from "./Dialogos/CrearModificar";
+import TablaVariables from "./Tabla/TablaVariables";
 
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { FilterMatchMode } from "primereact/api";
 
-const CrudModoFalla = ({ titulos, notificaciones }) => {
+const Crud = (props) => {
     //--------------------| Importacion de metodos axios |--------------------
-    const modoFallaService = new ModoFallaService();
+    const variablesService = new VariablesService();
 
     //--------------------| Uso de Contextos |--------------------
     const {
@@ -41,12 +36,11 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [globalFilter, setGlobalFilter] = useState("");
     const [tieneId, setTieneId] = useState(false);
-
     // CAMBIAR...
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        modoFalla: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        nombreArea: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     });
     const toast = useRef(null);
     const dt = useRef(null);
@@ -61,7 +55,7 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
         setGlobalFilter(value);
     };
     //------> Cabezal de buscador
-    const header = renderHeader(globalFilter, onGlobalFilterChange, titulos.Buscador, titulos.TituloTabla);
+    const header = renderHeader(globalFilter, onGlobalFilterChange, props.titulos.Buscador, props.titulos.TituloTabla);
 
     //--------------------| Funciones para mostrar dialogos |--------------------
     //------> Nuevo gasto
@@ -103,10 +97,20 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
     const saveProduct = () => {
         if (!product.id) {
             createProduct(product);
-            toast.current.show({ severity: "success", summary: "Atencion!", detail: `${notificaciones.creacion}`, life: 3000 });
-        } else {
+            toast.current.show({
+                severity: "success",
+                summary: "Atencion!",
+                detail: "Variable creada",
+                life: 3000,
+            });
+         } else {
             updateProduct(product);
-            toast.current.show({ severity: "success", summary: "Atencion!", detail: `${notificaciones.modificacion}`, life: 3000 });
+            toast.current.show({
+                severity: "success",
+                summary: "Atencion!",
+                detail: "Variable Actualizada",
+                life: 3000,
+            });
         }
         setProduct(emptyProduct);
         setProductDialog(false);
@@ -115,17 +119,29 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
     const _deleteProduct = () => {
         deleteProduct(product.id);
         setProduct(emptyProduct);
-        toast.current.show({ severity: "error", summary: "Atencion!", detail: `${notificaciones.eliminacion}`, life: 3000 });
+        toast.current.show({
+            severity: "error",
+            summary: "Atencion!",
+            detail: "Variable eliminada",
+            life: 3000,
+        });
         setDeleteProductDialog(false);
     };
     //------> Eliminar varios productos
     const deleteSelectedProducts = () => {
-        selectedProducts.map((producto) => {
-            return deleteProduct(producto.id);
-        });
+        let _products = products.filter((val) => selectedProducts.includes(val)); // Producto a eliminar
+        for (let i = 0; i < _products.length; i++) {
+            deleteProduct(_products[i].id);
+        }
         setDeleteProductsDialog(false); // Ocultara dialogo
         setSelectedProducts(null); // Elemetos seleccionados = 0
-        toast.current.show({ severity: "error", summary: "Atencion!", detail: `${notificaciones.eliminaciones}`, life: 3000 });
+        toast.current.show({
+            severity: "error",
+            summary: "Atencion!",
+            detail: "Variables eliminadas",
+            life: 3000,
+        });
+        variablesService.readAll().then((data) => setProducts(data));
     };
     //------> Editar producto
     const _editProduct = (product) => {
@@ -144,38 +160,54 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => _editProduct(rowData)} />
+                <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-success mr-2"
+                    onClick={() => {
+                        console.log(rowData);
+                        _editProduct(rowData);
+                    }}
+                />
 
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => confirmDeleteProduct(rowData)} />
             </React.Fragment>
         );
     };
+
     //--------------------| Obtener registros de back-end |--------------------
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    //---> Obtendra los datos del back-end
-    useEffect(() => {
-        const cargarDatos = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const data = await modoFallaService.readAll();
-                console.log(data)
-                setProducts(data);
-            } catch (error) {
-                setError(error.message);
-            }
-            setIsLoading(false);
-        };
-        cargarDatos();
-        return () => {
-            setProducts([]);
-        };
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    async function CargarDatos() {
+        const obj=[
+            {variable: "Temperatura",unidad:"C°",maquina:"maquina1", linea:"linea1",area:"area1",planta:"planta1",estatus:"Activo",fechaCreacion:"2022-12-13T18:11:49Z"},
+            {variable: "Presion",unidad:"Bar",maquina:"maquina1", linea:"linea1",area:"area1",planta:"planta1",estatus:"Activo",fechaCreacion:"2022-12-13T18:11:49Z"},
+            {variable: "Flujo",unidad:"l/s",maquina:"maquina1", linea:"linea1",area:"area1",planta:"planta1",estatus:"Activo",fechaCreacion:"2022-12-13T18:11:49Z"}
+        ]
+        setProducts(obj)
+        // setIsLoading(true);
+        // setError(null);
+        // try {
+        //     const data = await variablesService.readAll(); 
+        //     setProducts(data);
+        // } catch (error) {
+        //     setError(error.message);
+        // }
+        // setIsLoading(false);
+    }
+
+    let content = <p>Sin registros</p>;
+    if (true) {
+        content = <TablaVariables BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />;
+    }
 
     useEffect(() => {
-        modoFallaService.readAll().then((data) => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        CargarDatos();
+    }, []); 
+
+    useEffect(() => {
+        //variablesService.readAll().then((data) => setProducts(data));
+    }, []); 
 
     //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(() => {
@@ -188,17 +220,12 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
         }
     }, [product]);
 
-    //--------------------| Valor que regresara |--------------------
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
-            {!isLoading && !error && (
-                <TablaModoFalla BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />
-            )}
-            {isLoading && <Spinner />}
-            {error && <p>{error}</p>}
+            {content}
 
-            <CrearModificar productDialog={productDialog} titulos={titulos} saveProduct={saveProduct} hideDialog={hideDialog} product={product} updateField={updateField} tieneId={tieneId} />
+            <CrearModificar productDialog={productDialog} titulos={props.titulos} saveProduct={saveProduct} hideDialog={hideDialog} product={product} updateField={updateField} tieneId={tieneId} />
 
             <EliminarUno deleteProductDialog={deleteProductDialog} _deleteProduct={_deleteProduct} hideDeleteProductDialog={hideDeleteProductDialog} product={product} />
 
@@ -206,5 +233,4 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
         </div>
     );
 };
-
-export default CrudModoFalla;
+export default Crud;

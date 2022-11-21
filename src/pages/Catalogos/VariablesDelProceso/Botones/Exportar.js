@@ -10,21 +10,22 @@ const Exportar = (products) => {
 
                 doc.autoTable({
                     columns: [
-                        // CAMBIAR...
-                        { header: "ID", dataKey: "id" },
-                        { header: "Area", dataKey: "area" },
-                        { header: "Estatus", dataKey: "estatus" },
+                        { header: "Variable", dataKey: "variable" },
+                        { header: "Unidad", dataKey: "unidad" },
+                        { header: "Maquina", dataKey: "maquina" },
+                        { header: "Linea", dataKey: "linea" },
+                        { header: "Planta", dataKey: "planta" },
                         { header: "Fecha de Creacion", dataKey: "fechaCreacion" },
                     ],
                     body: products, // Registros de BD
                     margin: { top: 35 },
                     didDrawPage: function (data) {
-                        doc.text("Catalogo Areas", 20, 30); // CAMBIAR...
+                        doc.text("Catalogo Variables del Proceso", 20, 30); // CAMBIAR...
                     },
                 });
 
                 const fecha = new Date().getTime(); // Fecha en tiempo real
-                doc.save(`Areas_export_${fecha}.pdf`); // template string  /   CAMBIAR...
+                doc.save(`Variables_export_${fecha}.pdf`); // template string  /   CAMBIAR...
             });
         });
     };
@@ -36,7 +37,7 @@ const Exportar = (products) => {
             const worksheet = xlsx.utils.json_to_sheet(products);
             const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
             const excelBuffer = xlsx.write(workbook, { bookType: "xlsx", type: "array" });
-            saveAsExcelFile(excelBuffer, "Areas"); // CAMBIAR...
+            saveAsExcelFile(excelBuffer, "Variable"); // CAMBIAR...
         });
     };
 

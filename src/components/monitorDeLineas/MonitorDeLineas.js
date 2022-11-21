@@ -1,6 +1,5 @@
 import React,{useState } from "react";
 import {FiltroMonitorDeParos} from "./FiltroMonitorDeLineas";
-import Tacometros from "./Tacometros";
 import TablaMayorImpacto from "./Tablas/TablaMayorImpacto"
 import TablaUltimosParos from "./Tablas/TablaUltimosParos"
 
@@ -19,12 +18,6 @@ const MonitorDeLineas = () =>{
                     setRegistrosTopFive={setRegistrosTopFive}
                     setFiltroTacometro ={setFiltroTacometro}
                     setDataTacometro ={setDataTacometro}
-                />
-            </div>
-            <br></br>
-            <div className="col-12 md:col-12">
-                <Tacometros
-                    filtros={filtroTacometro}
                 />
             </div>
             <br></br>

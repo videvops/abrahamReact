@@ -40,6 +40,7 @@ const Exportar = (products) => {
 
     //---> Guardar datos en Excel
     const saveAsExcelFile = (buffer, fileName) => {
+        console.log(buffer)
         import("file-saver").then((module) => {
             if (module && module.default) {
                 let EXCEL_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
