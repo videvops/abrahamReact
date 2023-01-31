@@ -1,0 +1,18 @@
+.bien{
+    background-color: rgb(101, 188, 99);
+    text-align: center;
+    color: white;
+    text-shadow: rgb(101, 188, 99);
+}
+
+.regular{
+    background-color:rgb(251, 188, 4);
+    text-align: center;
+    color: white;
+}
+
+.mal{
+    background-color: rgb(221, 83, 83);
+    text-align: center;
+    color: white;
+}
