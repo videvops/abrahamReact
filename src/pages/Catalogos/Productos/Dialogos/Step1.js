@@ -5,26 +5,29 @@ import { Mensaje } from '../../ComponentsCat/Mensajes/Mensajes';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { MensajeFiltro } from '../../ComponentsCat/Mensajes/Mensajes';
+import Environment from '../../../../Environment';
+
+const getRoute = Environment()
 
 const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) => {
 //--------------------| Dropdown dinamico|--------------------
     //---> Plantas
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
-        Axios.get("http://localhost:8080/plantas/list").then(res=>setPlantasDisponibles(res.data))
+        Axios.get(getRoute+"/plantas/list").then(res=>setPlantasDisponibles(res.data))
     }, [])
     //---> Areas
     const [areasDisponibles, setAreasDisponibles] = useState([])
     useEffect(() => {
         if(product.idPlanta!==''){
-            Axios.get(`http://localhost:8080/areas/planta/${product.idPlanta}`).then(res=>setAreasDisponibles(res.data))
+            Axios.get(getRoute+`/areas/planta/${product.idPlanta}`).then(res=>setAreasDisponibles(res.data))
         }
     }, [product.idPlanta])
     //---> Lineas
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     useEffect(() => {
         if(product.idArea!==''){
-            Axios.get(`http://localhost:8080/lineas/area/${product.idArea}`).then(res=>setLineasDisponibles(res.data))
+            Axios.get(getRoute+`/lineas/area/${product.idArea}`).then(res=>setLineasDisponibles(res.data))
         }
     }, [product.idArea])
 
