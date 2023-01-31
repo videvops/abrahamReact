@@ -4,43 +4,46 @@ import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { MultiSelect } from 'primereact/multiselect'
-import { formatearFecha } from '../../helpers/funciones'
-import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
 
-const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
-//--------------------| MultiSelect de Plantas  |--------------------
-    //---> Obtener registros de back-end
+import { formatearFecha } from "../helpers/funciones"
+import { MensajeFiltro } from "../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes"
+
+import {PlantaService} from "../../service/PlantaService"
+import {AreaService} from "../../service/AreaService"
+import {LineaService} from "../../service/LineaService"
+
+const Filtros = ({ setRegistros, setChartFiltros }) => {
+
+    const plantasService = new PlantaService (); 
+    const areaService = new AreaService();
+    const lineaService = new LineaService();
+
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
-    useEffect(() => {
-        const cargarPlantas = async () => {
-            const respuesta = await Axios.get("http://localhost:8080/plantas/list")
-            setPlantasDisponibles(respuesta.data)
-        }
-        cargarPlantas()
-    }, [])
-    //---> Lista de plantas seleccionadas
-    const [plantas, setPlantas] = useState([])
-
-//--------------------| MultiSelect de Areas  |--------------------
-    //---> Obtener registros de back-end
     const [areasDisponibles, setAreasDisponibles] = useState([])
-    const obtenerAreas = async () => {
-
-        console.log("http://localhost:8080/areas/plantas"+plantas)
-        const respuesta = await Axios.post(`http://localhost:8080/areas/plantas`, plantas)
-        setAreasDisponibles(respuesta.data)
-    }
-    //---> Lista de areas seleccionados
-    const [areas, setAreas] = useState([])
-
-//--------------------| MultiSelect de Lineas  |--------------------
-    //---> Obtener registros de back-end
     const [lineasDisponibles, setLineasDisponibles] = useState([])
-    const obtenerLineas = async () => {
-        const respuesta = await Axios.post(`http://localhost:8080/lineas/areas`, areas)
-        setLineasDisponibles(respuesta.data)
+
+    // Plantas
+    useEffect(() =>{
+        plantasService.readAll().then((data)=>{
+            setPlantasDisponibles(data)
+        })
+    },[])
+    const [plantas, setPlantas] = useState([])
+    
+    // Areas
+    const obtenerAreas = async () => {
+        areaService.readAll().then((data)=>{
+            setAreasDisponibles(data)
+        })
     }
-    //---> Lista de lineas seleccionadas
+    const [areas, setAreas] = useState([])
+   
+    // Lineas
+    const obtenerLineas = async () => {
+        lineaService.readAll().then((data)=>{
+            setLineasDisponibles(data)
+        })
+    }
     const [lineas, setLineas] = useState([])
 
 //--------------------| MultiSelect de Lineas  |--------------------
@@ -110,13 +113,13 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
         <div className="col-12 ">
             <div className="card mb-0" style={{ textAlign: "center", background: "#6366f2" }}>
                 <span className=" font-bold" style={{ fontSize: "25px", color: "white" }}>
-                    Listado de Paros
+                    Desperdicio
                 </span>
             </div>
             <br/>
             <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
             <Dialog
-                header="Filtro para listado de paros"
+                header="Filtro para Desperdicio"
                 visible={dialogo}
                 footer={botonesAccion}
                 onHide={() => setDialogo(false)}
@@ -210,4 +213,4 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
     )
 }
 
-export default CabezalListParos
+export default Filtros

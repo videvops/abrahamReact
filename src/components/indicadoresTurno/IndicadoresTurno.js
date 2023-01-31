@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Cabezal from "../components/indicadoresTurno/Tabla/Cabezal";
-import Tabla from "../components/indicadoresTurno/Tabla/Tabla";
+import Cabezal from "./Tabla/Cabezal"
+import Tabla from "./Tabla/Tabla";
 
 const IndicadoresTurno = () => {
     const [registros, setRegistros] = useState([])

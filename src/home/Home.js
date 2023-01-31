@@ -9,12 +9,12 @@ import { AppConfig } from "../AppConfig";
 
 
 import Dashboard from "../components/Dashboard";
-import IndicadoresTurno from "../pages/IndicadoresTurno";
+import IndicadoresTurno from "../components/indicadoresTurno/IndicadoresTurno"
 import StatusLineas from "../pages/StatusLineas";
 
 
 //----------------| Catalogos |----------------
-import ListadoParos from "../pages/ListadoParos";
+import ListadoParos from "../components/listadoParo/ListadoParos";
 // import CatalogoRoles from "../pages/Catalogos/Roles/CatalogoRoles";
 // import CatalogoAreas from "../pages/Catalogos/Areas/CatalogoAreas";
 import CatalogoTurnos from "../pages/Catalogos/Turnos/CatalogoTurnos";
@@ -26,6 +26,9 @@ import CatalogoProducto from "../pages/Catalogos/Productos/CatalogoProducto";
 // import CatalogoTipoParo from "../pages/Catalogos/TiposParo/CatalogoTipoParo";
 // import CatalogoDirecciones from "../pages/Catalogos/Direcciones/CatalogoDirecciones";
 
+import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
+import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
+import Desperdicio from  '../components/desperdicio/Desperdicio'
 
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
@@ -170,24 +173,27 @@ const Home = ({ setLogueado }) => {
             label: "Tiempo Real",
             icon: "pi pi-fw pi-sitemap",
             items: [
-                { label: "Indicadores de Turno", icon: "pi pi-fw pi-check-square text-blue-500 ", to: "/indicadoresTurno" },
-                { label: "Status Lineas", icon: "pi pi-fw pi-chart-line text-blue-500 ", to: "/statusLineas" },
-                // { label: "Últimos Paros", icon: "pi pi-fw pi-exclamation-circle text-blue-500", to: "/desperdicio" },
+                { label: "Status Lineas", icon: "pi pi-fw pi-clock text-blue-500 ", to: "/statusLineas" },
+                { label: "Indicadores de Turno", icon: "pi pi-fw pi-clock text-blue-500 ", to: "/indicadoresTurno" },
+                { label: "Monitor de Lineas", icon: "pi pi-fw pi-clock text-blue-500", to: "/monitorDeLineas" },
             ],
         },
         {
             label: "Reportes",
             icon: "pi pi-fw pi-sitemap",
-            items: [{ label: "Listado de Paros", icon: "pi pi-fw pi-list text-blue-500", to: "/listadoParos" }],
+            items: [
+                { label: "Status Lineas", icon: "pi pi-fw pi-book text-blue-500 ", to: "/statusLineas" },
+                { label: "Indicadores de Turno", icon: "pi pi-fw pi-book text-blue-500 ", to: "/indicadoresTurno" },
+                { label: "Monitor de Lineas", icon: "pi pi-fw pi-book text-blue-500", to: "/monitorDeLineas" },
+                { label: "Listado de Paros", icon: "pi pi-fw pi-book text-blue-500", to: "/listadoParos" },
+            ],
         },
         {
             label: "Graficas",
             icon: "pi pi-fw pi-sitemap",
             items: [
-                { label: "Tiempo muerto por maquina", icon: "pi pi-fw pi-list text-blue-500", to: "/listadoParos" },
-                // { label: "Variables de Proceso", icon: "pi pi-fw pi-mobile text-blue-500", to: "/button" },
-                // { label: "Pareto modos de falla", icon: "pi pi-fw pi-mobile text-blue-500", to: "/button" },
-                // { label: "Desperdicio", icon: "pi pi-fw pi-mobile text-blue-500", to: "/desperdicio" },
+                { label: "Variables de Proceso", icon: "pi pi-fw pi-mobile text-blue-500", to: "/variablesDelProceso" },
+                { label: "Desperdicio", icon: "pi pi-fw pi-mobile text-blue-500", to: "/desperdicio" },
             ],
         },
         {
@@ -200,16 +206,12 @@ const Home = ({ setLogueado }) => {
                     icon: "pi pi-fw pi-database text-blue-500",
                     // CAMBIAR....
                     items: [
-                        // { label: "Áreas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoAreas" },
-                        // { label: "Direcciones", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoDirecciones" },
-                        { label: "Líneas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoLineas" },
                         // { label: "Plantas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoPlantas" },
+                        // { label: "Áreas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoAreas" },
+                        { label: "Líneas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoLineas" },
+                        // { label: "Maquina",icon: "pi pi-fw pi-bookmark text-blue-500",to: "/catalogoMaquinas",},
                         { label: "Productos", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoProductos" },
-                        // { label: "Roles", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoRoles" },
-                        // { label: "TipoParo", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTipoParo" },
                         { label: "Turnos", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTurnos" },
-                        // { label: "Usuarios", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoUsuarios" },
-                        // {label: "Maquina",icon: "pi pi-fw pi-bookmark text-blue-500",to: "/catalogoMaquinas",},
                         // {label: "Modo de Falla",icon: "pi pi-fw pi-bookmark text-blue-500",},
                     ],
                 },
@@ -280,6 +282,10 @@ const Home = ({ setLogueado }) => {
                     <Route path="/catalogoTurnos" component={CatalogoTurnos} />
                     {/* <Route path="/catalogoUsuarios" component={CatalogoUsuarios} /> */}
                     {/* <Route path="/catalogoMaquinas" component={CatalogoMaquinas} /> */}
+
+                    <Route path="/desperdicio" component={Desperdicio} />
+                    <Route path="/monitorDeLineas" component={MonitorDeLineas}/>
+                    <Route path="/variablesDelProceso" component={VariablesDelProceso}/>
                 </div>
 
                 {/* <AppFooter layoutColorMode={layoutColorMode} /> */}

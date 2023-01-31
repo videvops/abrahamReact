@@ -4,10 +4,11 @@ import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { MultiSelect } from 'primereact/multiselect'
+
 import { formatearFecha } from '../../helpers/funciones'
 import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
 
-const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
+const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
@@ -25,8 +26,6 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
     //---> Obtener registros de back-end
     const [areasDisponibles, setAreasDisponibles] = useState([])
     const obtenerAreas = async () => {
-
-        console.log("http://localhost:8080/areas/plantas"+plantas)
         const respuesta = await Axios.post(`http://localhost:8080/areas/plantas`, plantas)
         setAreasDisponibles(respuesta.data)
     }
@@ -62,9 +61,8 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
     const [esValido, setEsValido] = useState(true)
     //---> Enviar datos de back-end a otro componente
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post(`http://localhost:8080/paros/filter`, datos)
-        const resultado = await respuesta.data.registros
-        setRegistros(resultado)
+        const desperdicioMaquinas = await Axios.post(`http://localhost:8080/desperdicio/table/rechazos`,datos)
+        setRegistros(desperdicioMaquinas.data)
         setChartFiltros(datos)
     }
     //---> Validara antes de mandar el filtro
@@ -79,7 +77,7 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
         const nuevaFechaInicio = formatearFecha(fechaInicio)
         // console.log(nuevaFechaInicio)
         const nuevaFechaFin = formatearFecha(fechaFin)
-        const objeto = { page: 0, total: 10, todasLineas: false, maquinas: [...maquinas], fechaInc: nuevaFechaInicio, fechaFin: nuevaFechaFin }
+        const objeto = { page: 0, total: 10,lineas:[...lineas] ,maquinas: [...maquinas], fechaInc: nuevaFechaInicio, fechaFin: nuevaFechaFin }
         enviarDatos(objeto)
         setEsValido(true)
         setDialogo(false)
@@ -110,13 +108,13 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
         <div className="col-12 ">
             <div className="card mb-0" style={{ textAlign: "center", background: "#6366f2" }}>
                 <span className=" font-bold" style={{ fontSize: "25px", color: "white" }}>
-                    Listado de Paros
+                    Desperdicio
                 </span>
             </div>
             <br/>
             <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
             <Dialog
-                header="Filtro para listado de paros"
+                header="Filtro para Desperdicio"
                 visible={dialogo}
                 footer={botonesAccion}
                 onHide={() => setDialogo(false)}
@@ -210,4 +208,4 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
     )
 }
 
-export default CabezalListParos
+export default CabezalDesperdicio
