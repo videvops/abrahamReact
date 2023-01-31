@@ -20,7 +20,7 @@ const CourseInput = props => {
   const formSubmitHandler = event => {
     event.preventDefault();
 
-    if(enteredValue.trim().length==0){
+    if(enteredValue.trim().length===0){
       setIsValid(false);
       return;
     }
