@@ -3,7 +3,6 @@ import Iframe from 'react-iframe'
 import {getDateSplitted,getStringData} from "../../helpers/funciones"
 
 const DesperdicioLinea = ({filtros}) => {
-    console.log(filtros)
     if(Object.entries(filtros).length === 0){
         return(<h3>No hay informacion disponible</h3>)
     }else{

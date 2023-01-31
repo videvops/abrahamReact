@@ -75,7 +75,6 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
             return;                                                     // No permite avanzar
         }
         const nuevaFechaInicio = formatearFecha(fechaInicio)
-        // console.log(nuevaFechaInicio)
         const nuevaFechaFin = formatearFecha(fechaFin)
         const objeto = { page: 0, total: 10,lineas:[...lineas] ,maquinas: [...maquinas], fechaInc: nuevaFechaInicio, fechaFin: nuevaFechaFin }
         enviarDatos(objeto)
