@@ -6,6 +6,9 @@ import { Calendar } from 'primereact/calendar'
 import { MultiSelect } from 'primereact/multiselect'
 import { formatearFecha } from '../../helpers/funciones'
 import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
+import Environment from '../../../Environment'
+
+const getRoute = Environment()
 
 const CabezalListParos = ({ setRegistros }) => {
 //--------------------| MultiSelect de Plantas  |--------------------
@@ -13,7 +16,7 @@ const CabezalListParos = ({ setRegistros }) => {
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
         const cargarPlantas = async () => {
-            const respuesta = await Axios.get("http://localhost:8080/plantas/list")
+            const respuesta = await Axios.get(getRoute+"/plantas/list")
             setPlantasDisponibles(respuesta.data)
         }
         cargarPlantas()
@@ -25,7 +28,7 @@ const CabezalListParos = ({ setRegistros }) => {
     //---> Obtener registros de back-end
     const [areasDisponibles, setAreasDisponibles] = useState([])
     const obtenerAreas = async () => {
-        const respuesta = await Axios.post(`http://localhost:8080/areas/plantas`, plantas)
+        const respuesta = await Axios.post(getRoute+`/areas/plantas`, plantas)
         setAreasDisponibles(respuesta.data)
     }
     //---> Lista de areas seleccionados
@@ -35,7 +38,7 @@ const CabezalListParos = ({ setRegistros }) => {
     //---> Obtener registros de back-end
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     const obtenerLineas = async () => {
-        const respuesta = await Axios.post(`http://localhost:8080/lineas/areas`, areas)
+        const respuesta = await Axios.post(getRoute+`/lineas/areas`, areas)
         setLineasDisponibles(respuesta.data)
     }
     //---> Lista de lineas seleccionadas
@@ -45,7 +48,7 @@ const CabezalListParos = ({ setRegistros }) => {
     //---> Obtener registros de back-end
     const [maquinasDisponibles, setMaquinasDisponibles] = useState([])
     const obtenerMaquinas = async () => {
-        const respuesta = await Axios.post(`http://localhost:8080/maquinas/list`, lineas)
+        const respuesta = await Axios.post(getRoute+`/maquinas/list`, lineas)
         setMaquinasDisponibles(respuesta.data)
     }
     //---> Lista de lineas seleccionadas
@@ -60,7 +63,7 @@ const CabezalListParos = ({ setRegistros }) => {
     const [esValido, setEsValido] = useState(true)          // Mensaje de advertencia 
     //---> Enviar datos de back-end a otro componente
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post(`http://localhost:8080/paros/filter`, datos)
+        const respuesta = await Axios.post(getRoute+`/paros/filter`, datos)
         const resultado = await respuesta.data.registros
         setRegistros(resultado)
     }

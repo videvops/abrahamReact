@@ -6,6 +6,9 @@ import { Calendar } from "primereact/calendar";
 import { MultiSelect } from "primereact/multiselect";
 import { MensajeFiltro } from "../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes";
 // import { formatearFecha } from "../../helpers/funciones";
+import Environment from "../../../Environment";
+
+const getRoute = Environment()
 
 const Cabezal = ({ setRegistros, setCargando }) => {
     //--------------------| MultiSelect de Plantas  |--------------------
@@ -13,7 +16,7 @@ const Cabezal = ({ setRegistros, setCargando }) => {
     const [plantasDisponibles, setPlantasDisponibles] = useState([]);
     useEffect(() => {
         const cargarPlantas = async () => {
-            const respuesta = await Axios.get("http://localhost:8080/plantas/list");
+            const respuesta = await Axios.get(getRoute+"/plantas/list");
             setPlantasDisponibles(respuesta.data);
         };
         cargarPlantas();
@@ -25,7 +28,7 @@ const Cabezal = ({ setRegistros, setCargando }) => {
     //---> Obtener registros de back-end
     const [areasDisponibles, setAreasDisponibles] = useState([]);
     const obtenerAreas = async () => {
-        const respuesta = await Axios.post(`http://localhost:8080/areas/plantas`, plantas);
+        const respuesta = await Axios.post(getRoute+`/areas/plantas`, plantas);
         setAreasDisponibles(respuesta.data);
     };
     //---> Lista de areas seleccionados
@@ -35,7 +38,7 @@ const Cabezal = ({ setRegistros, setCargando }) => {
     //---> Obtener registros de back-end
     const [lineasDisponibles, setLineasDisponibles] = useState([]);
     const obtenerLineas = async () => {
-        const respuesta = await Axios.post(`http://localhost:8080/lineas/areas`, areas);
+        const respuesta = await Axios.post(getRoute+`/lineas/areas`, areas);
         setLineasDisponibles(respuesta.data);
     };
     //---> Lista de lineas seleccionadas
@@ -50,7 +53,7 @@ const Cabezal = ({ setRegistros, setCargando }) => {
     const [esValido, setEsValido] = useState(true); // Para mensaje de error
 
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post("http://localhost:8080/indicadores", datos);
+        const respuesta = await Axios.post(getRoute+"/indicadores", datos);
         setRegistros(respuesta.data.registros);
         console.log(respuesta.data.registros);
     };
