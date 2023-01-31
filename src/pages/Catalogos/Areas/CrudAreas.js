@@ -18,7 +18,6 @@ import Spinner from '../../../components/loader/Spinner';
 const CrudAreas = ({titulos, notificaciones}) => {
 //--------------------| Importacion de metodos axios |--------------------
     const areaService = new AreaService();
-
 //--------------------| Uso de Contextos |--------------------
     const {
         createProduct,
