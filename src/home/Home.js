@@ -175,7 +175,7 @@ const Home = ({ setLogueado }) => {
             items: [
                 { label: "Status Lineas", icon: "pi pi-fw pi-clock text-blue-500 ", to: "/statusLineas" },
                 { label: "Indicadores de Turno", icon: "pi pi-fw pi-clock text-blue-500 ", to: "/indicadoresTurno" },
-                { label: "Monitor de Lineas", icon: "pi pi-fw pi-clock text-blue-500", to: "/monitorDeLineas" },
+                { label: "Monitor de Lineas", icon: "pi pi-fw pi-clock text-blue-500", to: "/monitorDeLineasTiempoReal" },
             ],
         },
         {
@@ -282,9 +282,9 @@ const Home = ({ setLogueado }) => {
                     <Route path="/catalogoTurnos" component={CatalogoTurnos} />
                     {/* <Route path="/catalogoUsuarios" component={CatalogoUsuarios} /> */}
                     {/* <Route path="/catalogoMaquinas" component={CatalogoMaquinas} /> */}
-
                     <Route path="/desperdicio" component={Desperdicio} />
-                    <Route path="/monitorDeLineas" component={MonitorDeLineas}/>
+                    <Route path="/monitorDeLineas" component={()=><MonitorDeLineas tiempoReal = {false}/>}/>
+                    <Route path="/monitorDeLineasTiempoReal" component={()=><MonitorDeLineas tiempoReal = {true}/>}/>
                     <Route path="/variablesDelProceso" component={VariablesDelProceso}/>
                 </div>
 

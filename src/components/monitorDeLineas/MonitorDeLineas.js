@@ -1,16 +1,15 @@
-import React,{ useState } from "react";
-import FiltroMonitorDeParos from "./FiltroMonitorDeLineas";
+import React,{useState } from "react";
+import {FiltroMonitorDeParos} from "./FiltroMonitorDeLineas";
 import Tacometros from "./Tacometros";
-import Tacometro from "./tacometroComponente/Tacometro"
 import TablaMayorImpacto from "./Tablas/TablaMayorImpacto"
 import TablaUltimosParos from "./Tablas/TablaUltimosParos"
 
-const MonitorDeLineas = () =>{
+const MonitorDeLineas = ({tiempoReal}) =>{
     
     const [registrosUltimosParos, setRegistrosUltimosParos] = useState([]) 
     const [registrosTopFive, setRegistrosTopFive] = useState([])
     const [filtroTacometro, setFiltroTacometro] = useState([])
-    const [dataTacometro, setDataTacometro] = useState([])
+    const [dataTacometro, setDataTacometro] = useState([]) 
 
     return(
         <div className="col-12">
@@ -20,13 +19,11 @@ const MonitorDeLineas = () =>{
                     setRegistrosTopFive={setRegistrosTopFive}
                     setFiltroTacometro ={setFiltroTacometro}
                     setDataTacometro ={setDataTacometro}
+                    tiempoReal={tiempoReal}
                 />
             </div>
             <br></br>
             <div className="col-12 md:col-12">
-                {/* <Tacometro
-                    data = {dataTacometro}
-                />                */}
                 <Tacometros
                     filtros={filtroTacometro}
                 />
