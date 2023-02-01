@@ -1,8 +1,10 @@
 import axios from "axios";
+import Environment from "../Environment";
+const getRoute = Environment()
 
 export class RolService {
     //------> Link para hacer peticiones
-    baseUrl = "http://localhost:4000/listadoUsuarios";
+    baseUrl = `${getRoute}/listadoUsuarios`;
     //------> Agregar nuevo registro
     create(product){
         return axios.post(this.baseUrl, product).then(res => res.data);

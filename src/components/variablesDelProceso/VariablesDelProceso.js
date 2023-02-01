@@ -6,7 +6,7 @@ const VariablesDelProceso = () => {
     return (
         <div>
             <h1>Variables del proceso</h1>
-            <Filtros/>
+            {/* <Filtros/> */}
         </div>
     );
 };
