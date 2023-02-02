@@ -5,18 +5,19 @@ import { Dialog } from "primereact/dialog";
 import { Calendar } from "primereact/calendar";
 import { MultiSelect } from "primereact/multiselect";
 import { MensajeFiltro } from "../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes";
-// import { formatearFecha } from "../../helpers/funciones";
 import Environment from "../../../Environment";
-
-const getRoute = Environment()
+import { formatearFecha } from "../../helpers/funciones";
 
 const Cabezal = ({ setRegistros, setCargando }) => {
     //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
+
+    const getRoute = Environment()
+
     const [plantasDisponibles, setPlantasDisponibles] = useState([]);
     useEffect(() => {
         const cargarPlantas = async () => {
-            const respuesta = await Axios.get(getRoute+"/plantas/list");
+            const respuesta = await Axios.get(`${getRoute}/plantas/list`)
             setPlantasDisponibles(respuesta.data);
         };
         cargarPlantas();
@@ -28,7 +29,7 @@ const Cabezal = ({ setRegistros, setCargando }) => {
     //---> Obtener registros de back-end
     const [areasDisponibles, setAreasDisponibles] = useState([]);
     const obtenerAreas = async () => {
-        const respuesta = await Axios.post(getRoute+`/areas/plantas`, plantas);
+        const respuesta = await Axios.post(`${getRoute}/areas/plantas`, plantas)
         setAreasDisponibles(respuesta.data);
     };
     //---> Lista de areas seleccionados
@@ -38,7 +39,7 @@ const Cabezal = ({ setRegistros, setCargando }) => {
     //---> Obtener registros de back-end
     const [lineasDisponibles, setLineasDisponibles] = useState([]);
     const obtenerLineas = async () => {
-        const respuesta = await Axios.post(getRoute+`/lineas/areas`, areas);
+        const respuesta = await Axios.post(`${getRoute}/lineas/areas`, areas)
         setLineasDisponibles(respuesta.data);
     };
     //---> Lista de lineas seleccionadas
@@ -53,9 +54,8 @@ const Cabezal = ({ setRegistros, setCargando }) => {
     const [esValido, setEsValido] = useState(true); // Para mensaje de error
 
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post(getRoute+"/indicadores", datos);
+        const respuesta = await Axios.post(`${getRoute}/indicadores`, datos);
         setRegistros(respuesta.data.registros);
-        console.log(respuesta.data.registros);
     };
 
     //---> Validara antes de mandar el filtro
@@ -69,7 +69,7 @@ const Cabezal = ({ setRegistros, setCargando }) => {
             return; // No permite avanzar
         }
         setCargando(true);
-        const objeto = { idLineas: lineas };
+        const objeto = { idLineas: lineas, fechaInc:formatearFecha(fechaInicio),fechaFin:formatearFecha(fechaFin) };
         enviarDatos(objeto);
         setEsValido(true);
         setDialogo(false);

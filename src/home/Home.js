@@ -170,7 +170,7 @@ const Home = ({ setLogueado }) => {
             label: "Tiempo Real",
             icon: "pi pi-fw pi-sitemap",
             items: [
-                { label: "Indicadores de Turno", icon: "pi pi-fw pi-check-square text-blue-500 ", to: "/indicadoresTurno" },
+                { label: "Indicadores de Planta", icon: "pi pi-fw pi-check-square text-blue-500 ", to: "/indicadoresTurno" },
                 { label: "Status Lineas", icon: "pi pi-fw pi-chart-line text-blue-500 ", to: "/statusLineas" },
                 // { label: "Últimos Paros", icon: "pi pi-fw pi-exclamation-circle text-blue-500", to: "/desperdicio" },
             ],

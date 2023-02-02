@@ -52,13 +52,13 @@ const Tabla = ({ registros, cargando }) => {
             {registros.length > 0 ? (
                 <>
                     <CardTabla>
-                        <TablaDesing datos={registros}>
-                            <Column field="idLinea" header="ID Linea" sortable />
-                            <Column field="eficiencia" header="Eficiencia" style={{ textAlign: "center" }} sortable body={ColorEficiencia} />
-                            <Column field="disponibilidad" header="Disponibilidad" style={{ textAlign: "center" }} sortable body={ColorDisponibilidad} />
-                            <Column field="rendimiento" header="Rendimiento" style={{ textAlign: "center" }} sortable body={ColorRendimiento} />
-                            <Column field="calidad" header="Calidad" style={{ textAlign: "center" }} sortable body={ColorCalidad} />
-                            <Column field="productoTerminado" header="Producto Terminado(kg)" style={{ textAlign: "center" }} sortable />
+                    <TablaDesing datos={registros}>
+                            <Column field="linea" header="Linea" style={{ textAlign: "center", width:`${100/6}%`}} sortable />
+                            <Column field="eficiencia" header="Eficiencia" style={{ textAlign: "center", width:`${100/6}%`}} sortable body={ColorEficiencia} />
+                            <Column field="disponibilidad" header="Disponibilidad" style={{ textAlign: "center", width:`${100/6}%` }} sortable body={ColorDisponibilidad} />
+                            <Column field="rendimiento" header="Rendimiento" style={{ textAlign: "center", width:`${100/6}%`}} sortable body={ColorRendimiento} />
+                            <Column field="calidad" header="Calidad" style={{ textAlign: "center", width:`${100/6}%` }} sortable body={ColorCalidad} />
+                            <Column field="productoTerminado" header="Producto Terminado(kg)" style={{ textAlign: "center", width:`${100/6}%` }} sortable />
                         </TablaDesing>
                     </CardTabla>
                     <CardTabla>
