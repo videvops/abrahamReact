@@ -4,17 +4,17 @@ import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { formatearFecha } from '../helpers/funciones'
- import { MensajeFiltro } from '../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
- import { Dropdown } from 'primereact/dropdown'
- import Environment from "../../Environment";
- import {LineaService} from "../../service/LineaService"
+import { MensajeFiltro } from '../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
+import { Dropdown } from 'primereact/dropdown'
+import Environment from "../../Environment";
 
-export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosParos,setFiltroTacometro,setDataTacometro,tiempoReal}) => {
+
+
+export const FiltroMonitorDeParos = ({ tiempoReal}) => {
 
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
     const getRoute = Environment();
-    const lineaService = new LineaService();
 
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
@@ -111,38 +111,7 @@ export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosPa
         );
     }
 
-    const [reload,setReload] =useState(0);
-    useEffect(() =>{
-        setTimeout(()=>{
-            if(tiempoReal){
-                console.log("hecho")
-                if(lineas.length == 0){
-                    lineaService.readAll().then((data)=>{ 
-                        if(data.length > 0){
-                            setLineas([data[0].id])
-                        }else{
-                            console.log("no hay datos")
-                        }
-                    })
-                }else{
-                    const nuevaFechaInicio = "2020-11-21 15:37:21"
-                    const nuevaFechaFin = "2022-11-26 11:47:17" 
-                    const objeto = { linea:lineas, fechaInicio: nuevaFechaInicio, fechaFin: nuevaFechaFin }
-                    enviarDatos(objeto)
-                    const objeto2 = {linea:lineas, fechaInc:nuevaFechaInicio, fechaFin :nuevaFechaFin}
-                    enviarTacometros(objeto2)    
-                }
-                console.log(lineas)
-                setReload(Date.now())            
-            }
-        },1000)
-    },[reload])
-
-
-
-
-//--------------------| Valor que regresara  |--------------------
-    return (
+    return ( 
         <div className="col-12 ">
             <div className="card mb-0" style={{ textAlign: "center", background: "#6366f2" }}>
                 <span className=" font-bold" style={{ fontSize: "25px", color: "white" }}>
@@ -156,7 +125,7 @@ export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosPa
                 visible={dialogo}
                 footer={botonesAccion}
                 onHide={() => setDialogo(false)}
-        >
+            >
                 <div className="grid p-fluid">
                     <div className="col-12 md:col-4">
                         <label className="font-bold">Planta</label>
