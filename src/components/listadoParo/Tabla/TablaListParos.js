@@ -4,6 +4,11 @@ import TablaDesing from '../../indicadoresTurno/UI/DiseñoTabla'
 import { CardTabla,CardGeneral } from '../../indicadoresTurno/UI/Cards'
 
 const TablaListParos = ({ registros }) => {
+    var meta = document.createElement('meta');
+    meta.httpEquiv = "Content-Security-Policy";
+    meta.content = "upgrade-insecure-requests";
+    document.getElementsByTagName('head')[0].appendChild(meta);
+
 //--------------------| Valor que regresara  |--------------------
     return (
         <CardGeneral> 
