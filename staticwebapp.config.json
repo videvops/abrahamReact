@@ -1,6 +1,7 @@
 {
   "globalHeaders": {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS"
+    "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS",
+    "Content-Security-Policy": "upgrade-insecure-requests"
   }
 }
