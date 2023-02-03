@@ -250,6 +250,10 @@ const Home = ({ setLogueado }) => {
         "layout-theme-light": layoutColorMode === "light",
     });
 
+    var meta = document.createElement('meta');
+    meta.httpEquiv = "Content-Security-Policy";
+    meta.content = "upgrade-insecure-requests";
+    document.getElementsByTagName('head')[0].appendChild(meta);
 //--------------------| Valor que regresara  |--------------------
     return (
         <div className={wrapperClass} onClick={onWrapperClick}>
