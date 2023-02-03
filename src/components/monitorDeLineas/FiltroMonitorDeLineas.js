@@ -137,7 +137,7 @@ export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosPa
                 console.log(lineas)
                 setReload(Date.now())            
             }
-        },1000)
+        },10000)
     },[reload])
 
 
