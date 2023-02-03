@@ -14,7 +14,7 @@ import StatusLineas from "../pages/StatusLineas";
 
 
 //----------------| Catalogos |----------------
-import ListadoParos from "../pages/ListadoParos";
+import ListadoParos from "../components/listadoParo/ListadoParos";
 // import CatalogoRoles from "../pages/Catalogos/Roles/CatalogoRoles";
 // import CatalogoAreas from "../pages/Catalogos/Areas/CatalogoAreas";
 import CatalogoTurnos from "../pages/Catalogos/Turnos/CatalogoTurnos";

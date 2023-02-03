@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import Axios from "axios"
+import Axios from 'axios'
 import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { MultiSelect } from 'primereact/multiselect'
 import { formatearFecha } from '../../helpers/funciones'
 import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
-import Environment from '../../../Environment'
+import Environment from "../../../Environment";
 
-const getRoute = Environment()
-
-const CabezalListParos = ({ setRegistros }) => {
+const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
+
+    const getRoute = Environment()
+
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
         const cargarPlantas = async () => {
-            const respuesta = await Axios.get(getRoute+"/plantas/list")
+            const respuesta = await Axios.get(`${getRoute}/plantas/list`)
             setPlantasDisponibles(respuesta.data)
         }
         cargarPlantas()
@@ -28,7 +29,7 @@ const CabezalListParos = ({ setRegistros }) => {
     //---> Obtener registros de back-end
     const [areasDisponibles, setAreasDisponibles] = useState([])
     const obtenerAreas = async () => {
-        const respuesta = await Axios.post(getRoute+`/areas/plantas`, plantas)
+        const respuesta = await Axios.post(`${getRoute}/areas/plantas`, plantas)
         setAreasDisponibles(respuesta.data)
     }
     //---> Lista de areas seleccionados
@@ -38,7 +39,7 @@ const CabezalListParos = ({ setRegistros }) => {
     //---> Obtener registros de back-end
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     const obtenerLineas = async () => {
-        const respuesta = await Axios.post(getRoute+`/lineas/areas`, areas)
+        const respuesta = await Axios.post(`${getRoute}/lineas/areas`, areas)
         setLineasDisponibles(respuesta.data)
     }
     //---> Lista de lineas seleccionadas
@@ -48,7 +49,7 @@ const CabezalListParos = ({ setRegistros }) => {
     //---> Obtener registros de back-end
     const [maquinasDisponibles, setMaquinasDisponibles] = useState([])
     const obtenerMaquinas = async () => {
-        const respuesta = await Axios.post(getRoute+`/maquinas/list`, lineas)
+        const respuesta = await Axios.post(`${getRoute}/maquinas/list`, lineas)
         setMaquinasDisponibles(respuesta.data)
     }
     //---> Lista de lineas seleccionadas
@@ -59,13 +60,14 @@ const CabezalListParos = ({ setRegistros }) => {
     const [fechaFin, setFechaFin] = useState(null)
 
 //--------------------| Funciones para filtro  |--------------------
-    const [dialogo, setDialogo] = useState(false)           // Mostrar dialogo
-    const [esValido, setEsValido] = useState(true)          // Mensaje de advertencia 
+    const [dialogo, setDialogo] = useState(false)              // Para mostrar dialogo
+    const [esValido, setEsValido] = useState(true)
     //---> Enviar datos de back-end a otro componente
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post(getRoute+`/paros/filter`, datos)
+        const respuesta = await Axios.post(`${getRoute}/paros/filter`, datos)
         const resultado = await respuesta.data.registros
         setRegistros(resultado)
+        setChartFiltros(datos)
     }
     //---> Validara antes de mandar el filtro
     const enviarFiltro = () => {
@@ -77,11 +79,12 @@ const CabezalListParos = ({ setRegistros }) => {
             return;                                                     // No permite avanzar
         }
         const nuevaFechaInicio = formatearFecha(fechaInicio)
+        // console.log(nuevaFechaInicio)
         const nuevaFechaFin = formatearFecha(fechaFin)
         const objeto = { page: 0, total: 10, todasLineas: false, maquinas: [...maquinas], fechaInc: nuevaFechaInicio, fechaFin: nuevaFechaFin }
         enviarDatos(objeto)
-        setEsValido(true)   
-        setDialogo(false)       // Oculta el dialogo
+        setEsValido(true)
+        setDialogo(false)
     }
     //---> Limpiara los filtros
     const cancelarFiltro=()=>{
@@ -104,7 +107,6 @@ const CabezalListParos = ({ setRegistros }) => {
         );
     }
 
-
 //--------------------| Valor que regresara  |--------------------
     return (
         <div className="col-12 ">
@@ -113,7 +115,7 @@ const CabezalListParos = ({ setRegistros }) => {
                     Listado de Paros
                 </span>
             </div>
-            <br />
+            <br/>
             <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
             <Dialog
                 header="Filtro para listado de paros"
