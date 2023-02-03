@@ -17,7 +17,7 @@ const BarChartModoFallaGrafica = ({filtros}) => {
         const strMaquinas = getStringData(filtros.maquinas)
         const fechaInicio = getDateSplitted(filtros.fechaInc);
         const fechaFin = getDateSplitted(filtros.fechaFin);
-        let urlModoDeFalla = `http://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
+        let urlModoDeFalla = `https://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
         urlModoDeFalla += `var-inicio_intervalo=${fechaInicio.date}+${fechaInicio.hours}%3A${fechaInicio.mins}%3A${fechaFin.secs}&`
         urlModoDeFalla += `var-fin_intervalo=${fechaFin.date}+${fechaFin.hours}%3A${fechaFin.mins}%3A${fechaFin.secs}&`
         urlModoDeFalla += `var-maquinasArr=${strMaquinas}&`

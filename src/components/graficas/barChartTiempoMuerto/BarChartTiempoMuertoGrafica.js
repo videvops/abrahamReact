@@ -21,7 +21,7 @@ const BarChartTiempoMuertoGrafica = ({filtros}) => {
         const strMaquinas = getStringData(filtros.maquinas)
         const fechaInicio = getDateSplitted(filtros.fechaInc);
         const fechaFin = getDateSplitted(filtros.fechaFin);
-        let urlTiempoMuerto =`http://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
+        let urlTiempoMuerto =`https://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
         urlTiempoMuerto += `var-planta=1&var-area=1&var-linea=1&var-maquina=1&`
         urlTiempoMuerto += `var-inicio_intervalo=${fechaInicio.date}+${fechaInicio.hours}%3A${fechaInicio.mins}%3A${fechaFin.secs}&`
         urlTiempoMuerto += `var-fin_intervalo=${fechaFin.date}+${fechaFin.hours}%3A${fechaFin.mins}%3A${fechaFin.secs}%27&`
