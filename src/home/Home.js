@@ -27,6 +27,10 @@ import CatalogoProducto from "../pages/Catalogos/Productos/CatalogoProducto";
 // import CatalogoDirecciones from "../pages/Catalogos/Direcciones/CatalogoDirecciones";
 
 
+import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
+import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
+import Desperdicio from  '../components/desperdicio/Desperdicio'
+
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
 
@@ -170,24 +174,27 @@ const Home = ({ setLogueado }) => {
             label: "Tiempo Real",
             icon: "pi pi-fw pi-sitemap",
             items: [
-                { label: "Indicadores de Planta", icon: "pi pi-fw pi-check-square text-blue-500 ", to: "/indicadoresTurno" },
-                { label: "Status Lineas", icon: "pi pi-fw pi-chart-line text-blue-500 ", to: "/statusLineas" },
-                // { label: "Últimos Paros", icon: "pi pi-fw pi-exclamation-circle text-blue-500", to: "/desperdicio" },
+                { label: "Status Lineas", icon: "pi pi-fw pi-clock text-blue-500 ", to: "/statusLineas" },
+                { label: "Indicadores de Planta", icon: "pi pi-fw pi-clock text-blue-500 ", to: "/indicadoresTurno" },
+                // { label: "Monitor de Lineas", icon: "pi pi-fw pi-clock text-blue-500", to: "/monitorDeLineasTiempoReal" },
             ],
         },
         {
             label: "Reportes",
             icon: "pi pi-fw pi-sitemap",
-            items: [{ label: "Listado de Paros", icon: "pi pi-fw pi-list text-blue-500", to: "/listadoParos" }],
+            items: [
+                { label: "Status Lineas", icon: "pi pi-fw pi-book text-blue-500 ", to: "/statusLineas" },
+                { label: "Indicadores de Planta", icon: "pi pi-fw pi-book text-blue-500 ", to: "/indicadoresTurno" },
+                { label: "Monitor de Lineas", icon: "pi pi-fw pi-book text-blue-500", to: "/monitorDeLineas" },
+                { label: "Listado de Paros", icon: "pi pi-fw pi-book text-blue-500", to: "/listadoParos" },                
+                ],
         },
         {
             label: "Graficas",
             icon: "pi pi-fw pi-sitemap",
             items: [
-                { label: "Tiempo muerto por maquina", icon: "pi pi-fw pi-list text-blue-500", to: "/listadoParos" },
-                // { label: "Variables de Proceso", icon: "pi pi-fw pi-mobile text-blue-500", to: "/button" },
-                // { label: "Pareto modos de falla", icon: "pi pi-fw pi-mobile text-blue-500", to: "/button" },
-                // { label: "Desperdicio", icon: "pi pi-fw pi-mobile text-blue-500", to: "/desperdicio" },
+                { label: "Variables de Proceso", icon: "pi pi-fw pi-mobile text-blue-500", to: "/variablesDelProceso" },
+                { label: "Desperdicio", icon: "pi pi-fw pi-mobile text-blue-500", to: "/desperdicio" },
             ],
         },
         {
@@ -280,6 +287,10 @@ const Home = ({ setLogueado }) => {
                     <Route path="/catalogoTurnos" component={CatalogoTurnos} />
                     {/* <Route path="/catalogoUsuarios" component={CatalogoUsuarios} /> */}
                     {/* <Route path="/catalogoMaquinas" component={CatalogoMaquinas} /> */}
+                    <Route path="/desperdicio" component={Desperdicio} />
+                    <Route path="/monitorDeLineas" component={()=><MonitorDeLineas tiempoReal = {false}/>}/>
+                    <Route path="/monitorDeLineasTiempoReal" component={()=><MonitorDeLineas tiempoReal = {false}/>}/>
+                    <Route path="/variablesDelProceso" component={VariablesDelProceso}/>
                 </div>
 
                 {/* <AppFooter layoutColorMode={layoutColorMode} /> */}
