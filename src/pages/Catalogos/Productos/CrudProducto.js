@@ -11,11 +11,13 @@ import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
 //CAMBIAR...
 import { productoVacio } from './Objetos/ProductoVacio';
+import Environment from '../../../Environment';
 
 
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 
+const getRoute = Environment()
 
 const CrudProducto = ({titulos, notificaciones}) => {
 //--------------------| Uso de Contextos |--------------------
@@ -159,7 +161,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
         setIsLoading(true)
         setError(null)
         try{
-            const respuesta = await Axios.post("http://localhost:8080/productos/filter", informacion)
+            const respuesta = await Axios.post(getRoute+"/productos/filter", informacion)
             const datos = await respuesta.data.registros
             const total = await respuesta.data.numTotalReg
             setProducts(datos)  
