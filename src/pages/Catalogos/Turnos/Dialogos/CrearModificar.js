@@ -42,7 +42,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     const [horaFin,setHoraFin]=useState(null)
 
     const [boton,setBoton]=useState(false);                             // Activar o desactivar boton
-    const exprNombre=/^[a-zA-Z0-9._-]{1,40}$/;                          // Nombres,numeros y guiones
+    const exprNombre=/^[a-zA-Z0-9._-\s]{1,40}$/;                          // Nombres,numeros y guiones
     const exprHora=/^[0-2][0-3]:[0-5][0-9]$/;
     //---> Nombre
     const VerificarNombre=(texto)=>{
@@ -111,7 +111,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
 
 //--------------------| Botones de confirmacion |--------------------
     //------> Botones para crear registro
-    const crearRegistro=productDialogFooter(hideDialog,saveProduct,boton);
+    const crearRegistro=productDialogFooter(hideDialog,saveProduct,boton,product);
 
 //--------------------| Valor que regresara  |--------------------
     return (
@@ -122,6 +122,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
         modal 
         className="p-fluid" 
         footer={![product.nombre,product.horaInicio,product.horaFin,product.idLinea].includes('')&&crearRegistro} 
+        // footer={crearRegistro} 
         onHide={hideDialog}
         >
             <div className="field">
@@ -167,7 +168,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
                 id="turno"                                        // CAMBIAR...
                 value={product.turno}                             // CAMBIAR...
                 onChange={(e) => {
-                    updateField(e.target.value.trim(), "turno");  // CAMBIAR...
+                    updateField(e.target.value, "turno");  // CAMBIAR...
                     VerificarNombre(e.target.value)
                 }} 
                 required 
@@ -187,7 +188,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
                 id="horaInicio"                                        // CAMBIAR...
                 value={product.horaInicio}                             // CAMBIAR...
                 onChange={(e) => {
-                    updateField(e.target.value.trim(), "horaInicio");  // CAMBIAR...
+                    updateField(e.target.value, "horaInicio");  // CAMBIAR...
                     VerificarHoraI(e.target.value)
                 }} 
                 required 
@@ -207,7 +208,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
                 id="horaFin"                                            // CAMBIAR...
                 value={product.horaFin}                             // CAMBIAR...
                 onChange={(e) => {
-                    updateField(e.target.value.trim(), "horaFin");  // CAMBIAR...
+                    updateField(e.target.value, "horaFin");  // CAMBIAR...
                     VerificarHoraF(e.target.value)
                 }} 
                 required 

@@ -1,7 +1,7 @@
 const titulos={
     VentanaCrear:"Detalles de Producto",
     Buscador:"Buscar Producto...",
-    TituloTabla:"Productos..."
+    TituloTabla:"Productos"
 }
 
 const notificaciones={

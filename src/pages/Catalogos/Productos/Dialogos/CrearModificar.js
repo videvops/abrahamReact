@@ -14,7 +14,8 @@ const CrearModificar = ({
     mostrarM1,
     mostrarM2,
     objetoParte2,
-    setObjetoParte2
+    setObjetoParte2,
+    tieneID
 }) => {
 //--------------------| Crear objeto para componente 2 |--------------------
     const [resultado, setResultado] = useState([])
@@ -46,7 +47,7 @@ const CrearModificar = ({
             console.log(arreglo)
         } else {
             setObjetoParte2([])
-        }
+        }// eslint-disable-next-line
     }, [resultado])
 
 //--------------------| Valor que regresara |--------------------
@@ -66,6 +67,7 @@ const CrearModificar = ({
                     updateField={updateField}
                     product={product}
                     setResultado={setResultado}
+                    tieneID={tieneID}
                 />
             )}
             {m2 && (
