@@ -9,7 +9,19 @@ import Environment from '../../../../Environment';
 
 const getRoute = Environment()
 
-const CrearModificar = ({productDialog, titulos, hideDialog, product, updateField, saveProduct, tieneId}) => {
+const CrearModificar = ({
+    productDialog,
+    titulos,
+    hideDialog,
+    product,
+    updateField,
+    saveProduct,
+    tieneId,
+    boton,
+    setBoton,
+    validarNombre,
+    setValidarNombre
+}) => {
 //--------------------| Dropdown  |--------------------
     //---> Plantas
     const [plantasDisponibles,setPlantasDisponibles]=useState([])
@@ -25,10 +37,10 @@ const CrearModificar = ({productDialog, titulos, hideDialog, product, updateFiel
     }, [product.idPlanta])
 
 //--------------------| Validar campos  |--------------------
-    const [validarNombre,setValidarNombre]=useState("");                // Validar nombre de planta
-    const [boton,setBoton]=useState(false);                             // Activar o desactivar boton
+    // const [validarNombre,setValidarNombre]=useState("");                // Validar nombre de planta
+    // const [boton,setBoton]=useState(false);                             // Activar o desactivar boton
     const Advertencia=(<p style={{color:"red"}}>Campo no valido</p>);   // Mensaje de advertencia
-    const expresion=/^[a-zA-Z0-9._-]{1,40}$/;                            // Solo nombres y numeros
+    const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                            // Solo nombres y numeros
 
     const Verificar=(texto)=>{
         if (!expresion.test(texto)){
@@ -40,9 +52,19 @@ const CrearModificar = ({productDialog, titulos, hideDialog, product, updateFiel
         }
     }
 
+    // useEffect(() => { 
+    //     if (Object.values(product).includes("")) {
+    //         console.log("esta vacio")
+    //         setBoton(true)
+    //     } else {
+    //         console.log("ya no esta vacio")
+    //         setBoton(false)
+    //     }
+    // }, [product])
+
 //--------------------| Botones de confirmacion |--------------------
     //------> Botones para crear registro
-    const crearRegistro=productDialogFooter(hideDialog,saveProduct,boton);
+    const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton, product);
 
 //--------------------| Valor que regresara  |--------------------
     return (
@@ -87,7 +109,7 @@ const CrearModificar = ({productDialog, titulos, hideDialog, product, updateFiel
                 id="linea"                                        // CAMBIAR...
                 value={product.linea}                             // CAMBIAR...
                 onChange={(e) => {
-                    updateField(e.target.value.trim(), "linea");  // CAMBIAR...
+                    updateField(e.target.value, "linea");  // CAMBIAR...
                     Verificar(e.target.value)
                 }} 
                 required 

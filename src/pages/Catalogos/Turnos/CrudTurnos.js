@@ -42,7 +42,6 @@ const CrudTurnos = ({titulos, notificaciones}) => {
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [globalFilter, setGlobalFilter] = useState('');
     const [tieneId, setTieneId] = useState(false)
-    const [auxiliar, setAuxiliar] = useState(false)
 
     // CAMBIAR...
     const [filters, setFilters] = useState({
@@ -109,29 +108,20 @@ const CrudTurnos = ({titulos, notificaciones}) => {
         if (!product.id) {
             createProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.creacion}`, life: 3000 });
-            setAuxiliar(true)
         } else {
             updateProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
-            setAuxiliar(true)
         }
         setProduct(emptyProduct);
         setProductDialog(false);
-        setTimeout(() => {
-            setAuxiliar(false)
-        }, 100);
     }
     //------> Eliminar 1 producto
     const _deleteProduct = () => {
         console.log("Se elimino el ID: "+product.id);
         deleteProduct(product.id);
-        setAuxiliar(true)
         setProduct(emptyProduct);
         toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${notificaciones.eliminacion}`, life: 3000 });
         setDeleteProductDialog(false);
-        setTimeout(() => {
-            setAuxiliar(false)
-        }, 100);
     }
     //------> Eliminar varios productos
     const deleteSelectedProducts = () => {
@@ -139,13 +129,9 @@ const CrudTurnos = ({titulos, notificaciones}) => {
             console.log("Se elimino el ID: " + producto.id)
             return deleteProduct(producto.id)
         })
-        setAuxiliar(true)
         setDeleteProductsDialog(false);                                         // Ocultara dialogo
         setSelectedProducts(null);                                              // Elemetos seleccionados = 0
         toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${notificaciones.eliminaciones}`, life: 3000 });
-        setTimeout(() => {
-            setAuxiliar(false)
-        }, 100);
     }
     //------> Editar producto
     const _editProduct = (product) => {

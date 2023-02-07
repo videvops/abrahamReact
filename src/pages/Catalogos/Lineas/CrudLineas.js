@@ -37,7 +37,8 @@ const CrudLineas = ({titulos, notificaciones}) => {
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [globalFilter, setGlobalFilter] = useState('');
     const [tieneId, setTieneId] = useState(false)
-    const [auxiliar, setAuxiliar] = useState(false)
+    const [validarNombre, setValidarNombre] = useState("");                
+    const [boton, setBoton] = useState(false);
 
     // CAMBIAR...
     const [filters, setFilters] = useState({
@@ -66,6 +67,8 @@ const CrudLineas = ({titulos, notificaciones}) => {
     const openNew = () => {
         setProduct(emptyProduct);
         setProductDialog(true);
+        setValidarNombre("")
+        setBoton(false)
     }
     //------> 
     const hideDialog = () => {
@@ -99,34 +102,26 @@ const CrudLineas = ({titulos, notificaciones}) => {
         console.log(product);
     };
     //------> Agregar nuevo registro
-    const saveProduct = () => {
-        console.log("[+]ID: " + product.id);
+    const saveProduct = async() => {
         if (!product.id) {
             createProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.creacion}`, life: 3000 });
-            setAuxiliar(true)
         } else {
             updateProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
-            setAuxiliar(true)
         }
         setProduct(emptyProduct);
+        const data = await lineaService.readAll()
+        setProducts(data)
         setProductDialog(false);
-        setTimeout(() => {
-            setAuxiliar(false)
-        }, 100);
     }
     //------> Eliminar 1 producto
     const _deleteProduct = () => {
         console.log("Se elimino el ID: "+product.id);
         deleteProduct(product.id);
-        setAuxiliar(true)
         setProduct(emptyProduct);
         toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${notificaciones.eliminacion}`, life: 3000 });
         setDeleteProductDialog(false);
-        setTimeout(() => {
-            setAuxiliar(false)
-        }, 100);
     }
     //------> Eliminar varios productos
     const deleteSelectedProducts = () => {
@@ -134,13 +129,9 @@ const CrudLineas = ({titulos, notificaciones}) => {
             console.log("Se elimino el ID: " + producto.id)
             return deleteProduct(producto.id)
         })
-        setAuxiliar(true)
         setDeleteProductsDialog(false);                                         // Ocultara dialogo
         setSelectedProducts(null);                                              // Elemetos seleccionados = 0
         toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${notificaciones.eliminaciones}`, life: 3000 });
-        setTimeout(() => {
-            setAuxiliar(false)
-        }, 100);
     }
     //------> Editar producto
     const _editProduct = (product) => {
@@ -196,13 +187,6 @@ const CrudLineas = ({titulos, notificaciones}) => {
         }
     },[]); // eslint-disable-line react-hooks/exhaustive-deps    
 
-    useEffect(() => {
-        if (auxiliar) {
-            console.log("actualizado")
-            lineaService.readAll().then((data) => setProducts(data));
-        }
-    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
-
     //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(()=>{
         if(product.id){                        // Tiene existe el ID
@@ -232,13 +216,17 @@ const CrudLineas = ({titulos, notificaciones}) => {
             {error&&<p>{error}</p>}
 
             <CrearModificar
-            productDialog={productDialog}
-            titulos={titulos}
-            saveProduct={saveProduct}
-            hideDialog={hideDialog}
-            product={product}
-            updateField={updateField}
-            tieneId={tieneId}
+                productDialog={productDialog}
+                titulos={titulos}
+                saveProduct={saveProduct}
+                hideDialog={hideDialog}
+                product={product}
+                updateField={updateField}
+                tieneId={tieneId}
+                boton={boton}
+                setBoton={setBoton}
+                validarNombre={validarNombre}
+                setValidarNombre={setValidarNombre}
             />
 
             <EliminarUno

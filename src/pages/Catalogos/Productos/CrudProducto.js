@@ -1,33 +1,29 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-
+import Axios from 'axios';
 //CAMBIAR...
 import Spinner from '../../../components/loader/Spinner';
 import Exportar from './Botones/Exportar';
-import TablaTurnos from './Tabla/TablaProducto';
+import TablaProducto from './Tabla/TablaProducto';
 import EliminarUno from './Dialogos/EliminarUno';
 import EliminarVarios from './Dialogos/EliminarVarios';
 import CrearModificar from './Dialogos/CrearModificar';
 import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
-import { renderHeader } from '../ComponentsCat/Buscador/Cabezal';
 //CAMBIAR...
-import { TurnoService } from '../../../service/TurnoService';
 import { productoVacio } from './Objetos/ProductoVacio';
+import Environment from '../../../Environment';
 
 
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { FilterMatchMode } from 'primereact/api';
 
+const getRoute = Environment()
 
 const CrudProducto = ({titulos, notificaciones}) => {
-//--------------------| Importacion de metodos axios |--------------------
-    const turnoService = new TurnoService();
-
 //--------------------| Uso de Contextos |--------------------
     const {
-        createProduct,
-        updateProduct,
+        // createProduct,
+        // updateProduct,
         deleteProduct,
 
         products,
@@ -40,28 +36,9 @@ const CrudProducto = ({titulos, notificaciones}) => {
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(productoVacio);
     const [selectedProducts, setSelectedProducts] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState('');
-    // CAMBIAR...
-    const [filters, setFilters] = useState({
-        'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'id': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        'turno': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        'linea': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    });
+    
     const toast = useRef(null);
     const dt = useRef(null);
-
-//--------------------| Barra de Buscar |--------------------
-    const onGlobalFilterChange = (e) => {
-        const value = e.target.value;
-        let _filters = { ...filters };
-        _filters['global'].value = value;
-
-        setFilters(_filters);
-        setGlobalFilter(value);
-    }
-    //------> Cabezal de buscador
-    const header=renderHeader(globalFilter,onGlobalFilterChange,titulos.Buscador,titulos.TituloTabla)
 
 //--------------------| Funciones para mostrar dialogos |--------------------
     //------> Nuevo gasto
@@ -103,18 +80,18 @@ const CrudProducto = ({titulos, notificaciones}) => {
         console.log(product);
     };
     //------> Agregar nuevo registro
-    const saveProduct = () => {
-        console.log("[+]ID: " + product.id);
-        if (!product.id) {
-            createProduct(product);
-            toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.creacion}`, life: 3000 });
-        } else {
-            updateProduct(product);
-            toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
-        }
-        setProduct(productoVacio);
-        setProductDialog(false);
-    }
+    // const saveProduct = () => {
+    //     console.log("[+]ID: " + product.id);
+    //     if (!product.id) {
+    //         createProduct(product);
+    //         toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.creacion}`, life: 3000 });
+    //     } else {
+    //         updateProduct(product);
+    //         toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
+    //     }
+    //     setProduct(productoVacio);
+    //     setProductDialog(false);
+    // }
     //------> Eliminar 1 producto
     const _deleteProduct = () => {
         console.log("Se elimino el ID: "+product.id);
@@ -165,30 +142,42 @@ const CrudProducto = ({titulos, notificaciones}) => {
     }
 
 //--------------------| Obtener registros de back-end |--------------------
+    const [pagina, setPagina] = useState(0)
+    const [first, setFirst] = useState(0)
+    const [filas, setFilas] = useState(5)
+    const [totalRegistros, setTotalRegistros] = useState(0)
+
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     //---> Obtendra los datos del back-end
-    useEffect(()=>{
-        const cargarDatos=async()=>{
-            setIsLoading(true)
-            setError(null)
-            try{
-                const data=await turnoService.readAll()
-                setProducts(data)  
-            } catch(error){
-                setError(error.message)
-            }
-            setIsLoading(false)
+    const paginacion = (event) => {
+        setFirst(event.first)
+        setFilas(event.rows)
+        setPagina(event.page)
+    }
+
+    const cargarDatos = async (datos) => {
+        const informacion = datos
+        setIsLoading(true)
+        setError(null)
+        try{
+            const respuesta = await Axios.post(getRoute+"/productos/filter", informacion)
+            const datos = await respuesta.data.registros
+            const total = await respuesta.data.numTotalReg
+            setProducts(datos)  
+            setTotalRegistros(total)
+        } catch(error){
+            setError(error.message)
         }
-        cargarDatos()
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        cargarDatos({ page: pagina, total: filas })
         return () => {                                      // Funcion de limpieza
             setProducts([])
-        }
-    },[]); // eslint-disable-line react-hooks/exhaustive-deps    
-    
-    useEffect(() => {
-        turnoService.readAll().then((data) => setProducts(data));
-    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
+        }// eslint-disable-next-line
+    }, [filas]);
 
 //--------------------| Modal |--------------------
     const [m1, setM1] = useState(true)
@@ -204,33 +193,44 @@ const CrudProducto = ({titulos, notificaciones}) => {
         setM1(false)
         setM2(true)
     }
+
+//--------------------| Validar ID |--------------------
+    const [tieneID, setTieneID] = useState(false)
+    useEffect(() => { 
+        if (product.id) {
+            setTieneID(true)
+        } else {
+            setTieneID(false)
+        }
+    }, [product.id])
+
 //--------------------| Valor que regresara |--------------------
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
             {!isLoading && !error && (
-            <TablaTurnos
-                BotonesCabezal={BotonesCabezal} 
-                ExportarRegistros={ExportarRegistros} 
-                dt={dt} 
-                products={products} 
-                selectedProducts={selectedProducts} 
-                filters={filters} 
-                setSelectedProducts={setSelectedProducts} 
-                header={header}
-                actionBodyTemplate={actionBodyTemplate} 
-            />)}
-            {isLoading&&<Spinner/>}
-            {error&&<p>{error}</p>}
+                <TablaProducto
+                    BotonesCabezal={BotonesCabezal} 
+                    ExportarRegistros={ExportarRegistros} 
+                    dt={dt} 
+                    products={products} 
+                    selectedProducts={selectedProducts} 
+                    setSelectedProducts={setSelectedProducts} 
+                    actionBodyTemplate={actionBodyTemplate}
+                    paginacion={paginacion}
+                    first={first}
+                    setFirst={setFirst}
+                    filas={filas}
+                    pagina={pagina}
+                    setPagina={setPagina}
+                    totalRegistros={totalRegistros}
+                    titulo={titulos.TituloTabla}
+                    cargarDatos={cargarDatos}
+                />)}
 
-            {/* <CrearM1
-                productDialog={productDialog}
-                titulos={titulos}
-                saveProduct={saveProduct}
-                hideDialog={hideDialog}
-                product={product}
-                updateField={updateField}
-            /> */}
+            {isLoading&&<Spinner/>}
+            {error&&<p className='uppercase font-bold text-center'>{error}</p>}
+
             <CrearModificar
                 titulos={titulos}
                 productDialog={productDialog}
@@ -243,6 +243,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
                 mostrarM2={mostrarM2}
                 objetoParte2={objetoParte2}
                 setObjetoParte2={setObjetoParte2}
+                tieneID={tieneID}
             />
 
             <EliminarUno

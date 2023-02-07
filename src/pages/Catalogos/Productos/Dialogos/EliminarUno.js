@@ -19,7 +19,7 @@ const EliminarUno = ({ deleteProductDialog, hideDeleteProductDialog, product, _d
             <div className="confirmation-content">
                 <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem'}} />
                 {/* CAMBIAR... */}
-                {product && <span>Estas seguro de eliminar <b>{product.nombre}</b>?</span>}
+                {product && <span>Estas seguro de eliminar <b>{product.producto}</b>?</span>}
             </div>
         </Dialog>
     )

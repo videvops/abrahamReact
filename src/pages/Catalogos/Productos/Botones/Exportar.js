@@ -9,22 +9,19 @@ const Exportar = (products) => {
                 const doc = new jsPDF.default(0, 0);
                 doc.autoTable({
                     columns:[                                       // CAMBIAR...
-                        { header: 'ID', dataKey: 'id' },
-                        { header: 'Turno', dataKey: 'turno' },
-                        { header: 'Hora de Inicio', dataKey: 'horaInicio' },
-                        { header: 'Hora de Fin', dataKey: 'horaFin' },
-                        { header: 'Linea', dataKey: 'linea' },
+                        { header: 'Producto', dataKey: 'producto' },
+                        { header: 'Area', dataKey: 'area' },
+                        { header: 'Planta', dataKey: 'planta' },
                         { header: 'Fecha de creacion', dataKey: 'fechaCreacion' },
-                        { header: 'Estatus', dataKey: 'estatus' },
                     ],
                     body:products,                                  // Registros de BD
                     margin:{top:35},
                     didDrawPage:function(data){
-                    doc.text("Catalogo Turnos", 20, 30);            // CAMBIAR...
+                    doc.text("Catalogo Productos", 20, 30);            // CAMBIAR...
                 }})
 
                 const fecha=new Date().getTime()                    // Fecha en tiempo real
-                doc.save(`Turnos_export_${fecha}.pdf`);             // template string  /   CAMBIAR...
+                doc.save(`Productos_export_${fecha}.pdf`);             // template string  /   CAMBIAR...
             })
         })
     }
@@ -36,7 +33,7 @@ const Exportar = (products) => {
             const worksheet = xlsx.utils.json_to_sheet(products);
             const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
             const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-            saveAsExcelFile(excelBuffer, 'Turnos');                 // CAMBIAR...
+            saveAsExcelFile(excelBuffer, 'Productos');                 // CAMBIAR...
         });
     }
 

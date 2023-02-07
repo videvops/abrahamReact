@@ -9,7 +9,7 @@ import Environment from '../../../../Environment';
 
 const getRoute = Environment()
 
-const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) => {
+const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado, tieneID }) => {
 //--------------------| Dropdown dinamico|--------------------
     //---> Plantas
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
@@ -34,17 +34,14 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) =>
 //--------------------| Validar campos  |--------------------
     const [validarNombre, setValidarNombre] = useState("");                // Validar nombre de turno
     const [envioIncorrecto, setEnvioIncorrecto] = useState(false)
-    // const [boton, setBoton] = useState(false);                             // Activar o desactivar boton
-    const exprNombre = /^[a-zA-Z0-9._-]{1,40}$/;                          // Nombres,numeros y guiones
+    const exprNombre = /^[a-zA-Z0-9._-\s]{1,40}$/;                          // Nombres,numeros y guiones
     //---> Nombre
     const VerificarNombre=(texto)=>{
         if (!exprNombre.test(texto)){
             setValidarNombre("p-invalid");
-            // setBoton(true);
             
         }else{
             setValidarNombre("");
-            // setBoton(false);
         }
     }
 //--------------------| Envio de datos  |--------------------
@@ -55,7 +52,6 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) =>
 
     const enviarParte1 = () => {
         if ([product.idPlanta, product.idArea, product.idLinea, product.producto].includes("")) {
-            console.log("Se deben llenar todos los campos")
             setEnvioIncorrecto(true)
             setTimeout(() => {
                 setEnvioIncorrecto(false)
@@ -103,17 +99,25 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) =>
                     placeholder="--Selecciona una linea--"
                 />
             </div>
+            {tieneID && (
+                <div className="field">
+                    <label>Linea Asignada</label>
+                    <Dropdown
+                        placeholder="--Selecciona una linea--"
+                    />
+                </div>
+            )}
             <div className="field">
                 <label 
-                htmlFor="turno"                                   // CAMBIAR...
+                    htmlFor="producto"                                   // CAMBIAR...
                 >
                     Nombre del Producto
                 </label>
                 <InputText 
-                    id="turno"                                        // CAMBIAR...
+                    id="producto"                                        // CAMBIAR...
                     value={product.producto}                             // CAMBIAR...
                     onChange={(e) => {
-                        updateField(e.target.value.trim(), "producto");  // CAMBIAR...
+                        updateField(e.target.value, "producto");  // CAMBIAR...
                         VerificarNombre(e.target.value)
                     }} 
                     required 
