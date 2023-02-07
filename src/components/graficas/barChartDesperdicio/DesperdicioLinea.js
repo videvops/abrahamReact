@@ -20,7 +20,7 @@ const DesperdicioLinea = ({filtros}) => {
 
 
 
-        let urlDesperdicioLinea = `http://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
+        let urlDesperdicioLinea = `https://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
         urlDesperdicioLinea += `var-inicio_intervalo=${fechaInicio.date}+${fechaInicio.hours}%3A${fechaInicio.mins}%3A${fechaFin.secs}&`
         urlDesperdicioLinea += `var-fin_intervalo=${fechaFin.date}+${fechaFin.hours}%3A${fechaFin.mins}%3A${fechaFin.secs}&`
         urlDesperdicioLinea += `var-maquinasArr=1&`
