@@ -12,15 +12,14 @@ const Tacometros = ({filtros}) =>{
     else {
         const fechaInicio = getDateSplitted(filtros.fechaInicio);
         const fechaFin = getDateSplitted(filtros.fechaFin);
+        
         let urlTacometro = `https://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
         urlTacometro += `var-inicio_intervalo=${fechaInicio.date}+${fechaInicio.hours}%3A${fechaInicio.mins}%3A${fechaFin.secs}&`
         urlTacometro += `var-fin_intervalo=${fechaFin.date}+${fechaFin.hours}%3A${fechaFin.mins}%3A${fechaFin.secs}&`
         urlTacometro += `var-maquinasArr=2%2C&`
         urlTacometro += `var-lineasArr=1%2C&`
         urlTacometro += `var-linea=${filtros.linea}&panelId=14`
-        console.log(urlTacometro)
 
-           
         return(
             <div className="col-12 md:col-12">
                 <div className="card mb-4 p-0" style={{ textAlign: "center", background: "#ffffff" }}>
