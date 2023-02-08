@@ -27,10 +27,6 @@ const DesperdicioLinea = ({filtros}) => {
         urlDesperdicioLinea += `var-lineasArr=${strLineas}&`
         urlDesperdicioLinea += `panelId=2`
         
-     
-        
-        
-        
         // URL localhost
         // let urlDesperdicioLinea = "http://localhost:3000/d-solo/DtaYRtpVz/new-dashboard?orgId=1&"
         // urlDesperdicioLinea += "var-planta=1&var-area=1&var-linea=1&var-maquina=1&"

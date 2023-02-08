@@ -18,7 +18,7 @@ const TablaListParos = ({ registros }) => {
                     <Column field="modoFalla" header="Modo de Falla" style={{ textAlign: "center" }} sortable/>
                     <Column field="inicioParo" header="Inicio de Paro" style={{ textAlign: "center" }} sortable/>
                     <Column field="finParo" header="Fin de Paro" style={{ textAlign: "center" }} sortable/>
-                    <Column field="tiempo" header="Tiempo" style={{ textAlign: "center", width: '2rem' }} sortable />
+                    <Column field="duracion" header="Tiempo[mins]" style={{ textAlign: "center", width: '2rem' }} sortable />
                 </TablaDesing>
             </CardTabla>
         </CardGeneral>
