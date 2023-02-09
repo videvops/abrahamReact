@@ -97,6 +97,7 @@ const Crud = (props) => {
     //------> Agregar nuevo registro
     const saveProduct = () => {
         console.log("[+]ID: " + product.id);
+        console.log("id linea: " + product.idLinea);
         if (!product.id) {
             createProduct(product);
             toast.current.show({
@@ -166,7 +167,14 @@ const Crud = (props) => {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => _editProduct(rowData)} />
+                <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-success mr-2"
+                    onClick={() => {
+                        console.log(rowData);
+                        _editProduct(rowData);
+                    }}
+                />
 
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => confirmDeleteProduct(rowData)} />
             </React.Fragment>
@@ -174,7 +182,6 @@ const Crud = (props) => {
     };
 
     //--------------------| Obtener registros de back-end |--------------------
-    // eslint-disable-next-line
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -183,9 +190,7 @@ const Crud = (props) => {
         setError(null);
         try {
             const data = await maquinasService.readAll(); // Hasta que no se termine de ejecutar la maquina
-            if (data.ok) {
-                throw new Error("Algo salio mal");
-            }
+
             setProducts(data);
         } catch (error) {
             setError(error.message);
