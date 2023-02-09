@@ -185,7 +185,7 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
     //---> Cuando cambien los registros
     useEffect(() => {
         plantaService.readAll().then((data) => setProducts(data));
-    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     //--------------------| Valor que regresara |--------------------
     return (

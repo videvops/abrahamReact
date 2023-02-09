@@ -5,7 +5,7 @@ const getRoute = Environment()
 
 export class PlantaService {
     //------> Link para hacer peticiones
-    baseUrl = getRoute+"/listadoPlantas";
+    baseUrl = getRoute+"/plantas";
     //------> Agregar nuevo registro
     create(product){
         return axios.post(this.baseUrl, product).then(res => res.data);

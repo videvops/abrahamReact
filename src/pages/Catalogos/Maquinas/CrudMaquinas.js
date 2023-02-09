@@ -213,7 +213,7 @@ const Crud = (props) => {
 
     useEffect(() => {
         maquinasService.readAll().then((data) => setProducts(data));
-    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(() => {
         if (product.id) {
