@@ -16,7 +16,7 @@ import StatusLineas from "../pages/StatusLineas";
 //----------------| Catalogos |----------------
 import ListadoParos from "../components/listadoParo/ListadoParos";
 // import CatalogoRoles from "../pages/Catalogos/Roles/CatalogoRoles";
-// import CatalogoAreas from "../pages/Catalogos/Areas/CatalogoAreas";
+import CatalogoAreas from "../pages/Catalogos/Areas/CatalogoAreas";
 import CatalogoTurnos from "../pages/Catalogos/Turnos/CatalogoTurnos";
 import CatalogoLineas from "../pages/Catalogos/Lineas/CatalogoLineas";
 // import CatalogoPlantas from "../pages/Catalogos/Plantas/CatalogoPlantas";
@@ -207,7 +207,7 @@ const Home = ({ setLogueado }) => {
                     icon: "pi pi-fw pi-database text-blue-500",
                     // CAMBIAR....
                     items: [
-                        // { label: "Áreas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoAreas" },
+                        { label: "Áreas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoAreas" },
                         // { label: "Direcciones", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoDirecciones" },
                         { label: "Líneas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoLineas" },
                         // { label: "Plantas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoPlantas" },
@@ -277,7 +277,7 @@ const Home = ({ setLogueado }) => {
                     <Route path="/listadoParos" component={ListadoParos} />
                     {/* <Route path="/desperdicio" component={Desperdecio} /> */}
                     {/* <Route path="/button" component={ButtonDemo} /> */}
-                    {/* <Route path="/catalogoAreas" component={CatalogoAreas} /> */}
+                    <Route path="/catalogoAreas" component={CatalogoAreas} />
                     {/* <Route path="/catalogoDirecciones" component={CatalogoDirecciones} /> */}
                     <Route path="/catalogoLineas" component={CatalogoLineas} />
                     {/* <Route path="/catalogoPlantas" component={CatalogoPlantas} /> */}
