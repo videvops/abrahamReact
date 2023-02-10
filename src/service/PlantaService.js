@@ -5,10 +5,11 @@ const getRoute = Environment()
 
 export class PlantaService {
     //------> Link para hacer peticiones
-    baseUrl = getRoute+"/listadoPlantas";
+    baseUrl = getRoute+"/plantas";
     //------> Agregar nuevo registro
     create(product){
-        return axios.post(this.baseUrl, product).then(res => res.data);
+        const url = this.baseUrl+"/list"
+        return axios.post(url, product).then(res => res.data);
     }
     //------> Obtener registros de BD
     readAll(){

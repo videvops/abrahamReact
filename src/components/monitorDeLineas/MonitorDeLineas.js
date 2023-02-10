@@ -4,7 +4,7 @@ import Tacometros from "./Tacometros";
 import TablaMayorImpacto from "./Tablas/TablaMayorImpacto"
 import TablaUltimosParos from "./Tablas/TablaUltimosParos"
 
-const MonitorDeLineas = ({tiempoReal}) =>{
+const MonitorDeLineas = () =>{
     
     const [registrosUltimosParos, setRegistrosUltimosParos] = useState([]) 
     const [registrosTopFive, setRegistrosTopFive] = useState([])
@@ -19,7 +19,6 @@ const MonitorDeLineas = ({tiempoReal}) =>{
                     setRegistrosTopFive={setRegistrosTopFive}
                     setFiltroTacometro ={setFiltroTacometro}
                     setDataTacometro ={setDataTacometro}
-                    tiempoReal={tiempoReal}
                 />
             </div>
             <br></br>

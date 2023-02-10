@@ -9,7 +9,7 @@ import { formatearFecha } from '../helpers/funciones'
  import Environment from "../../Environment";
  import {LineaService} from "../../service/LineaService"
 
-export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosParos,setFiltroTacometro,setDataTacometro,tiempoReal}) => {
+export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosParos,setFiltroTacometro,setDataTacometro}) => {
 
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
@@ -112,35 +112,6 @@ export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosPa
             </div>
         );
     }
-
-    const [reload,setReload] =useState(0);
-    useEffect(() =>{
-        setTimeout(()=>{
-            if(tiempoReal){
-                console.log("hecho")
-                if(lineas.length == 0){
-                    lineaService.readAll().then((data)=>{ 
-                        if(data.length > 0){
-                            setLineas([data[0].id])
-                        }else{
-                            console.log("no hay datos")
-                        }
-                    })
-                }else{
-                    const nuevaFechaInicio = "2020-11-21 15:37:21"
-                    const nuevaFechaFin = "2022-11-26 11:47:17" 
-                    const objeto = { linea:lineas, fechaInicio: nuevaFechaInicio, fechaFin: nuevaFechaFin }
-                    enviarDatos(objeto)
-                    const objeto2 = {linea:lineas, fechaInc:nuevaFechaInicio, fechaFin :nuevaFechaFin}
-                    enviarTacometros(objeto2)    
-                }
-                console.log(lineas)
-                setReload(Date.now())            
-            }
-        },10000)
-    },[reload])
-
-
 
 
 //--------------------| Valor que regresara  |--------------------

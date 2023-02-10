@@ -31,6 +31,8 @@ import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
 import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
 import Desperdicio from  '../components/desperdicio/Desperdicio'
 
+import MonitorDeLineasTiempoReal from "../components/monitorDeLineas/tiempoReal/MonitorDeLineasTiempoReal"
+
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
 
@@ -288,8 +290,8 @@ const Home = ({ setLogueado }) => {
                     {/* <Route path="/catalogoUsuarios" component={CatalogoUsuarios} /> */}
                     {/* <Route path="/catalogoMaquinas" component={CatalogoMaquinas} /> */}
                     <Route path="/desperdicio" component={Desperdicio} />
-                    <Route path="/monitorDeLineas" component={()=><MonitorDeLineas tiempoReal = {false}/>}/>
-                    <Route path="/monitorDeLineasTiempoReal" component={()=><MonitorDeLineas tiempoReal = {true}/>}/>
+                    <Route path="/monitorDeLineas" component= {MonitorDeLineas}/>
+                    <Route path="/monitorDeLineasTiempoReal" component={MonitorDeLineasTiempoReal}/>
                     <Route path="/variablesDelProceso" component={VariablesDelProceso}/>
                 </div>
 

@@ -22,4 +22,8 @@ export class LineaService {
     delete(id){
         return axios.delete(this.baseUrl + "/" + id).then(res => res.data);
     }
+    lineasAreas(area){
+        const url = this.baseUrl +"/areas";
+        return axios.post(url,area).then(res => res.data);
+    }
 }

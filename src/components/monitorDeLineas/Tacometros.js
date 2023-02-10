@@ -19,7 +19,6 @@ const Tacometros = ({filtros}) =>{
         urlTacometro += `var-maquinasArr=2%2C&`
         urlTacometro += `var-lineasArr=1%2C&`
         urlTacometro += `var-linea=${filtros.linea}&panelId=14`
-
         return(
             <div className="col-12 md:col-12">
                 <div className="card mb-4 p-0" style={{ textAlign: "center", background: "#ffffff" }}>

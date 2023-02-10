@@ -1,8 +1,11 @@
 import axios from "axios";
+import Environment from "../Environment";
+
+const getRoute = Environment()
 
 export class AreaService {
     //------> Link para hacer peticiones
-    baseUrl = "http://localhost:8080/areas";
+    baseUrl = getRoute+"/areas";
     //------> Agregar nuevo registro
     create(product){
         return axios.post(this.baseUrl, product).then(res => res.data);
@@ -18,5 +21,9 @@ export class AreaService {
     //------> Eliminar registro
     delete(id){
         return axios.delete(this.baseUrl + "/" + id).then(res => res.data);
+    }
+    areasPlantas(planta){
+        const url = this.baseUrl+"/plantas"
+        return axios.post(url,planta).then(res => res.data)
     }
 }
