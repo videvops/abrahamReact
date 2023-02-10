@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react'
+import Axios from 'axios';
 import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { productDialogFooter } from '../../ComponentsCat/Botones/CrearRegistro';
-import { Mensaje, MensajeHora } from '../../ComponentsCat/Mensajes/Mensajes';
-import Axios from 'axios';
 import { statusDisponibles } from '../../ComponentsCat/Constantes/constantes';
-import Environment from '../../../../Environment';
+import { MensajeAdvertencia, TextoAdvertencia } from '../../ComponentsCat/Mensajes/Mensajes';
 
+import Environment from '../../../../Environment';
 const getRoute = Environment()
 
 const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,saveProduct,tieneId}) => {
@@ -17,14 +17,14 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     useEffect(() => {
         Axios.get(getRoute+"/plantas/list").then(res=>setPlantasDisponibles(res.data))
     }, [])
-
+    //---> Areas
     const [areasDisponibles, setAreasDisponibles]=useState([])
     useEffect(() => {
         if(product.idPlanta!==''){
             Axios.get(getRoute+`/areas/planta/${product.idPlanta}`).then(res=>setAreasDisponibles(res.data))
         }
     }, [product.idPlanta])
-
+    //---> Lineas
     const [lineasDisponibles,setLineasDisponibles]=useState([])
     useEffect(() => {
         if(product.idArea!==''){
@@ -33,39 +33,50 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     }, [product.idArea])
 
 //--------------------| Validar campos  |--------------------
-    const [validarNombre,setValidarNombre]=useState("");                // Validar nombre de turno
-    const [validHoraI,setValidHoraI]=useState('')
-    const [validHoraF,setValidHoraF]=useState('')
-    const [onMensajeHora,setOnMensajeHora]=useState(false)
+    const [estiloInput, setEstiloInput] = useState("");             // Validar nombre de turno
+    const [estiloHoraI, setEstiloHoraI] = useState('')              // Estilo hora inicio
+    const [estiloHoraF, setEstiloHoraF] = useState('')              // Estilo hora fin
+    const [horasInvalidas, setHorasInvalidas] = useState(false)     // Horas incorrectas
+    const [envioIncorrecto, setEnvioIncorrecto] = useState(false)   // Envio vacio
+    const [camposInvalidos, setCamposInvalidos] = useState(false);  // Activar o desactivar boton
+
+    const [mensaje, setMensaje] = useState("")
+    const [textoInput, setTextoInput] = useState("")
+    const [textoHoraI, setTextoHoraI] = useState("")
+    const [textoHoraF, setTextoHoraF] = useState("")
     
+    //--->
     const [horaInicio,setHoraInicio]=useState(null)
     const [horaFin,setHoraFin]=useState(null)
 
-    const [boton,setBoton]=useState(false);                             // Activar o desactivar boton
     const exprNombre=/^[a-zA-Z0-9._-\s]{1,40}$/;                          // Nombres,numeros y guiones
     const exprHora=/^[0-2][0-3]:[0-5][0-9]$/;
     //---> Nombre
     const VerificarNombre=(texto)=>{
         if (!exprNombre.test(texto)){
-            setValidarNombre("p-invalid");
-            setBoton(true);
+            setEstiloInput("p-invalid");
+            setTextoInput("Nombre no valido")
+            setCamposInvalidos(true);
             
         }else{
-            setValidarNombre("");
-            setBoton(false);
+            setEstiloInput("");
+            setTextoInput("")
+            setCamposInvalidos(false);
         }
     }
     //---> Hora inicio
-    const VerificarHoraI=(texto)=>{
+    const VerificarHoraI = (texto) => {
+        //---> Comparar con expresion regular
         if (!exprHora.test(texto)){
-            setValidHoraI("p-invalid");
-            setBoton(true);
-            
+            setEstiloHoraI("p-invalid")
+            setTextoHoraI("Hora de inicio no valida")
+            setCamposInvalidos(true)
         }else{
-            setValidHoraI("");
-            setBoton(false);
+            setEstiloHoraI("")
+            setTextoHoraI("")
+            setCamposInvalidos(false)
         }
-        //---> Validar
+        //---> Modifica la hora
         if(texto.length>4){
             const arregloHoras=texto.split(':')
             let horaI = new Date()
@@ -76,16 +87,19 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
         }
     }
     //---> Hora Fin
-    const VerificarHoraF=(texto)=>{
+    const VerificarHoraF = (texto) => {
+        //---> Comparar con expresion regular
         if (!exprHora.test(texto)){
-            setValidHoraF("p-invalid");
-            setBoton(true);
+            setEstiloHoraF("p-invalid")
+            setTextoHoraF("Hora de fin no valida")
+            setCamposInvalidos(true)
             
         }else{
-            setValidHoraF("");
-            setBoton(false);
+            setEstiloHoraF("")
+            setTextoHoraF("")
+            setCamposInvalidos(false);
         }
-
+        //---> Modificar la hora
         if(texto.length>4){
             const arregloHoras=texto.split(':')
             let horaF = new Date()
@@ -95,23 +109,54 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
             setHoraFin(horaF)
         }
     }
-    //---> Comparar horas
+    //---> Comparar horas ingresadas
     useEffect(() => {
-        if(![horaInicio,horaFin].includes(null)){
-            if(horaInicio<horaFin){
-                setOnMensajeHora(false)
-                setBoton(false);
+        if (![horaInicio, horaFin].includes(null)) {// horas vacias
+            if (horaInicio < horaFin) {             // las horas son correctas
+                setTextoHoraF("")
+                setCamposInvalidos(false)
+                setHorasInvalidas(false)
             }
-            else {
-                setOnMensajeHora(true)
-                setBoton(true);
+            else {                                  // las horas no son correctas
+                setTextoHoraF("La hora de fin tiene que ser mayor que la hora de inicio")
+                setCamposInvalidos(true)
+                setEstiloHoraF("p-invalid")
+                setHorasInvalidas(true)
             }
         }
-    }, [horaFin,horaInicio])
+    }, [horaFin, horaInicio])
+    //---> Envio de datos
+    const validarEnvio = () => {
+        if (Object.values(product).includes("")) {
+            // console.log("campos vacios")
+            setEnvioIncorrecto(true)
+            setMensaje("Todos los campos son obligatorios")
+            setTimeout(() => {
+                setEnvioIncorrecto(false)
+            }, 3000);
+            return
+        } else {
+            if (camposInvalidos || horasInvalidas) {
+                setEnvioIncorrecto(true)
+                setMensaje("Algun campo es incorrecto")
+                setTimeout(() => {
+                    setEnvioIncorrecto(false)
+                }, 3000);
+                return
+            }
+        }
+        saveProduct()
+    }  
 
-//--------------------| Botones de confirmacion |--------------------
     //------> Botones para crear registro
-    const crearRegistro=productDialogFooter(hideDialog,saveProduct,boton,product);
+    const botonesCrear = () => {
+        return(
+            <>
+                <Button label="Cancelar" icon="pi pi-times" className="p-button-rounded" onClick={hideDialog} />
+                <Button label="Guardar" icon="pi pi-check" className="p-button-rounded" onClick={validarEnvio} />
+            </>
+        );
+    }
 
 //--------------------| Valor que regresara  |--------------------
     return (
@@ -121,103 +166,78 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
         header={titulos.VentanaCrear} 
         modal 
         className="p-fluid" 
-        footer={![product.nombre,product.horaInicio,product.horaFin,product.idLinea].includes('')&&crearRegistro} 
-        // footer={crearRegistro} 
+        footer={botonesCrear} 
         onHide={hideDialog}
         >
             <div className="field">
                 <label>Planta</label>
                 <Dropdown 
-                optionLabel="planta" 
-                optionValue="id" 
-                value={product.idPlanta} 
-                options={plantasDisponibles} 
-                onChange={(e) => {updateField(e.value, "idPlanta")}} 
-                placeholder="--Selecciona una planta--"
+                    optionLabel="planta" optionValue="id" 
+                    value={product.idPlanta} 
+                    options={plantasDisponibles} 
+                    onChange={(e) => {updateField(e.value, "idPlanta")}} 
+                    placeholder="--Selecciona una planta--"
                 />
             </div>
             <div className="field">
                 <label>Area</label>
                 <Dropdown 
-                optionLabel="area" 
-                optionValue="id" 
-                value={product.idArea} 
-                options={areasDisponibles} 
-                onChange={(e) => {updateField(e.value, "idArea")}} 
-                placeholder="--Selecciona una area--"
+                    optionLabel="area" optionValue="id" 
+                    value={product.idArea} 
+                    options={areasDisponibles} 
+                    onChange={(e) => {updateField(e.value, "idArea")}} 
+                    placeholder="--Selecciona una area--"
                 />
             </div>
             <div className="field">
                 <label>Linea</label>
                 <Dropdown 
-                optionLabel="linea" 
-                optionValue="id" 
-                value={product.idLinea} 
-                options={lineasDisponibles} 
-                onChange={(e) => {updateField(e.value, "idLinea")}} 
-                placeholder="--Selecciona una linea--"
+                    optionLabel="linea" optionValue="id" 
+                    value={product.idLinea} 
+                    options={lineasDisponibles} 
+                    onChange={(e) => {updateField(e.value, "idLinea")}} 
+                    placeholder="--Selecciona una linea--"
                 />
             </div>
             <div className="field">
-                <label 
-                htmlFor="turno"                                   // CAMBIAR...
-                >
-                    Nombre del Turno
-                </label>
+                <label htmlFor="turno">Nombre del Turno</label>
                 <InputText 
-                id="turno"                                        // CAMBIAR...
-                value={product.turno}                             // CAMBIAR...
-                onChange={(e) => {
-                    updateField(e.target.value, "turno");  // CAMBIAR...
-                    VerificarNombre(e.target.value)
-                }} 
-                required 
-                autoFocus 
-                className={validarNombre}
-                maxLength="30" 
+                    id="turno"                                   
+                    value={product.turno}                     
+                    onChange={(e) => {
+                        updateField(e.target.value, "turno");
+                        VerificarNombre(e.target.value)
+                    }} 
+                    required autoFocus className={estiloInput} maxLength="30" 
                 />
-                {validarNombre && Mensaje}
+                {estiloInput && <TextoAdvertencia>{textoInput}</TextoAdvertencia>}
             </div>
             <div className="field">
-                <label 
-                htmlFor="horaInicio"                                   // CAMBIAR...
-                >
-                    Hora de inicio
-                </label>
+                <label htmlFor="horaInicio">Hora de inicio</label>
                 <InputText
-                id="horaInicio"                                        // CAMBIAR...
-                value={product.horaInicio}                             // CAMBIAR...
-                onChange={(e) => {
-                    updateField(e.target.value, "horaInicio");  // CAMBIAR...
-                    VerificarHoraI(e.target.value)
-                }} 
-                required 
-                autoFocus
-                className={validHoraI}
-                placeholder='Ejemplo => 07:20'
+                    id="horaInicio"                
+                    value={product.horaInicio}                      
+                    onChange={(e) => {
+                        updateField(e.target.value, "horaInicio"); 
+                        VerificarHoraI(e.target.value)
+                    }} 
+                    required autoFocus className={estiloHoraI} placeholder='Ejemplo => 07:20'
                 />
-                {validHoraI && Mensaje}
+                {estiloHoraI && <TextoAdvertencia>{textoHoraI}</TextoAdvertencia>}
             </div>
             <div className="field">
-                <label 
-                htmlFor="horaFin"                                   // CAMBIAR...
-                >
-                    Hora de Fin
-                </label>
+                <label htmlFor="horaFin">Hora de Fin</label>
                 <InputText 
-                id="horaFin"                                            // CAMBIAR...
-                value={product.horaFin}                             // CAMBIAR...
-                onChange={(e) => {
-                    updateField(e.target.value, "horaFin");  // CAMBIAR...
-                    VerificarHoraF(e.target.value)
-                }} 
-                required 
-                autoFocus
-                className={validHoraF}
-                placeholder='Ejemplo => 07:30'
+                    id="horaFin"               
+                    value={product.horaFin} 
+                    onChange={(e) => {
+                        updateField(e.target.value, "horaFin");
+                        VerificarHoraF(e.target.value)
+                    }} 
+                    required autoFocus className={estiloHoraF} placeholder='Ejemplo => 07:30'
                 />
-                {validHoraF && Mensaje}
-                {!validHoraF && onMensajeHora && MensajeHora}
+                {estiloHoraF && <TextoAdvertencia>{textoHoraF}</TextoAdvertencia>}
+                {!estiloHoraF && horasInvalidas && <TextoAdvertencia>{textoHoraF}</TextoAdvertencia>}
             </div>
             {!tieneId && (<div className="field">
                 <label>Status</label>
@@ -231,6 +251,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
                     placeholder="--Selecciona un status--"
                 />
             </div>)}
+            {envioIncorrecto && <MensajeAdvertencia>{mensaje}</MensajeAdvertencia>}
         </Dialog>
     )
 }
