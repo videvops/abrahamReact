@@ -15,3 +15,19 @@ export const MensajeFiltro=(
         Todos los campos son obligatorios
     </div>
 )
+
+export const MensajeAdvertencia = ({ children }) => {
+    return (
+        <div className="uppercase text-center font-bold text-white" style={{background:"red"}}>
+            {children}
+        </div>
+    )
+}
+
+export const TextoAdvertencia = ({children}) => {
+    return (
+        <p style={{color:"red"}}>
+            {children}
+        </p>
+    )
+}

@@ -16,13 +16,13 @@ import StatusLineas from "../pages/StatusLineas";
 //----------------| Catalogos |----------------
 import ListadoParos from "../components/listadoParo/ListadoParos";
 // import CatalogoRoles from "../pages/Catalogos/Roles/CatalogoRoles";
-// import CatalogoAreas from "../pages/Catalogos/Areas/CatalogoAreas";
+import CatalogoAreas from "../pages/Catalogos/Areas/CatalogoAreas";
 import CatalogoTurnos from "../pages/Catalogos/Turnos/CatalogoTurnos";
 import CatalogoLineas from "../pages/Catalogos/Lineas/CatalogoLineas";
-// import CatalogoPlantas from "../pages/Catalogos/Plantas/CatalogoPlantas";
+import CatalogoPlantas from "../pages/Catalogos/Plantas/CatalogoPlantas";
 // import CatalogoUsuarios from "../pages/Catalogos/Usuarios/CatalogoUsuarios";
 import CatalogoProducto from "../pages/Catalogos/Productos/CatalogoProducto";
-// import CatalogoMaquinas from "../pages/Catalogos/Maquinas/CatalogoMaquinas";
+import CatalogoMaquinas from "../pages/Catalogos/Maquinas/CatalogoMaquinas";
 // import CatalogoTipoParo from "../pages/Catalogos/TiposParo/CatalogoTipoParo";
 // import CatalogoDirecciones from "../pages/Catalogos/Direcciones/CatalogoDirecciones";
 
@@ -209,16 +209,16 @@ const Home = ({ setLogueado }) => {
                     icon: "pi pi-fw pi-database text-blue-500",
                     // CAMBIAR....
                     items: [
-                        // { label: "Áreas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoAreas" },
+                        { label: "Áreas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoAreas" },
                         // { label: "Direcciones", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoDirecciones" },
                         { label: "Líneas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoLineas" },
-                        // { label: "Plantas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoPlantas" },
+                        { label: "Plantas", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoPlantas" },
                         { label: "Productos", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoProductos" },
                         // { label: "Roles", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoRoles" },
                         // { label: "TipoParo", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTipoParo" },
                         { label: "Turnos", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTurnos" },
                         // { label: "Usuarios", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoUsuarios" },
-                        // {label: "Maquina",icon: "pi pi-fw pi-bookmark text-blue-500",to: "/catalogoMaquinas",},
+                        {label: "Maquinas",icon: "pi pi-fw pi-bookmark text-blue-500",to: "/catalogoMaquinas",},
                         // {label: "Modo de Falla",icon: "pi pi-fw pi-bookmark text-blue-500",},
                     ],
                 },
@@ -279,16 +279,16 @@ const Home = ({ setLogueado }) => {
                     <Route path="/listadoParos" component={ListadoParos} />
                     {/* <Route path="/desperdicio" component={Desperdecio} /> */}
                     {/* <Route path="/button" component={ButtonDemo} /> */}
-                    {/* <Route path="/catalogoAreas" component={CatalogoAreas} /> */}
+                    <Route path="/catalogoAreas" component={CatalogoAreas} />
                     {/* <Route path="/catalogoDirecciones" component={CatalogoDirecciones} /> */}
                     <Route path="/catalogoLineas" component={CatalogoLineas} />
-                    {/* <Route path="/catalogoPlantas" component={CatalogoPlantas} /> */}
+                    <Route path="/catalogoPlantas" component={CatalogoPlantas} />
                     <Route path="/catalogoProductos" component={CatalogoProducto} />
                     {/* <Route path="/catalogoRoles" component={CatalogoRoles} /> */}
                     {/* <Route path="/catalogoTipoParo" component={CatalogoTipoParo} /> */}
                     <Route path="/catalogoTurnos" component={CatalogoTurnos} />
                     {/* <Route path="/catalogoUsuarios" component={CatalogoUsuarios} /> */}
-                    {/* <Route path="/catalogoMaquinas" component={CatalogoMaquinas} /> */}
+                    <Route path="/catalogoMaquinas" component={CatalogoMaquinas} />
                     <Route path="/desperdicio" component={Desperdicio} />
                     <Route path="/monitorDeLineas" component= {MonitorDeLineas}/>
                     <Route path="/monitorDeLineasTiempoReal" component={MonitorDeLineasTiempoReal}/>

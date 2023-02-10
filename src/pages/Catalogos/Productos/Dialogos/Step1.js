@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import Axios from 'axios';
 import { Button } from 'primereact/button';
-import { Mensaje } from '../../ComponentsCat/Mensajes/Mensajes';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { MensajeFiltro } from '../../ComponentsCat/Mensajes/Mensajes';
-import Environment from '../../../../Environment';
+import { MensajeAdvertencia, TextoAdvertencia } from '../../ComponentsCat/Mensajes/Mensajes';
 
+import Environment from '../../../../Environment';
 const getRoute = Environment()
 
 const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado, tieneID }) => {
@@ -32,16 +31,22 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado, tien
     }, [product.idArea])
 
 //--------------------| Validar campos  |--------------------
-    const [validarNombre, setValidarNombre] = useState("");                // Validar nombre de turno
-    const [envioIncorrecto, setEnvioIncorrecto] = useState(false)
-    const exprNombre = /^[a-zA-Z0-9._-\s]{1,40}$/;                          // Nombres,numeros y guiones
+    const [validarNombre, setValidarNombre] = useState("");         // Validar nombre de turno
+    const [nombreIncorrecto, setNombreIncorrecto] = useState(false) // Aprobar nombre
+    const [envioIncorrecto, setEnvioIncorrecto] = useState(false)   // Aprobar envio
+    const [mensaje, setMensaje] = useState("")                      // Advertencia general
+    const [texto, setTexto] = useState("")                          // Texto de nombre invalido
+    const exprNombre = /^[a-zA-Z0-9._-\s]{1,40}$/;                  // Nombres,numeros y guiones
     //---> Nombre
     const VerificarNombre=(texto)=>{
         if (!exprNombre.test(texto)){
-            setValidarNombre("p-invalid");
+            setValidarNombre("p-invalid")
+            setTexto("Campo no valido")
+            setNombreIncorrecto(true)
             
         }else{
-            setValidarNombre("");
+            setValidarNombre("")
+            setNombreIncorrecto(false)
         }
     }
 //--------------------| Envio de datos  |--------------------
@@ -53,10 +58,20 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado, tien
     const enviarParte1 = () => {
         if ([product.idPlanta, product.idArea, product.idLinea, product.producto].includes("")) {
             setEnvioIncorrecto(true)
+            setMensaje("Todos los campos son obligatorios")
             setTimeout(() => {
                 setEnvioIncorrecto(false)
             }, 3000);
             return
+        } else {
+            if (nombreIncorrecto) {
+                setEnvioIncorrecto(true)
+                setMensaje("El nombre no es valido")
+                setTimeout(() => {
+                    setEnvioIncorrecto(false)
+                }, 3000);
+                return
+            }
         }
         const objeto = { producto: product.producto, idLinea: product.idLinea }
         enviarDatos(objeto)
@@ -125,10 +140,10 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado, tien
                     className={validarNombre}
                     maxLength="30" 
                 />
-                {validarNombre && Mensaje}
-                {envioIncorrecto && MensajeFiltro}
+                {validarNombre && <TextoAdvertencia>{texto}</TextoAdvertencia>}
+                {envioIncorrecto && <MensajeAdvertencia>{mensaje}</MensajeAdvertencia>}
             </div>
-            <div className='flex'>
+            <div className='mt-5 flex'>
                 <Button label="Cancelar" className="p-button-rounded" onClick={hideDialog}/>
                 <Button label="Siguiente" className="p-button-rounded" onClick={enviarParte1} />
             </div>

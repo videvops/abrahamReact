@@ -1,8 +1,11 @@
 import axios from "axios";
+import Environment from "../Environment";
+
+const getRoute = Environment()
 
 export class MaquinasService {
     //------> Link para hacer peticiones
-    baseUrl = "http://localhost:4000/modoFalla";
+    baseUrl = getRoute+"/maquinas";
     //------> Agregar nuevo registro
     create(product) {
         return axios.post(this.baseUrl, product).then((res) => res.data);

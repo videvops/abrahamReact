@@ -19,34 +19,37 @@ const CrearModificar = ({
 }) => {
 //--------------------| Crear objeto para componente 2 |--------------------
     const [resultado, setResultado] = useState([])
+    const [tieneAlgo, setTieneAlgo] = useState(false)
     let arreglo = [{
-        id: product.idLinea,
-        tipo: "linea",
-        nombre: "linea1",
-        velocidadEstandar: "",
-        factorConversionI: "",
-        factorConversionO: "",
-        habilitado: false
-    }]
+                id: product.idLinea,
+                tipo: "linea",
+                nombre: "linea1",
+                velocidadEstandar: null,
+                factorConversionI: null,
+                factorConversionO: null,
+                habilitado: "false"
+            }]
     useEffect(() => {
-        if (resultado.length>0) {
+        if (resultado.length > 0) {
             let i = 0
             while (i < resultado.length) {
                 arreglo.push({
                     id: resultado[i].id,
                     tipo: "maquina",
                     nombre: resultado[i].maquina,
-                    velocidadEstandar: "",
-                    factorConversionI: "",
-                    factorConversionO: "",
-                    habilitado: false
+                    velocidadEstandar: null,
+                    factorConversionI: null,
+                    factorConversionO: null,
+                    habilitado: "false"
                 })
                 i++
             }
             setObjetoParte2(arreglo)
-            console.log(arreglo)
+            setTieneAlgo(true)
+            // console.log(arreglo)
         } else {
-            setObjetoParte2([])
+            setObjetoParte2(arreglo)
+            setTieneAlgo(false)
         }// eslint-disable-next-line
     }, [resultado])
 
@@ -54,7 +57,7 @@ const CrearModificar = ({
     return (
         <Dialog
             visible={productDialog} 
-            style={{ width: `${m1 ? 450 : 850}px` }} 
+            style={{ width: `${m1 ? 450 : 900}px` }} 
             header={titulos.VentanaCrear} 
             modal 
             className="p-fluid" 
@@ -76,6 +79,8 @@ const CrearModificar = ({
                     hideDialog={hideDialog}
                     objetoParte2={objetoParte2}
                     setObjetoParte2={setObjetoParte2}
+                    tieneAlgo={tieneAlgo}
+                    setTieneAlgo={setTieneAlgo}
                 />
             )}
         </Dialog>
