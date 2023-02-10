@@ -22,7 +22,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     const [validarNombre,setValidarNombre]=useState("");                // Validar nombre de planta
     const [boton,setBoton]=useState(false);                             // Activar o desactivar boton
     const Advertencia=(<p style={{color:"red"}}>Campo no valido</p>);   // Mensaje de advertencia
-    const expresion=/^[a-zA-Z0-9._-]{1,40}$/;                            // Solo nombres y numeros
+    const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                         // Todo menos ','
 
     const Verificar=(texto)=>{
         if (!expresion.test(texto)){
@@ -70,7 +70,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
                 id="area"                                        // CAMBIAR...
                 value={product.area}                             // CAMBIAR...
                 onChange={(e) => {
-                    updateField(e.target.value.trim(), "area");  // CAMBIAR...
+                    updateField(e.target.value, "area");  // CAMBIAR...
                     Verificar(e.target.value)
                 }} 
                 required 
