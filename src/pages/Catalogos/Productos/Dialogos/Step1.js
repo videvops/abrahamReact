@@ -8,12 +8,12 @@ import { MensajeAdvertencia, TextoAdvertencia } from '../../ComponentsCat/Mensaj
 import Environment from '../../../../Environment';
 const getRoute = Environment()
 
-const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado, tieneID }) => {
+const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) => {
 //--------------------| Dropdown dinamico|--------------------
     //---> Plantas
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
-        Axios.get(getRoute+"/plantas/list").then(res=>setPlantasDisponibles(res.data))
+        Axios.get(getRoute + "/plantas/list").then(res => setPlantasDisponibles(res.data))
     }, [])
     //---> Areas
     const [areasDisponibles, setAreasDisponibles] = useState([])
@@ -100,46 +100,27 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado, tien
                     value={product.idArea} 
                     options={areasDisponibles} 
                     onChange={(e) => {updateField(e.value, "idArea")}} 
-                    placeholder="--Selecciona una area--"
-                />
+                    placeholder="--Selecciona una area--" />
             </div>
             <div className="field">
                 <label>Linea</label>
                 <Dropdown 
-                    optionLabel="linea" 
-                    optionValue="id" 
+                    optionLabel="linea" optionValue="id" 
                     value={product.idLinea} 
                     options={lineasDisponibles} 
                     onChange={(e) => {updateField(e.value, "idLinea")}} 
-                    placeholder="--Selecciona una linea--"
-                />
+                    placeholder="--Selecciona una linea--" />
             </div>
-            {tieneID && (
-                <div className="field">
-                    <label>Linea Asignada</label>
-                    <Dropdown
-                        placeholder="--Selecciona una linea--"
-                    />
-                </div>
-            )}
             <div className="field">
-                <label 
-                    htmlFor="producto"                                   // CAMBIAR...
-                >
-                    Nombre del Producto
-                </label>
+                <label htmlFor="producto">Nombre del Producto</label>
                 <InputText 
-                    id="producto"                                        // CAMBIAR...
-                    value={product.producto}                             // CAMBIAR...
+                    id="producto"
+                    value={product.producto}
                     onChange={(e) => {
-                        updateField(e.target.value, "producto");  // CAMBIAR...
+                        updateField(e.target.value, "producto")
                         VerificarNombre(e.target.value)
                     }} 
-                    required 
-                    autoFocus 
-                    className={validarNombre}
-                    maxLength="30" 
-                />
+                    required autoFocus className={validarNombre} maxLength="30" />
                 {validarNombre && <TextoAdvertencia>{texto}</TextoAdvertencia>}
                 {envioIncorrecto && <MensajeAdvertencia>{mensaje}</MensajeAdvertencia>}
             </div>

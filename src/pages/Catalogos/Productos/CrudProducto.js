@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Axios from 'axios';
 //CAMBIAR...
+import Crear from './Dialogos/Crear';
 import Spinner from '../../../components/loader/Spinner';
 import Exportar from './Botones/Exportar';
 import TablaProducto from './Tabla/TablaProducto';
 import EliminarUno from './Dialogos/EliminarUno';
 import EliminarVarios from './Dialogos/EliminarVarios';
-import CrearModificar from './Dialogos/CrearModificar';
-import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
+import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
 //CAMBIAR...
-import { productoVacio } from './Objetos/ProductoVacio';
-import Environment from '../../../Environment';
-
-
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
+import { productoVacio } from './Objetos/ProductoVacio';
 
+import Environment from '../../../Environment';
+import Desicion from './Dialogos/Desicion';
+import Editar from './Dialogos/Editar';
 const getRoute = Environment()
 
 const CrudProducto = ({titulos, notificaciones}) => {
@@ -30,13 +30,19 @@ const CrudProducto = ({titulos, notificaciones}) => {
         setProducts
     }=useContext(ProductContext);
 
+    const registroVacio = { idProducto: null, producto: "", lineasAsignadas: [], lineasDisponibles: [] }
 //--------------------| Uso de estados |--------------------
-    const [productDialog, setProductDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [product, setProduct] = useState(productoVacio);
-    const [selectedProducts, setSelectedProducts] = useState(null);
-    
+    const [productDialog, setProductDialog] = useState(false)
+    const [deleteProductDialog, setDeleteProductDialog] = useState(false)
+    const [deleteProductsDialog, setDeleteProductsDialog] = useState(false)
+    const [product, setProduct] = useState(productoVacio)
+    const [selectedProducts, setSelectedProducts] = useState(null)
+    //---> Para editar registro
+    const [modalDesicion, setModalDesicion] = useState(false)       // Pregunta al usuario
+    const [modalEditar, setModalEditar] = useState(false)           // Editar registro
+    const [dataProducto, setDataProducto] = useState({})            // Informacion de 1 producto
+    const [dataEnvio, setDataEnvio] = useState(registroVacio)       // Informacion para actualizar
+
     const toast = useRef(null);
     const dt = useRef(null);
 
@@ -111,9 +117,15 @@ const CrudProducto = ({titulos, notificaciones}) => {
         toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${notificaciones.eliminaciones}`, life: 3000 });
     }
     //------> Editar producto
-    const _editProduct = (product) => {
-        setProduct({...product});
-        setProductDialog(true);
+    // const _editProduct = (product) => {
+    //     setProduct({...product});
+    //     setProductDialog(true);
+    // }
+    const decision = (informacion) => {
+        setModalDesicion(true)
+        setDataProducto(informacion)
+        // console.log(informacion)
+
     }
 
 //--------------------| Botones en pantalla |--------------------
@@ -130,7 +142,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
                 <Button 
                     icon="pi pi-pencil" 
                     className="p-button-rounded p-button-success mr-2" 
-                    onClick={() => _editProduct(rowData)} 
+                    onClick={() => decision(rowData)} 
                 />
                 <Button 
                     icon="pi pi-trash" 
@@ -194,16 +206,6 @@ const CrudProducto = ({titulos, notificaciones}) => {
         setM2(true)
     }
 
-//--------------------| Validar ID |--------------------
-    const [tieneID, setTieneID] = useState(false)
-    useEffect(() => { 
-        if (product.id) {
-            setTieneID(true)
-        } else {
-            setTieneID(false)
-        }
-    }, [product.id])
-
 //--------------------| Valor que regresara |--------------------
     return (
         <div className="datatable-crud-demo">
@@ -231,7 +233,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
             {isLoading&&<Spinner/>}
             {error&&<p className='uppercase font-bold text-center'>{error}</p>}
 
-            <CrearModificar
+            <Crear
                 titulos={titulos}
                 productDialog={productDialog}
                 hideDialog={hideDialog}
@@ -243,8 +245,19 @@ const CrudProducto = ({titulos, notificaciones}) => {
                 mostrarM2={mostrarM2}
                 objetoParte2={objetoParte2}
                 setObjetoParte2={setObjetoParte2}
-                tieneID={tieneID}
             />
+            <Desicion
+                modalDesicion={modalDesicion}
+                setModalDesicion={setModalDesicion}
+                setModalEditar={setModalEditar}
+                openNew={openNew}
+                dataProducto={dataProducto}
+                setDataEnvio={setDataEnvio} />
+            <Editar
+                modalEditar={modalEditar}
+                setModalEditar={setModalEditar}
+                dataEnvio={dataEnvio}
+                setDataEnvio={setDataEnvio} />
 
             <EliminarUno
                 deleteProductDialog={deleteProductDialog} 

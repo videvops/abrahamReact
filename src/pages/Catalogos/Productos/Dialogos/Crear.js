@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog'
 import Step1 from './Step1'
 import Step2 from './Step2'
 
-const CrearModificar = ({
+const Crear = ({
     titulos,
     product,
     productDialog,
@@ -15,7 +15,6 @@ const CrearModificar = ({
     mostrarM2,
     objetoParte2,
     setObjetoParte2,
-    tieneID
 }) => {
 //--------------------| Crear objeto para componente 2 |--------------------
     const [resultado, setResultado] = useState([])
@@ -70,7 +69,6 @@ const CrearModificar = ({
                     updateField={updateField}
                     product={product}
                     setResultado={setResultado}
-                    tieneID={tieneID}
                 />
             )}
             {m2 && (
@@ -87,4 +85,4 @@ const CrearModificar = ({
     )
 }
 
-export default CrearModificar
+export default Crear
