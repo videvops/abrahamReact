@@ -189,7 +189,7 @@ const CrudTurnos = ({titulos, notificaciones}) => {
     
     useEffect(() => {
         turnoService.readAll().then((data) => setProducts(data));
-    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(()=>{
