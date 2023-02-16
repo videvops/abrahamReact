@@ -157,6 +157,7 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
             if (data.ok) {
                 throw new Error("Algo salio mal");
             }
+            console.log(data)
             setProducts(data);
         } catch (error) {
             setError(error.message);

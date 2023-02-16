@@ -1,7 +1,7 @@
 const titulos={
     VentanaCrear:"Detalles de Area",
-    Buscador:"Buscar Area...",
-    TituloTabla:"Areas..."
+    Buscador:"Buscar Area",
+    TituloTabla:"Areas"
 }
 
 const notificaciones={

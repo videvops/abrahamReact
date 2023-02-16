@@ -101,7 +101,6 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
     };
     //------> Agregar nuevo registro
     const saveProduct = () => {
-        console.log("guardando")
         if (!product.id) {
             createProduct(product);
             toast.current.show({ severity: "success", summary: "Atencion!", detail: `${notificaciones.creacion}`, life: 3000 });
@@ -151,7 +150,6 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
             </React.Fragment>
         );
     };
-
     //--------------------| Obtener registros de back-end |--------------------
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -170,14 +168,13 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
         };
         cargarDatos();
         return () => {
-            // Funcion de limpieza
             setProducts([]);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         modoFallaService.readAll().then((data) => setProducts(data));
-    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(() => {

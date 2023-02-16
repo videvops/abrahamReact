@@ -1,7 +1,7 @@
 const titulos={
     VentanaCrear:"Detalles de Roles",
-    Buscador:"Buscar Rol...",
-    TituloTabla:"Roles..."
+    Buscador:"Buscar Rol",
+    TituloTabla:"Roles"
 }
 
 const notificaciones={

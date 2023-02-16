@@ -1,7 +1,7 @@
 const titulos = {
     VentanaCrear: "Detalles de Status",
-    Buscador: "Buscar Status...",
-    TituloTabla: "Status...",
+    Buscador: "Buscar Status",
+    TituloTabla: "Status",
 };
 
 const notificaciones = {

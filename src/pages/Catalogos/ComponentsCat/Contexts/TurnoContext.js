@@ -1,37 +1,25 @@
 import React, { useState } from "react";
-// CAMBIAR...
 import { TurnoService } from "../../../../service/TurnoService";
 import { ProductContext } from "./ProductContext";
 
 const TurnoContextProvider=(props)=>{
 //--------------------| Importacion de metodos axios |--------------------
     const turnoService = new TurnoService();
-
 //--------------------| Uso de estados |--------------------
     const [products, setProducts] = useState([]);
-
 //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {
-        turnoService
-        .create(product)
-        .then((data) => setProducts([...products, data]));
+        console.log(product)
+        turnoService.create(product).then(res =>turnoService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Actualizar producto
     const updateProduct = (product) => {
-        turnoService
-        .update(product)
-        .then((data) =>
-            setProducts(
-            products.map((p) => (p.id === product.id ? data : product))
-            )
-        );
+        turnoService.update(product).then(res => turnoService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Eliminar producto
     const deleteProduct = (id) => {
-        turnoService
-        .delete(id)
-        .then(() => setProducts(products.filter((p) => p.id !== id)));
+        turnoService.delete(id).then(res => turnoService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
 
 //--------------------| Funciones de Crud |--------------------

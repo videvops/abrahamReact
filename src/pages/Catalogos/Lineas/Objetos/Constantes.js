@@ -1,7 +1,7 @@
 const titulos={
     VentanaCrear:"Detalles de Lineas",
-    Buscador:"Buscar Linea...",
-    TituloTabla:"Lineas..."
+    Buscador:"Buscar Linea",
+    TituloTabla:"Lineas"
 }
 
 const notificaciones={

@@ -12,15 +12,15 @@ const ModoFallaProvider = (props) => {
     //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {
-        modofallaService.create(product).then((data) => setProducts([...products, data]));
+        modofallaService.create(product).then((res) => modofallaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Actualizar producto
     const updateProduct = (product) => {
-        modofallaService.update(product).then((data) => setProducts(products.map((p) => (p.id === product.id ? data : product))));
+        modofallaService.update(product).then((res) => modofallaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Eliminar producto
     const deleteProduct = (id) => {
-        modofallaService.delete(id).then(() => setProducts(products.filter((p) => p.id !== id)));
+        modofallaService.delete(id).then(() => modofallaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
 
     //--------------------| Funciones de Crud |--------------------

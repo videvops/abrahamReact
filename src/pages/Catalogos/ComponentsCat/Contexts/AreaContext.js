@@ -5,10 +5,8 @@ import { ProductContext } from "./ProductContext";
 const AreaContextProvider = (props) => {
     //--------------------| Importacion de metodos axios |--------------------
     const areaService = new AreaService();
-
     //--------------------| Uso de estados |--------------------
     const [products, setProducts] = useState([]);
-
     //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {

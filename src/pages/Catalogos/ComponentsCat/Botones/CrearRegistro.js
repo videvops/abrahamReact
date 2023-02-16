@@ -4,10 +4,8 @@ import { compileString } from "sass";
 
 export const productDialogFooter = (hideDialog, saveProduct, boton, product, setBoton) => {
     const enviarDatos = () => {
-        console.log("crearREgistro")
         if(!Object.values(product).includes("") || !Object.values(product).includes(null)){
             saveProduct();
-            console.log("salvando registro")
             setBoton(false)
         }else{
             setBoton(true)

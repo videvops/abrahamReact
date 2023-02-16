@@ -1,7 +1,7 @@
 const titulos = {
     VentanaCrear: "Detalles de Maquina",
-    Buscador: "Buscar Maquina...",
-    TituloTabla: "Maquina...",
+    Buscador: "Buscar Maquina",
+    TituloTabla: "Maquinas",
 };
 
 const notificaciones = {

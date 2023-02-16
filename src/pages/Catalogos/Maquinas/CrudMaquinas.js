@@ -98,7 +98,7 @@ const Crud = (props) => {
         console.log(product)
         if (!product.id) {
             console.log("creando")
-            //createProduct(product);
+            createProduct(product);
             toast.current.show({
                 severity: "success",
                 summary: "Atencion!",

@@ -1,7 +1,7 @@
 const titulos = {
     VentanaCrear: "Detalles de Modo de Falla",
-    Buscador: "Buscar Modo de Falla...",
-    TituloTabla: "Modo de Falla...",
+    Buscador: "Buscar Modo de Falla",
+    TituloTabla: "Modo de Falla",
 };
 
 const notificaciones = {

@@ -50,7 +50,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     const [horaFin,setHoraFin]=useState(null)
 
     const exprNombre=/^[a-zA-Z0-9._-\s]{1,40}$/;                          // Nombres,numeros y guiones
-    const exprHora=/^[0-2][0-3]:[0-5][0-9]$/;
+    const exprHora=/^[0-2][0-9]:[0-5][0-9]$/;
     //---> Nombre
     const VerificarNombre=(texto)=>{
         if (!exprNombre.test(texto)){
@@ -67,14 +67,27 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     //---> Hora inicio
     const VerificarHoraI = (texto) => {
         //---> Comparar con expresion regular
-        if (!exprHora.test(texto)){
-            setEstiloHoraI("p-invalid")
-            setTextoHoraI("Hora de inicio no valida")
-            setCamposInvalidos(true)
+        if(texto[0]==2){
+            const exprHora2=/^[0-2][0-3]:[0-5][0-9]$/;
+            if (!exprHora2.test(texto)){
+                setEstiloHoraI("p-invalid")
+                setTextoHoraI("Hora de inicio no valida")
+                setCamposInvalidos(true)
+            }else{
+                setEstiloHoraI("")
+                setTextoHoraI("")
+                setCamposInvalidos(false)
+            }
         }else{
-            setEstiloHoraI("")
-            setTextoHoraI("")
-            setCamposInvalidos(false)
+            if (!exprHora.test(texto)){
+                setEstiloHoraI("p-invalid")
+                setTextoHoraI("Hora de inicio no valida")
+                setCamposInvalidos(true)
+            }else{
+                setEstiloHoraI("")
+                setTextoHoraI("")
+                setCamposInvalidos(false)
+            }
         }
         //---> Modifica la hora
         if(texto.length>4){

@@ -1,7 +1,7 @@
 const titulos={
     VentanaCrear:"Detalles de Planta",
-    Buscador:"Buscar Planta...",
-    TituloTabla:"Plantas..."
+    Buscador:"Buscar Planta",
+    TituloTabla:"Plantas"
 }
 
 const notificaciones={

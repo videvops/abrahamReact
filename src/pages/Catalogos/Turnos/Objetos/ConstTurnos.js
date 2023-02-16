@@ -1,7 +1,7 @@
 const titulos={
     VentanaCrear:"Detalles de Turno",
-    Buscador:"Buscar Turno...",
-    TituloTabla:"Turnos..."
+    Buscador:"Buscar Turno",
+    TituloTabla:"Turnos"
 }
 
 const notificaciones={

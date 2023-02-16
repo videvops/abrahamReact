@@ -165,8 +165,7 @@ const CrudAreas = ({titulos, notificaciones}) => {
             setError(null)
             try{
                 const data=await areaService.readAll()
-                setProducts(data)  
-                console.log(data)
+                setProducts(data)
             } catch(error){
                 setError(error.message)
             }
