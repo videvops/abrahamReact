@@ -16,6 +16,10 @@ const Consultas =  ({filtros}) =>{
 
     const [datosDeConsulta, setDatosDeConsulta] = useState({})
 
+
+
+
+
     const nuevaFechaInicio = "2022-11-20 15:37:21"//formatearFecha(fechaInicio)
     const nuevaFechaFin = "2022-11-28 11:47:17"//formatearFecha(fechaFin)
 

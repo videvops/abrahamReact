@@ -30,10 +30,9 @@ const TablaLineas = ({BotonesCabezal,ExportarRegistros,dt,products,selectedProdu
             >
                 {/* // CAMBIAR.............. */}
                 <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}/>
-                <Column field="id" header="ID" sortable style={{ width: '7rem',textAlign:'center' }}/>
                 <Column field="linea" header="Linea" sortable style={{ minWidth: '7rem',textAlign:'center' }}/>
                 <Column field="area" header="Area" sortable style={{ minWidth: '7rem',textAlign:'center' }}/>
-                <Column field="estatus" header="Estatus" sortable style={{ minWidth: '7rem',textAlign:'center' }}/>
+                {/* <Column field="estatus" header="Estatus" sortable style={{ minWidth: '7rem',textAlign:'center' }}/> */}
                 <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
                 <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: '3rem' }}/>
             </DataTable>

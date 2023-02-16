@@ -92,11 +92,9 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
             ...product,
             [field]: data,
         });
-        console.log(product);
     };
     //------> Agregar nuevo registro
     const saveProduct = () => {
-        console.log("[+]ID: " + product.id);
         if (!product.id) {
             createProduct(product);
             toast.current.show({ severity: "success", summary: "Atencion!", detail: `${notificaciones.creacion}`, life: 3000 });
@@ -109,7 +107,6 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
     };
     //------> Eliminar 1 producto
     const _deleteProduct = () => {
-        console.log("Se elimino el ID: " + product.id);
         deleteProduct(product.id);
         setProduct(emptyProduct);
         toast.current.show({ severity: "error", summary: "Atencion!", detail: `${notificaciones.eliminacion}`, life: 3000 });
@@ -118,7 +115,6 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
     //------> Eliminar varios productos
     const deleteSelectedProducts = () => {
         selectedProducts.map((producto) => {
-            console.log("Se elimino el ID: " + producto.id);
             return deleteProduct(producto.id);
         });
         setDeleteProductsDialog(false); // Ocultara dialogo
@@ -161,7 +157,6 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
             if (data.ok) {
                 throw new Error("Algo salio mal");
             }
-            console.log(data);
             setProducts(data);
         } catch (error) {
             setError(error.message);

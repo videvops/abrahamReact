@@ -12,26 +12,16 @@ const PlantaContextProvider=(props)=>{
 //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {
-        plantaService
-        .create(product)
-        .then((data) => setProducts([...products, data]));
+        plantaService.create(product).then(plantaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Actualizar producto
     const updateProduct = (product) => {
-        plantaService
-        .update(product)
-        .then((data) =>
-            setProducts(
-            products.map((p) => (p.id === product.id ? data : product))
-            )
-        );
-    };
+        plantaService.update(product).then(res =>plantaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
+    }
     //------> Eliminar producto
     const deleteProduct = (id) => {
-        plantaService
-        .delete(id)
-        .then(() => setProducts(products.filter((p) => p.id !== id)));
-    };
+        plantaService.delete(id).then(plantaService.readAll(res=>setProducts(res)).catch(e=>console.log(e)));
+    }
 
 //--------------------| Funciones de Crud |--------------------
     return(

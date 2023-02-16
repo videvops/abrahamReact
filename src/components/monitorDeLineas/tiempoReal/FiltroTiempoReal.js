@@ -5,6 +5,18 @@ import Consultas from "./Consultas";
 import {PlantaService} from "../../../service/PlantaService";
 import {AreaService} from "../../../service/AreaService"
 import {LineaService } from "../../../service/LineaService"
+import { TurnoService } from "../../../service/TurnoService";
+
+
+
+
+const groupedItemTemplate = (option) => {
+    return (
+        <div className="flex align-items-center">
+            <div>{option.label}</div>
+        </div>
+    );
+};
 
 
 const FiltroTiempoReal = () => {
@@ -12,6 +24,7 @@ const FiltroTiempoReal = () => {
     const plantaService = new PlantaService();
     const areaService = new AreaService();
     const lineaService = new LineaService();
+    const turnoService = new TurnoService();
 
     const [selectedPlanta, setSelectedPlanta] = useState(null);
     const [selectedArea, setSelectedArea] = useState(null);
@@ -21,11 +34,12 @@ const FiltroTiempoReal = () => {
     const [plantasDb, setPlantasDb] = useState([]);
     const [areasDb, setAreasDb] = useState([]);
     const [lineasDb, setLineasDb] = useState([]);
+    const [turnosDb, setTurnosDb] =useState([]);
 
 
     useEffect(() => {
-        plantaService.readAll().then((data)=>{
-            setPlantasDb(data)
+        plantaService.readAll().then(res=>{
+            setPlantasDb(res)
         }).catch((e)=>{
             console.error(e)
         })
@@ -34,8 +48,8 @@ const FiltroTiempoReal = () => {
     useEffect(() => {
         let plantas =[];
         Object.entries(plantasDb).length > 0 ? plantas =[selectedPlanta.id] : plantas =[] ;
-        areaService.areasPlantas(plantas).then((data)=>{
-            setAreasDb(data)
+        areaService.areasPlantas(plantas).then(res=>{
+            setAreasDb(res)
         }).catch((e)=>{
             console.error(e)
         })
@@ -45,19 +59,39 @@ const FiltroTiempoReal = () => {
     useEffect(() => {
         let areas =[];
         Object.entries(areasDb).length > 0 ? areas = [selectedArea.id] : areas = [] ;
-        lineaService.lineasAreas(areas).then((data)=>{
-            setLineasDb(data)
+        lineaService.lineasAreas(areas).then(res=>{
+            setLineasDb(res)
         }).catch((e)=>{
             console.error(e)
         })
     },[selectedArea])
 
-    const turnos = [
-        { turno: 'Turno Actual', id: '1' },
-        { turno: 'Truno Anterior', id: '2' },
-        { turno: 'Ultima hora', id: '3' }
+    useEffect(()=>{
+        turnoService.readAll().then(res =>{
+            setTurnosDb(res)
+        }).catch((e)=>{
+            console.log(e)
+        })
+    },[])
+
+    const turnosGrouped = [
+        {
+            label: 'Turno',
+            code: 'TAC',
+            items: [
+                {'turno':'Turno Actual'},
+                {'turno':'Ultima Hora'}
+            ]
+        },
+        {
+            label: 'Turno Anterior',
+            code: 'TA',
+            items: turnosDb
+        }
     ];
 
+    console.log(turnosDb)
+    console.log(turnosGrouped)
     const [filtros,setFiltros] = useState ({})
 
     useEffect(() => {
@@ -112,9 +146,12 @@ const FiltroTiempoReal = () => {
                     <Dropdown 
                             value={selectedTurno} 
                             onChange={(e) => setSelectedTurno(e.value)} 
-                            options={turnos} 
+                            options={turnosGrouped} 
                             optionLabel="turno" 
+                            optionGroupLabel="turno"
+                            optionGroupChildren="items" 
                             placeholder="Selecciona una turno"
+                            optionGroupTemplate={groupedItemTemplate} 
                             className="w-full md:w-full" 
                     />
                 </div>

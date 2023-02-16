@@ -99,7 +99,6 @@ const CrudLineas = ({titulos, notificaciones}) => {
         ...product,
         [field]: data,
         });
-        console.log(product);
     };
     //------> Agregar nuevo registro
     const saveProduct = async() => {

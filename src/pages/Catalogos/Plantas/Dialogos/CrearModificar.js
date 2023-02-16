@@ -11,7 +11,7 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
     const expresion = /^[a-zA-Z0-9._-\s]{1,40}$/; // Todo menos ','
 
     const Verificar = (texto) => {
-        if (!expresion.test(texto)) {
+        if (!expresion.test(texto)){
             setValidarNombre("p-invalid");
             setBoton(true);
         } else {
@@ -22,7 +22,7 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
 
     //--------------------| Botones de confirmacion |--------------------
     //------> Botones para crear registro
-    const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton);
+    const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton, product, setBoton);
 
     //--------------------| Valor que regresara  |--------------------
     return (

@@ -12,15 +12,15 @@ const AreaContextProvider = (props) => {
     //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {
-        areaService.create(product).then((data) => setProducts([...products, data]));
+        areaService.create(product).then( data =>areaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Actualizar producto
     const updateProduct = (product) => {
-        areaService.update(product).then((data) => setProducts(products.map((p) => (p.id === product.id ? data : product))));
+        areaService.update(product).then(data => areaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Eliminar producto
     const deleteProduct = (id) => {
-        areaService.delete(id).then(() => setProducts(products.filter((p) => p.id !== id)));
+        areaService.delete(id).then(data => areaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
 
     //--------------------| Funciones de Crud |--------------------

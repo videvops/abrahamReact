@@ -1,13 +1,17 @@
 import React from "react";
 import { Button } from 'primereact/button';
+import { compileString } from "sass";
 
-export const productDialogFooter = (hideDialog, saveProduct, boton, product) => {
+export const productDialogFooter = (hideDialog, saveProduct, boton, product, setBoton) => {
     const enviarDatos = () => {
-        if (Object.values(product).includes("")) {
-            console.log("esta vacio")
-            return
+        console.log("crearREgistro")
+        if(!Object.values(product).includes("") || !Object.values(product).includes(null)){
+            saveProduct();
+            console.log("salvando registro")
+            setBoton(false)
+        }else{
+            setBoton(true)
         }
-        saveProduct()
     }
 //-------------------------| Valor que regresara |-------------------------
     return(

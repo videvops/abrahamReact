@@ -15,17 +15,13 @@ import StatusLineas from "../pages/StatusLineas";
 
 //----------------| Catalogos |----------------
 import ListadoParos from "../components/listadoParo/ListadoParos";
-// import CatalogoRoles from "../pages/Catalogos/Roles/CatalogoRoles";
 import CatalogoAreas from "../pages/Catalogos/Areas/CatalogoAreas";
 import CatalogoTurnos from "../pages/Catalogos/Turnos/CatalogoTurnos";
 import CatalogoLineas from "../pages/Catalogos/Lineas/CatalogoLineas";
 import CatalogoPlantas from "../pages/Catalogos/Plantas/CatalogoPlantas";
-// import CatalogoUsuarios from "../pages/Catalogos/Usuarios/CatalogoUsuarios";
 import CatalogoProducto from "../pages/Catalogos/Productos/CatalogoProducto";
 import CatalogoMaquinas from "../pages/Catalogos/Maquinas/CatalogoMaquinas";
-// import CatalogoTipoParo from "../pages/Catalogos/TiposParo/CatalogoTipoParo";
-// import CatalogoDirecciones from "../pages/Catalogos/Direcciones/CatalogoDirecciones";
-
+import CatalogoModoFalla from "../pages/Catalogos/ModoFalla/CatalogoModoFalla"
 
 import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
 import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
@@ -219,7 +215,7 @@ const Home = ({ setLogueado }) => {
                         { label: "Turnos", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTurnos" },
                         // { label: "Usuarios", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoUsuarios" },
                         {label: "Maquinas",icon: "pi pi-fw pi-bookmark text-blue-500",to: "/catalogoMaquinas",},
-                        // {label: "Modo de Falla",icon: "pi pi-fw pi-bookmark text-blue-500",},
+                        {label: "Modo de Falla",icon: "pi pi-fw pi-bookmark text-blue-500", to:"/catalogoModoFalla"},
                     ],
                 },
             ],
@@ -285,7 +281,7 @@ const Home = ({ setLogueado }) => {
                     <Route path="/catalogoPlantas" component={CatalogoPlantas} />
                     <Route path="/catalogoProductos" component={CatalogoProducto} />
                     {/* <Route path="/catalogoRoles" component={CatalogoRoles} /> */}
-                    {/* <Route path="/catalogoTipoParo" component={CatalogoTipoParo} /> */}
+                    <Route path="/catalogoModoFalla" component={CatalogoModoFalla} />
                     <Route path="/catalogoTurnos" component={CatalogoTurnos} />
                     {/* <Route path="/catalogoUsuarios" component={CatalogoUsuarios} /> */}
                     <Route path="/catalogoMaquinas" component={CatalogoMaquinas} />

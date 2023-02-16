@@ -12,7 +12,7 @@ export class MaquinasService {
     }
     //------> Obtener registros de BD
     readAll() {
-        return axios.get(this.baseUrl).then((res) => res.data);
+        return axios.get(this.baseUrl).then((res) =>res.data);
     }
     //------> Modificar registro
     update(product) {

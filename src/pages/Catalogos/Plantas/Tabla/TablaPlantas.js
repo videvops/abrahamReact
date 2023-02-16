@@ -20,8 +20,6 @@ const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selecte
     const [pageInputTooltip, setPageInputTooltip] = useState("Press 'Enter' key to go to this page.");
 
     const onCustomPage1 = (event) => {
-        console.log("pagina");
-        console.log(event.page);
         setFirst1(event.first);
         setRows1(event.rows);
         setCurrentPage(event.page + 1);
@@ -129,10 +127,8 @@ const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selecte
             >
                 {/* // CAMBIAR.............. */}
                 <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} exportable={false} />
-                <Column field="id" header="ID" sortable style={{ width: "7rem", textAlign: "center" }} />
                 <Column field="planta" header="Planta" sortable style={{ minWidth: "7rem", textAlign: "center" }} />
-                <Column field="descripcion" header="Descripción" sortable style={{ minWidth: "7rem", textAlign: "center" }} />
-                <Column field="estatus" header="Estatus" sortable style={{ minWidth: "7rem", textAlign: "center" }} />
+                {/* <Column field="estatus" header="Estatus" sortable style={{ minWidth: "7rem", textAlign: "center" }} /> */}
                 <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{ minWidth: "3rem", textAlign: "center" }} />
                 <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: "3rem" }} />
             </DataTable>

@@ -8,7 +8,6 @@ const TablaMaquinas = ({ BotonesCabezal, ExportarRegistros, dt, products, select
     return (
         <div className="card">
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros} />
-
             <DataTable
                 ref={dt}
                 value={products}
@@ -27,18 +26,18 @@ const TablaMaquinas = ({ BotonesCabezal, ExportarRegistros, dt, products, select
                 globalFilterFields={["id", "calle", "num_ext", "fecha_creacion", "fecha_modificacion", "creado_por", "modificado_por"]}
                 emptyMessage="No se encontraron resultados."
                 header={header}
+                size="small" 
                 responsiveLayout="scroll"
             >
                 {/* // CAMBIAR.............. */}
                 <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} exportable={false} />
-                <Column field="id" header="ID" sortable style={{ minWidth: "12rem", textAlign: "center" }} />
-                <Column field="maquina" header="Maquina" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
+               <Column field="maquina" header="Maquina" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
                 <Column field="linea" header="Linea" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
                 <Column field="area" header="Área" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
                 <Column field="planta" header="Planta" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
-                <Column field="estatus" header="Estatus " sortable style={{ minWidth: "16rem", textAlign: "center" }} />
+                {/* <Column field="estatus" header="Estatus " sortable style={{ minWidth: "16rem", textAlign: "center" }} /> */}
                 <Column field="fechaCreacion" header="Fecha de Creacion" sortable style={{ minWidth: "16rem", textAlign: "center" }} />
-                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: "3rem" }} />
+                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: "10rem" }} />
             </DataTable>
         </div>
     );

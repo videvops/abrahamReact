@@ -24,7 +24,6 @@ const CrudAreas = ({titulos, notificaciones}) => {
         createProduct,
         updateProduct,
         deleteProduct,
-
         products,
         setProducts
     }=useContext(ProductContext);
@@ -94,11 +93,9 @@ const CrudAreas = ({titulos, notificaciones}) => {
         ...product,
         [field]: data,
         });
-        console.log(product);
     };
     //------> Agregar nuevo registro
     const saveProduct = () => {
-        console.log("[+]ID: " + product.id);
         if (!product.id) {
             createProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.creacion}`, life: 3000 });
@@ -106,28 +103,12 @@ const CrudAreas = ({titulos, notificaciones}) => {
             updateProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
         }
-      
-        // setProducts(listaAct => {
-        //     const newProducts = [...listaAct];
-        //     newProducts.unshift({ 
-        //         id: 1,
-        //         area: '',
-        //         descripcion:'prueba',
-        //         fechaCreacion:'2022-12-17 12:12:43',
-        //         idEstatus:1,
-        //         idPlanta:1, 
-        //         estatus:'Activo' });
-        //     console.log(newProducts);
-        //     return newProducts;
-        //   });
-
           setProduct(emptyProduct);
           setProductDialog(false);
 
     }
     //------> Eliminar 1 producto
     const _deleteProduct = () => {
-        console.log("Se elimino el ID: "+product.id);
         deleteProduct(product.id);
         setProduct(emptyProduct);
         toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${notificaciones.eliminacion}`, life: 3000 });
@@ -136,7 +117,6 @@ const CrudAreas = ({titulos, notificaciones}) => {
     //------> Eliminar varios productos
     const deleteSelectedProducts = () => {
         selectedProducts.map( producto => {
-            console.log("Se elimino el ID: " + producto.id)
             return deleteProduct(producto.id)
         })
         setDeleteProductsDialog(false);                                         // Ocultara dialogo
@@ -181,7 +161,6 @@ const CrudAreas = ({titulos, notificaciones}) => {
     //---> Obtendra los datos del back-end
     useEffect(()=>{
         const cargarDatos=async()=>{
-            console.log("cargando nuevamente");
             setIsLoading(true)
             setError(null)
             try{
@@ -229,13 +208,13 @@ const CrudAreas = ({titulos, notificaciones}) => {
             {error&&<p>{error}</p>}
 
             <CrearModificar
-            productDialog={productDialog}
-            titulos={titulos}
-            saveProduct={saveProduct}
-            hideDialog={hideDialog}
-            product={product}
-            updateField={updateField}
-            tieneId={tieneId}
+                productDialog={productDialog}
+                titulos={titulos}
+                saveProduct={saveProduct}
+                hideDialog={hideDialog}
+                product={product}
+                updateField={updateField}
+                tieneId={tieneId}
             />
 
             <EliminarUno

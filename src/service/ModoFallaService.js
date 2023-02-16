@@ -3,17 +3,16 @@ import Environment from "../Environment";
 
 const getRoute = Environment()
 
-export class PlantaService {
+export class ModoFallaService {
     //------> Link para hacer peticiones
-    baseUrl = getRoute+"/plantas";
+    baseUrl = getRoute+"/modosFallas";
     //------> Agregar nuevo registro
     create(product){
         return axios.post(this.baseUrl, product).then(res => res.data);
     }
     //------> Obtener registros de BD
     readAll(){
-        const url = this.baseUrl+"/list"
-        return axios.get(url).then(res => res.data);
+        return axios.get(this.baseUrl).then(res => res.data);
     }
     //------> Modificar registro
     update(product){

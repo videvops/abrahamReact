@@ -12,15 +12,15 @@ const MaquinaProvider = (props) => {
     //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {
-        maquinaService.create(product).then((data) => setProducts([...products, data]));
+        maquinaService.create(product).then(res=>maquinaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Actualizar producto
     const updateProduct = (product) => {
-        maquinaService.update(product).then((data) => setProducts(products.map((p) => (p.id === product.id ? data : product))));
-    };
+        maquinaService.update(product).then(res=>maquinaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
+    }
     //------> Eliminar producto
     const deleteProduct = (id) => {
-        maquinaService.delete(id).then(() => setProducts(products.filter((p) => p.id !== id)));
+        maquinaService.delete(id).then(res=>maquinaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
 
     //--------------------| Funciones de Crud |--------------------

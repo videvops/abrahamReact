@@ -92,26 +92,26 @@ const Crud = (props) => {
             ...product,
             [field]: data,
         });
-        console.log(product);
     };
     //------> Agregar nuevo registro
     const saveProduct = () => {
-        console.log("[+]ID: " + product.id);
-        console.log("id linea: " + product.idLinea);
+        console.log(product)
         if (!product.id) {
-            createProduct(product);
+            console.log("creando")
+            //createProduct(product);
             toast.current.show({
                 severity: "success",
                 summary: "Atencion!",
-                detail: "Modos de falla creado",
+                detail: "Maquina creada",
                 life: 3000,
             });
         } else {
+            console.log("editando")
             updateProduct(product);
             toast.current.show({
                 severity: "success",
                 summary: "Atencion!",
-                detail: "Modos de falla modificado",
+                detail: "Maquina Actualizada",
                 life: 3000,
             });
         }
@@ -120,7 +120,6 @@ const Crud = (props) => {
     };
     //------> Eliminar 1 producto
     const _deleteProduct = () => {
-        console.log("Producto eliminado: " + product.id);
         deleteProduct(product.id);
         setProduct(emptyProduct);
         toast.current.show({
@@ -134,18 +133,15 @@ const Crud = (props) => {
     //------> Eliminar varios productos
     const deleteSelectedProducts = () => {
         let _products = products.filter((val) => selectedProducts.includes(val)); // Producto a eliminar
-        console.log("[+]Registros eliminados: " + _products.length); // N# de productos a eliminar
         for (let i = 0; i < _products.length; i++) {
             deleteProduct(_products[i].id);
-            console.log("Registro eliminado: " + _products[i].id);
         }
-
         setDeleteProductsDialog(false); // Ocultara dialogo
         setSelectedProducts(null); // Elemetos seleccionados = 0
         toast.current.show({
             severity: "error",
             summary: "Atencion!",
-            detail: "Plantas eliminadas",
+            detail: "Maquinas eliminadas",
             life: 3000,
         });
         maquinasService.readAll().then((data) => setProducts(data));
@@ -190,7 +186,6 @@ const Crud = (props) => {
         setError(null);
         try {
             const data = await maquinasService.readAll(); // Hasta que no se termine de ejecutar la maquina
-
             setProducts(data);
         } catch (error) {
             setError(error.message);

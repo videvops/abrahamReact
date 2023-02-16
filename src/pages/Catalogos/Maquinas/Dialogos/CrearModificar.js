@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-// import { productDialogFooter } from '../Botones/CrearRegistro';
 import Axios from "axios";
 import { productDialogFooter } from "../../ComponentsCat/Botones/CrearRegistro";
 import Environment from '../../../../Environment';
@@ -14,7 +13,7 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
     //--------------------| Validar campos  |--------------------
     const [validarNombre, setValidarNombre] = useState(""); // Validar nombre de planta
     const [boton, setBoton] = useState(false); // Activar o desactivar boton
-    const Advertencia = <p style={{ color: "red" }}>Campo no valido</p>; // Mensaje de advertencia
+    const Advertencia=(<p style={{color:"red", marginTop:"20px", textAlign:"center"}}>Campos no validos</p>); 
     const expresion = /^[a-zA-Z0-9._-\s]{1,40}$/; // Todo menos ','
     
 
@@ -39,8 +38,10 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
         }
     }, [product.idArea]);
 
+
+
     const Verificar = (texto) => {
-        if (!expresion.test(texto)) {
+        if (!expresion.test(texto) || Object.values(texto).includes(" ")) {
             setValidarNombre("p-invalid");
             setBoton(true);
         } else {
@@ -48,10 +49,10 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
             setBoton(false);
         }
     };
-
     //--------------------| Botones de confirmacion |--------------------
     //------> Botones para crear registro
-    const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton);
+    const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton, product, setBoton);
+
 
     //--------------------| Valor que regresara  |--------------------
     return (
@@ -99,17 +100,14 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
             </div>
 
             <div className="field">
-                {/* CAMBIAR.... */}
-                <label
-                    htmlFor="nombreMaquinas" // CAMBIAR...
-                >
+                <label htmlFor="nombreMaquinas">                    
                     Maquina
                 </label>
                 <InputText
                     id="maquina" // CAMBIAR...
                     value={product.maquina} // CAMBIAR...
                     onChange={(e) => {
-                        updateField(e.target.value, "maquina"); // CAMBIAR...
+                        updateField(e.target.value.trim(), "maquina"); // CAMBIAR...
                         Verificar(e.target.value);
                     }}
                     required

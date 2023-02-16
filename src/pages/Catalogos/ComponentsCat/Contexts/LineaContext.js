@@ -12,27 +12,16 @@ const LineaContextProvider=(props)=>{
 //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {
-        lineaService
-        .create(product)
-        .then((data) => setProducts([...products, data]));
-    };
+        lineaService.create(product).then(res => lineaService.readAll().then(res=>setProducts(res))).catch(e=>console.log(e));
+    }
     //------> Actualizar producto
     const updateProduct = (product) => {
-        lineaService
-        .update(product)
-        .then((data) =>
-            setProducts(
-            products.map((p) => (p.id === product.id ? data : product))
-            )
-        );
-    };
+        lineaService.update(product).then(res => lineaService.readAll().then(res =>setProducts(res))).catch(e=>console.log(e));
+    }
     //------> Eliminar producto
     const deleteProduct = (id) => {
-        lineaService
-        .delete(id)
-        .then(() => setProducts(products.filter((p) => p.id !== id)));
-    };
-
+        lineaService.delete(id).then(res=>lineaService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
+    }
 //--------------------| Funciones de Crud |--------------------
     return(
         <ProductContext.Provider

@@ -10,7 +10,17 @@ import Environment from '../../../../Environment';
 
 const getRoute = Environment();
 
-const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,saveProduct,tieneId}) => {
+const CrearModificar = ({
+    productDialog,
+    titulos,
+    hideDialog,
+    product,
+    updateField,
+    saveProduct,
+    tieneId
+}) => {
+
+
 //--------------------| Dropdown  |--------------------
     //---> Plantas
     const [plantasDisponibles,setPlantasDisponibles]=useState([])
@@ -19,24 +29,24 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     }, [])
 
 //--------------------| Validar campos  |--------------------
-    const [validarNombre,setValidarNombre]=useState("");                // Validar nombre de planta
+    const [validarNombre,setValidarNombre]=useState("");   
     const [boton,setBoton]=useState(false);                             // Activar o desactivar boton
-    const Advertencia=(<p style={{color:"red"}}>Campo no valido</p>);   // Mensaje de advertencia
-    const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                         // Todo menos ','
+    const Advertencia=(<p style={{color:"red", marginTop:"20px", textAlign:"center"}}>Campos no validos</p>);   // Mensaje de advertencia
+    const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                       // Todo menos ','
 
-    const Verificar=(texto)=>{
-        if (!expresion.test(texto)){
+
+    const Verificar = (texto) => {
+        if (!expresion.test(texto)) {
             setValidarNombre("p-invalid");
             setBoton(true);
-        }else{
+        } else {
             setValidarNombre("");
             setBoton(false);
         }
-    }
-
-//--------------------| Botones de confirmacion |--------------------
+    };
+    //--------------------| Botones de confirmacion |--------------------
     //------> Botones para crear registro
-    const crearRegistro=productDialogFooter(hideDialog,saveProduct,boton);
+    const crearRegistro=productDialogFooter(hideDialog,saveProduct,boton,product,setBoton);
 
 //--------------------| Valor que regresara  |--------------------
     return (
@@ -56,15 +66,15 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
                 optionValue="id" 
                 value={product.idPlanta} 
                 options={plantasDisponibles} 
-                onChange={(e) => {updateField(e.value, "idPlanta")}} 
+                onChange={(e) => {
+                    updateField(e.value, "idPlanta")   
+                }} 
                 placeholder="--Selecciona una planta--"
                 />
             </div>
             <div className="field">
-                <label 
-                htmlFor="area"                                   // CAMBIAR...
-                >
-                    Area
+                <label htmlFor="area">                                   
+                    Area  
                 </label>
                 <InputText 
                 id="area"                                        // CAMBIAR...

@@ -45,7 +45,7 @@ const CrearModificar = ({
     const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                     // Todo menos ','
     //--> Validar input
     const Verificar=(texto)=>{
-        if (!expresion.test(texto)){
+        if (!expresion.test(texto) || Object.values(texto).includes(" ")){
             setValidarNombre("p-invalid")   // Input rojo
             setTexto("Campo invalido")      // Texto de advertencia de input
             setBoton(true);                 // Validacion para input invalido
@@ -57,6 +57,7 @@ const CrearModificar = ({
     }
     //--> Validar datos antes de envio
     const enviarDatos = () => {
+        console.log(product)
         if (Object.values(product).includes("")) {
             setMensaje("Todos los campos son obligatorios")
             setDatosInvalidos(true)
@@ -132,7 +133,7 @@ const CrearModificar = ({
                     id="linea"                                      // CAMBIAR...
                     value={product.linea}                           // CAMBIAR...
                     onChange={(e) => {
-                        updateField(e.target.value, "linea");       // CAMBIAR...
+                        updateField(e.target.value.trim(), "linea");       // CAMBIAR...
                         Verificar(e.target.value)
                     }} 
                     required 

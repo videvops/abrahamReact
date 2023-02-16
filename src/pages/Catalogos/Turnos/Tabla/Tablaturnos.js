@@ -30,13 +30,12 @@ const TablaTurnos = ({BotonesCabezal,ExportarRegistros,dt,products,selectedProdu
             >
                 {/* // CAMBIAR.............. */}
                 <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}/>
-                <Column field="id" header="ID" sortable style={{ width: '7rem',textAlign:'center' }}/>
                 <Column field="turno" header="Turno" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
                 <Column field="horaInicio" header="Hora de Inicio" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
                 <Column field="horaFin" header="Hora de Fin" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
                 <Column field="linea" header="Linea" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
                 <Column field="fechaCreacion" header="Fecha de creacion" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
-                <Column field="estatus" header="Estatus" sortable style={{ minWidth: '3rem',textAlign:'center' }}/>
+                {/* <Column field="estatus" header="Estatus" sortable style={{ minWidth: '3rem',textAlign:'center' }}/> */}
                 <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ minWidth: '3rem' }}/>
             </DataTable>
         </div>
