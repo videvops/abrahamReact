@@ -21,18 +21,21 @@ const BarChartTiempoMuertoGrafica = ({filtros}) => {
         const strMaquinas = getStringData(filtros.maquinas)
         const fechaInicio = getDateSplitted(filtros.fechaInc);
         const fechaFin = getDateSplitted(filtros.fechaFin);
-        let urlTiempoMuerto =`https://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
-        urlTiempoMuerto += `var-planta=1&var-area=1&var-linea=1&var-maquina=1&`
-        urlTiempoMuerto += `var-inicio_intervalo=${fechaInicio.date}+${fechaInicio.hours}%3A${fechaInicio.mins}%3A${fechaFin.secs}&`
-        urlTiempoMuerto += `var-fin_intervalo=${fechaFin.date}+${fechaFin.hours}%3A${fechaFin.mins}%3A${fechaFin.secs}%27&`
-        urlTiempoMuerto += `var-maquinasArr=${strMaquinas}3&var-lineasArr=1%2C2%2C3&from=1675250437561&to=1675272037561&`
-        urlTiempoMuerto += `panelId=10`
+
+        // let urlTiempoMuerto =`https://ec2-3-20-237-147.us-east-2.compute.amazonaws.com:3000/d-solo/s5XhbD0Vz/ublick?orgId=1&`
+        // urlTiempoMuerto += `var-planta=1&var-area=1&var-linea=1&var-maquina=1&`
+        // urlTiempoMuerto += `var-inicio_intervalo=${fechaInicio.date}+${fechaInicio.hours}%3A${fechaInicio.mins}%3A${fechaFin.secs}&`
+        // urlTiempoMuerto += `var-fin_intervalo=${fechaFin.date}+${fechaFin.hours}%3A${fechaFin.mins}%3A${fechaFin.secs}%27&`
+        // urlTiempoMuerto += `var-maquinasArr=${strMaquinas}3&var-lineasArr=1%2C2%2C3&from=1675250437561&to=1675272037561&`
+        // urlTiempoMuerto += `panelId=10`
         
         // URL localhost
-        // let urlTiempoMuerto = "http://localhost:3000/d-solo/DtaYRtpVz/new-dashboard?orgId=1&var-planta=1&var-area=1&var-linea=1&var-maquina=1&"
-        // urlTiempoMuerto+= "var-inicio_intervalo=%27"+fechaInicio.date+"+"+fechaInicio.hours+"%3A"+fechaInicio.mins+"%3A"+fechaInicio.secs+"%27&"
-        // urlTiempoMuerto+= "var-fin_intervalo=%27"+fechaFin.date+"+"+fechaFin.hours+"%3A"+fechaFin.mins+"%3A"+fechaFin.secs+"%27&"
-        // urlTiempoMuerto += "var-maquinasArr="+strMaquinas+"&panelId=8"
+
+        let urlTiempoMuerto = "http://localhost:3000/d-solo/DtaYRtpVz/new-dashboard?orgId=1&"
+        urlTiempoMuerto += "var-planta=1&var-area=1&var-linea=1&var-maquina=1&"
+        urlTiempoMuerto+= "var-inicio_intervalo="+fechaInicio.date+"+"+fechaInicio.hours+"%3A"+fechaInicio.mins+"%3A"+fechaInicio.secs+"&"
+        urlTiempoMuerto+= "var-fin_intervalo="+fechaFin.date+"+"+fechaFin.hours+"%3A"+fechaFin.mins+"%3A"+fechaFin.secs+"&"
+        urlTiempoMuerto+= "var-maquinasArr="+strMaquinas+"&panelId=8"
         //
 
         return (

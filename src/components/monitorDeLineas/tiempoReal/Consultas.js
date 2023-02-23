@@ -23,8 +23,8 @@ const Consultas =  ({filtros}) =>{
         try{
             const res = await Axios.post(`${getRoute}/utilerias/getFechasForLiveScreen`,objIntervalos);
             const obj = {
-                fechaInicio: res.data.fechaInicio,
-                fechaFin: res.data.fechaFin,
+                fechaInicio:res.data.fechaInicio, //"2022-11-21 08:01:00",//
+                fechaFin:res.data.fechaFin,//"2022-11-21 16:00:34",//
                 linea:id
             }
             setDatosDeConsulta(obj)
@@ -53,7 +53,11 @@ const Consultas =  ({filtros}) =>{
         urlTacometros=`${getRoute}/indicadores/monitor/linea/${datosDeConsulta.linea}`;
     }
 
-    console.log(datosDeConsulta)
+    useEffect(()=>{
+
+    },[urlTopFive,reload])
+
+    // console.log(datosDeConsulta)
     useEffect(()=>{
         getData();
     },[filtros])
@@ -62,18 +66,19 @@ const Consultas =  ({filtros}) =>{
     useEffect(()=>{
         setTimeout(()=>{
             getData();
+            console.log("axios")
+            console.log(datosDeConsulta)
+            if(Object.entries(datosDeConsulta).length !== 0){
+                Axios.post(urlUltimosParos,datosDeConsulta).then( res => setRegistrosUltimosParos(res.data) ).catch (e=>console.log(e) );
+                Axios.post(urlTopFive,datosDeConsulta).then( res => setRegistrosTopFive(res.data) ).catch(e=>console.log(e) );
+                Axios.post(urlTacometros,datosDeConsulta).then(res => setTacometrosData(res.data) ).catch(e=>console.log(e));
+            }
             setReload(Date.now())            
         },1000)
     },[reload])
 
 
-    useEffect(()=>{
-        if(Object.entries(datosDeConsulta).length !== 0){
-            Axios.post(urlUltimosParos,datosDeConsulta).then( res => setRegistrosUltimosParos(res.data) ).catch (e=>console.log(e) );
-            Axios.post(urlTopFive,datosDeConsulta).then( res => setRegistrosTopFive(res.data) ).catch(e=>console.log(e) );
-            Axios.post(urlTacometros,datosDeConsulta).then(res => setTacometrosData(res.data) ).catch(e=>console.log(e));
-        }
-    },[urlTopFive,reload])
+
 
     return (
         <>
