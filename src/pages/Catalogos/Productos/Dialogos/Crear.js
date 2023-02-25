@@ -1,56 +1,85 @@
 import React, { useEffect, useState } from 'react'
-import { Dialog } from 'primereact/dialog'
+
+import Axios from 'axios'
 import Step1 from './Step1'
 import Step2 from './Step2'
+import { Dialog } from 'primereact/dialog'
+import Environment from '../../../../Environment'
+const getRoute = Environment();
 
 const Crear = ({
-    titulos,
-    product,
-    productDialog,
-    updateField,
-    hideDialog,
     m1,
     m2,
+    titulos,
+    edicion,
+    product,
     mostrarM1,
     mostrarM2,
+    hideDialog,
+    updateField,
     objetoParte2,
+    productDialog,
     setObjetoParte2,
 }) => {
-//--------------------| Crear objeto para componente 2 |--------------------
-    const [resultado, setResultado] = useState([])
-    const [tieneAlgo, setTieneAlgo] = useState(false)
-    let arreglo = [{
-                id: product.idLinea,
-                tipo: "linea",
-                nombre: "linea1",
-                velocidadEstandar: null,
-                factorConversionI: null,
-                factorConversionO: null,
-                habilitado: "false"
-            }]
+    //--------------------| Crear objeto para componente 2 |--------------------
+    const [tieneMaquinas, setTieneMaquinas] = useState(false)
+    const [idProducto, setIdProduto] = useState({})
+    const [informacion, setInformacion] = useState({})
+    //--> Obtiene informacion 
+    useEffect(() => { 
+        if (tieneMaquinas) {
+            Axios.get(getRoute + `/productos/getById/${idProducto}`).then((res) => setInformacion(res.data))
+        }
+        // eslint-disable-next-line
+    }, [tieneMaquinas])
+    //--> Crea tabla de componente 2
     useEffect(() => {
-        if (resultado.length > 0) {
-            let i = 0
-            while (i < resultado.length) {
-                arreglo.push({
-                    id: resultado[i].id,
-                    tipo: "maquina",
-                    nombre: resultado[i].maquina,
-                    velocidadEstandar: null,
-                    factorConversionI: null,
-                    factorConversionO: null,
-                    habilitado: "false"
+        if (informacion.lineasAsignadas) {               // Tiene informacion
+            let arregloLM=[]
+            if (!informacion.lineasAsignadas[0].config) {
+                arregloLM.push({
+                    id: informacion.lineasAsignadas[0].id,
+                    tipo: "linea",
+                    nombre: informacion.lineasAsignadas[0].linea,
+                    velocidadEstandar: 0,
+                    factorConversionI: 0,
+                    factorConversionO: 0,
+                    habilitado:"false"
                 })
-                i++
+            } else {
+                arregloLM.push({
+                    id: informacion.lineasAsignadas[0].id,
+                    tipo: "linea",
+                    nombre: informacion.lineasAsignadas[0].linea,
+                    velocidadEstandar: informacion.lineasAsignadas[0].config.velocidadEstandar,
+                    factorConversionI: informacion.lineasAsignadas[0].config.factorConversionI,
+                    factorConversionO: informacion.lineasAsignadas[0].config.factorConversionO,
+                    habilitado:`${informacion.lineasAsignadas[0].config.habilitado}`
+                })
             }
-            setObjetoParte2(arreglo)
-            setTieneAlgo(true)
-            // console.log(arreglo)
-        } else {
-            setObjetoParte2(arreglo)
-            setTieneAlgo(false)
-        }// eslint-disable-next-line
-    }, [resultado])
+            //--> Si hay maquinas configuradas
+            if (informacion.lineasAsignadas[0].maquinasConfig) {
+                console.log("Maquinas configuradas")
+            }
+            //--> Si hay maquinas sin configurar
+            if (informacion.lineasAsignadas[0].maquinasNoConfig.length>0) {
+                let i = 0
+                while (i < informacion.lineasAsignadas[0].maquinasNoConfig.length) {
+                    arregloLM.push({
+                        id: informacion.lineasAsignadas[0].maquinasNoConfig[i].id,
+                        tipo: "maquina",
+                        nombre: informacion.lineasAsignadas[0].maquinasNoConfig[i].maquina,
+                        velocidadEstandar: 0,
+                        factorConversionI: 0,
+                        factorConversionO: 0,
+                        habilitado:"false"
+                    })
+                    i++
+                }
+            }
+            setObjetoParte2(arregloLM)
+        } // eslint-disable-next-line
+    }, [informacion])
 
 //--------------------| Valor que regresara |--------------------
     return (
@@ -64,22 +93,23 @@ const Crear = ({
         >
             {m1 && (
                 <Step1
+                    edicion={edicion}
+                    product={product}
                     mostrarM2={mostrarM2}
                     hideDialog={hideDialog}
                     updateField={updateField}
-                    product={product}
-                    setResultado={setResultado}
-                />
+                    setIdProduto={setIdProduto}
+                    setTieneMaquinas={setTieneMaquinas} />
             )}
             {m2 && (
                 <Step2
                     mostrarM1={mostrarM1}
                     hideDialog={hideDialog}
                     objetoParte2={objetoParte2}
+                    tieneMaquinas={tieneMaquinas}
                     setObjetoParte2={setObjetoParte2}
-                    tieneAlgo={tieneAlgo}
-                    setTieneAlgo={setTieneAlgo}
-                />
+                    setTieneMaquinas={setTieneMaquinas}
+                    idProducto={informacion.idProducto} />
             )}
         </Dialog>
     )

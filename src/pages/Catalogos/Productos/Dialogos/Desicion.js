@@ -1,49 +1,38 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Axios from 'axios';
-import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-
+import useBotones from '../../../../components/hooks/useBotones';
 
 const Desicion = ({
-    modalDesicion,
-    setModalDesicion,
-    setModalEditar,
     openNew,
+    setEdicion,
     dataProducto,
-    setDataEnvio }) => {
+    modalDesicion,
+    setModalEditar,
+    setModalDesicion }) => {
     //---> Destructuracion
     const { id } = dataProducto
-
     //---> Opcion crear registro
     const nuevaLinea = () => {
         openNew()
         setModalDesicion(false)
     }
-
     //---> Opcion editar registro
     const lineaAsignada = () => {
         setModalEditar(true)
         setModalDesicion(false)
-        Axios.get(`http://localhost:8080/productos/getById/${id}`).then(res => setDataEnvio(res.data))
     }
-
-    //---> Permite escojer crear o editar
-    const botonesAccion = () => {
-        return (
-            <>
-                <Button
-                    label="Nueva Linea"
-                    className="py-2 p-button-rounded"
-                    onClick={nuevaLinea}
-                />
-                <Button
-                    label="Lineas Asignadas"
-                    className="py-2 p-button-rounded"
-                    onClick={lineaAsignada}
-                />
-            </>
-        )
-    }
+    //--> Crear o editar
+    const [botonesAccion] = useBotones(
+        "Nueva Linea", "", "py-2 p-button-rounded", nuevaLinea,
+        "Lineas Asignadas","","py-2 p-button-rounded",lineaAsignada
+    )
+    useEffect(() => {
+        if (modalDesicion) {
+            Axios.get(`http://localhost:8080/productos/getById/${id}`).then(res => setEdicion(res.data))
+        }
+        // eslint-disable-next-line
+    }, [modalDesicion])
 
 //--------------------| Valor que regresara |--------------------
     return (

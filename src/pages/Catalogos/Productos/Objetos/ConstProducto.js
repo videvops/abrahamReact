@@ -1,6 +1,6 @@
 const titulos={
     VentanaCrear:"Detalles de Producto",
-    Buscador:"Buscar Producto",
+    Buscador:"Buscar Producto...",
     TituloTabla:"Productos"
 }
 

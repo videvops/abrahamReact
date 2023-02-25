@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
+import Axios from 'axios'
 import { Dialog } from 'primereact/dialog';
-import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
-import { productDialogFooter } from '../../ComponentsCat/Botones/CrearRegistro';
-import Axios from 'axios';
-import { statusDisponibles } from '../../ComponentsCat/Constantes/constantes';
+import { Dropdown } from 'primereact/dropdown'
+import { InputText } from 'primereact/inputtext'
+import { statusDisponibles } from '../../ComponentsCat/Constantes/constantes'
+import useBotones from '../../../../components/hooks/useBotones';
+import { MensajeAdvertencia, TextoAdvertencia } from '../../../../components/mensajes/Mensajes';
+
 import Environment from '../../../../Environment';
-
-
 const getRoute = Environment();
 
 const CrearModificar = ({
@@ -29,67 +29,81 @@ const CrearModificar = ({
     }, [])
 
 //--------------------| Validar campos  |--------------------
-    const [validarNombre,setValidarNombre]=useState("");   
-    const [boton,setBoton]=useState(false);                             // Activar o desactivar boton
-    const Advertencia=(<p style={{color:"red", marginTop:"20px", textAlign:"center"}}>Campos no validos</p>);   // Mensaje de advertencia
+    const [validarNombre, setValidarNombre] = useState("")
+    const [envioIncorrecto, setEnvioIncorrecto] = useState(false)
+    const [nombreIncorrecto, setNombreIncorrecto] = useState(false)
+    const [mensaje, setMensaje] = useState('')
+    const [texto, setTexto] = useState('')
     const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                       // Todo menos ','
 
-
-    const Verificar = (texto) => {
+    const VerificarNombre = (texto) => {
         if (!expresion.test(texto)) {
-            setValidarNombre("p-invalid");
-            setBoton(true);
+            setValidarNombre("p-invalid")
+            setTexto('Campo no valido')
+            setNombreIncorrecto(true)
         } else {
-            setValidarNombre("");
-            setBoton(false);
+            setTexto('')
+            setValidarNombre("")
+            setNombreIncorrecto(false)
         }
-    };
+    }
+    const enviarDatos = () => {
+        if ([product.area, product.idPlanta].includes('')) {
+            setEnvioIncorrecto(true)
+            setMensaje("Todos los campos son obligatorios")
+            setTimeout(() => {
+                setEnvioIncorrecto(false)
+            }, 3000)
+            return
+        }
+        if (nombreIncorrecto) {
+            setEnvioIncorrecto(true)
+            setMensaje("El nombre no es valido")
+            setTimeout(() => {
+                setEnvioIncorrecto(false)
+            }, 3000)
+            return
+        }
+        console.log("datos enviados")
+        saveProduct()
+        hideDialog()
+    }
     //--------------------| Botones de confirmacion |--------------------
     //------> Botones para crear registro
-    const crearRegistro=productDialogFooter(hideDialog,saveProduct,boton,product,setBoton);
+    const [botonesAccion] = useBotones(
+        "Cancelar", "pi pi-times", "p-button-rounded", hideDialog,
+        "Guardar", "pi pi-check", "p-button-rounded", enviarDatos
+    )
 
 //--------------------| Valor que regresara  |--------------------
     return (
         <Dialog 
-        visible={productDialog} 
-        style={{ width: '450px' }} 
-        header={titulos.VentanaCrear} 
-        modal 
-        className="p-fluid" 
-        footer={crearRegistro} 
-        onHide={hideDialog}
+        visible={productDialog} style={{ width: '450px' }} header={titulos.VentanaCrear} className="p-fluid" 
+        modal footer={botonesAccion} onHide={hideDialog}
         >   
             <div className="field">
                 <label>Planta</label>
                 <Dropdown 
-                optionLabel="planta" 
-                optionValue="id" 
-                value={product.idPlanta} 
-                options={plantasDisponibles} 
-                onChange={(e) => {
-                    updateField(e.value, "idPlanta");
-                    setBoton(false);   
-                }} 
-                placeholder="--Selecciona una planta--"
+                    optionLabel="planta" 
+                    optionValue="id" 
+                    value={product.idPlanta} 
+                    options={plantasDisponibles} 
+                    onChange={(e) => { updateField(e.value, "idPlanta") }}    
+                    placeholder="--Selecciona una planta--"
                 />
             </div>
             <div className="field">
-                <label htmlFor="area">                                   
-                    Area  
-                </label>
+                <label htmlFor="area">Area</label>
                 <InputText 
-                id="area"                                        // CAMBIAR...
-                value={product.area}                             // CAMBIAR...
-                onChange={(e) => {
-                    updateField(e.target.value, "area");  // CAMBIAR...
-                    Verificar(e.target.value)
-                }} 
-                required 
-                autoFocus 
-                className={validarNombre}
-                maxLength="30" 
+                    id="area"                                 
+                    value={product.area}                      
+                    onChange={(e) => {
+                        updateField(e.target.value, "area");  
+                        VerificarNombre(e.target.value)
+                    }} 
+                    required autoFocus className={validarNombre} maxLength="30" 
                 />
-                {boton && Advertencia}
+                {validarNombre && <TextoAdvertencia>{texto}</TextoAdvertencia>}
             </div>
             {!tieneId && (<div className="field">
                 <label>Status</label>
@@ -103,6 +117,7 @@ const CrearModificar = ({
                     placeholder="--Selecciona un status--"
                 />
             </div>)}
+            {envioIncorrecto && <MensajeAdvertencia>{mensaje}</MensajeAdvertencia>}
         </Dialog>
     )
 }

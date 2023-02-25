@@ -7,7 +7,15 @@ import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { InputNumber } from 'primereact/inputnumber';
 
-const Step2 = ({ mostrarM1, hideDialog, objetoParte2, setObjetoParte2, tieneAlgo, setTieneAlgo }) => {
+const Step2 = ({
+    mostrarM1,
+    hideDialog,
+    idProducto,
+    objetoParte2,
+    tieneMaquinas,
+    setObjetoParte2,
+    setTieneMaquinas,
+}) => {
 //--------------------| Editar tabla  |--------------------
     //---> Funcion principal
     const onRowEditComplete = (e) => {
@@ -56,7 +64,7 @@ const Step2 = ({ mostrarM1, hideDialog, objetoParte2, setObjetoParte2, tieneAlgo
 
 //--------------------| Envio de datos  |--------------------
     const enviarParte2 = () => {
-        const objetoEnviar = { config: objetoParte2 }
+        const objetoEnviar = { idProducto: idProducto, config: objetoParte2 }
         Axios.post("http://localhost:8080/productos/config/velocidades", objetoEnviar)
         console.log("Datos enviados")
         console.log(objetoEnviar)
@@ -66,12 +74,12 @@ const Step2 = ({ mostrarM1, hideDialog, objetoParte2, setObjetoParte2, tieneAlgo
 //--------------------| Valor que regresara  |--------------------
     return (
         <>
-            {tieneAlgo ? (
+            {tieneMaquinas ? (
                 <div>
                     <p>Descripcion: Galleta mini chispa chocolate 20 oz</p>
                     <DataTable value={objetoParte2} editMode="row" dataKey="id" onRowEditComplete={onRowEditComplete} responsiveLayout="scroll">
-                        <Column field="id" header="ID" editor={(options) => textEditor(options)} style={{ width: '20%' }}/>
-                        <Column field="tipo" header="Tipo" editor={(options) => textEditor(options)} style={{ width: '20%' }}/>
+                        <Column field="id" header="ID" style={{ width: '20%' }} />
+                        <Column field="tipo" header="Tipo" style={{ width: '20%' }} />
                         <Column field="nombre" header="Nombre" editor={(options) => textEditor(options)} style={{ width: '20%' }}/>
                         <Column field="velocidadEstandar" header="Velocidad Estándar" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
                         <Column field="factorConversionI" header="Factor de Conversión Input" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
@@ -90,11 +98,10 @@ const Step2 = ({ mostrarM1, hideDialog, objetoParte2, setObjetoParte2, tieneAlgo
                         <p>¿Desea continuar?</p>
                         <div className='mt-5 flex justify-content-end'>
                             <Button label="Atras" className="w-2 p-button-rounded" onClick={mostrarM1} />
-                            <Button label="Continuar" className="w-2 p-button-rounded" onClick={()=>setTieneAlgo(true)}/>
+                            <Button label="Continuar" className="w-2 p-button-rounded" onClick={() => setTieneMaquinas(true)} />
                         </div>
                     </div>
-            )
-            }
+            )}
         </>
     )
 }
