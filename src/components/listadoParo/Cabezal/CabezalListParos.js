@@ -157,7 +157,7 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
             <br/>
             <div className='clas col-12 md:col-12 flex justify-content-between '>
                 <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
-                {/* <Button label="Excel" icon="pi pi-file-excel" className="p-button-success mr-2" onClick={loadFilter} /> */}
+                <Button label="Excel" icon="pi pi-file-excel" className="p-button-success mr-2" onClick={loadFilter} />
             </div>
                 <Dialog
                     header="Filtro para listado de paros"
