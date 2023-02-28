@@ -18,6 +18,7 @@ import { emptyProduct } from "./Objetos/ProductoVacio";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { FilterMatchMode } from "primereact/api";
+import ErrorSistema from "../../../components/error/ErrorSistema";
 
 const CrudModoFalla = ({ titulos, notificaciones }) => {
     //--------------------| Importacion de metodos axios |--------------------
@@ -160,7 +161,7 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
             setError(null);
             try {
                 const data = await modoFallaService.readAll();
-                console.log(data)
+                // console.log(data)
                 setProducts(data);
             } catch (error) {
                 setError(error.message);
@@ -173,9 +174,9 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect(() => {
-        modoFallaService.readAll().then((data) => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    // useEffect(() => {
+    //     modoFallaService.readAll().then((data) => setProducts(data));
+    // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(() => {
@@ -196,7 +197,7 @@ const CrudModoFalla = ({ titulos, notificaciones }) => {
                 <TablaModoFalla BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />
             )}
             {isLoading && <Spinner />}
-            {error && <p>{error}</p>}
+            {error && <ErrorSistema texto={error} />}
 
             <CrearModificar productDialog={productDialog} titulos={titulos} saveProduct={saveProduct} hideDialog={hideDialog} product={product} updateField={updateField} tieneId={tieneId} />
 

@@ -18,6 +18,7 @@ import { emptyProduct } from './Objetos/TurnoVacio';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FilterMatchMode } from 'primereact/api';
+import ErrorSistema from '../../../components/error/ErrorSistema';
 
 
 const CrudTurnos = ({titulos, notificaciones}) => {
@@ -187,9 +188,9 @@ const CrudTurnos = ({titulos, notificaciones}) => {
         }
     },[]); // eslint-disable-line react-hooks/exhaustive-deps    
     
-    useEffect(() => {
-        turnoService.readAll().then((data) => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    // useEffect(() => {
+    //     turnoService.readAll().then((data) => setProducts(data));
+    // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(()=>{
@@ -216,8 +217,8 @@ const CrudTurnos = ({titulos, notificaciones}) => {
                 header={header}
                 actionBodyTemplate={actionBodyTemplate} 
             />)}
-            {isLoading&&<Spinner/>}
-            {error&&<p>{error}</p>}
+            {isLoading && <Spinner />}
+            {error && <ErrorSistema texto={error} />}
 
             <CrearModificar
             productDialog={productDialog}

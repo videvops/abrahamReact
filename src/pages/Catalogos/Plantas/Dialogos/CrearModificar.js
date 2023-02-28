@@ -1,32 +1,64 @@
 import React, { useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { productDialogFooter } from "../../ComponentsCat/Botones/CrearRegistro";
+import useBotones from "../../../../components/hooks/useBotones";
+import { MensajeAdvertencia, TextoAdvertencia } from "../../../../components/mensajes/Mensajes"
 
 const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateField, saveProduct }) => {
     //--------------------| Validar campos  |--------------------
-    const [validarNombre, setValidarNombre] = useState(""); // Validar nombre de planta
-    const [boton, setBoton] = useState(false); // Activar o desactivar boton
-    const Advertencia = <p style={{ color: "red" }}>Campo no valido</p>; // Mensaje de advertencia
-    const expresion = /^[a-zA-Z0-9._-\s]{1,40}$/; // Todo menos ','
+    const [validarNombre, setValidarNombre] = useState("")
+    const [envioIncorrecto, setEnvioIncorrecto] = useState(false)
+    const [nombreIncorrecto, setNombreIncorrecto] = useState(false)
+    const [mensaje, setMensaje] = useState('')
+    const [texto, setTexto] = useState('')
+    const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                       // Todo menos ','
 
     const Verificar = (texto) => {
-        if (!expresion.test(texto)){
-            setValidarNombre("p-invalid");
-            setBoton(true);
+        if (!expresion.test(texto)) {
+            setValidarNombre("p-invalid")
+            setTexto('Campo no valido')
+            setNombreIncorrecto(true)
         } else {
-            setValidarNombre("");
-            setBoton(false);
+            setTexto('')
+            setValidarNombre("")
+            setNombreIncorrecto(false)
         }
     };
-
-    //--------------------| Botones de confirmacion |--------------------
+    const enviarDatos = () => {
+        if (!product.planta) {
+            setEnvioIncorrecto(true)
+            setMensaje("Todos los campos son obligatorios")
+            setTimeout(() => {
+                setEnvioIncorrecto(false)
+            }, 3000)
+            return
+        }
+        if (nombreIncorrecto) {
+            setEnvioIncorrecto(true)
+            setMensaje("El nombre no es valido")
+            setTimeout(() => {
+                setEnvioIncorrecto(false)
+            }, 3000)
+            return
+        }
+        console.log("datos enviados")
+        saveProduct()
+        hideDialog()
+    }
     //------> Botones para crear registro
-    const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton, product, setBoton);
+    // const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton, product, setBoton);
+    const [botonesAccion] = useBotones(
+        "Cancelar", "pi pi-times", "p-button-rounded", hideDialog,
+        "Guardar", "pi pi-check", "p-button-rounded", enviarDatos
+    )
 
     //--------------------| Valor que regresara  |--------------------
     return (
-        <Dialog visible={productDialog} style={{ width: "450px" }} header={titulos.VentanaCrear} modal className="p-fluid" footer={crearRegistro} onHide={hideDialog}>
+        <Dialog
+            style={{ width: "450px" }} modal className="p-fluid"
+            header={titulos.VentanaCrear}
+            visible={productDialog} footer={botonesAccion} onHide={hideDialog}
+        >
             <div className="field">
                 <label htmlFor="nombrePlanta">Planta</label>
                 <InputText
@@ -41,7 +73,8 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
                     className={validarNombre}
                     maxLength="30"
                 />
-                {boton && Advertencia}
+                {validarNombre && <TextoAdvertencia>{texto}</TextoAdvertencia>}
+                {envioIncorrecto && <MensajeAdvertencia>{mensaje}</MensajeAdvertencia>}
             </div>
         </Dialog>
     );

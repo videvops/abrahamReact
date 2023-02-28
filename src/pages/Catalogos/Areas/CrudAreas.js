@@ -14,6 +14,7 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FilterMatchMode } from 'primereact/api';
 import Spinner from '../../../components/loader/Spinner';
+import ErrorSistema from '../../../components/error/ErrorSistema';
 
 const CrudAreas = ({titulos, notificaciones}) => {
 //--------------------| Importacion de metodos axios |--------------------
@@ -156,8 +157,8 @@ const CrudAreas = ({titulos, notificaciones}) => {
     }
 
 //--------------------| Obtener registros de back-end |--------------------
-    const [isLoading,setIsLoading]=useState(false)
-    const [error,setError]=useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(null)
     //---> Obtendra los datos del back-end
     useEffect(()=>{
         const cargarDatos=async()=>{
@@ -203,8 +204,8 @@ const CrudAreas = ({titulos, notificaciones}) => {
                 header={header}
                 actionBodyTemplate={actionBodyTemplate} 
             />)}
-            {isLoading&&<Spinner/>}
-            {error&&<p>{error}</p>}
+            {isLoading && <Spinner />}
+            {error && <ErrorSistema texto={error} />}
 
             <CrearModificar
                 productDialog={productDialog}

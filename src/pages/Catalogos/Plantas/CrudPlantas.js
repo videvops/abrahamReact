@@ -13,6 +13,8 @@ import { leftToolbarTemplate } from "../ComponentsCat/Botones/AgregarEliminar";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { FilterMatchMode } from "primereact/api";
+import ErrorSistema from "../../../components/error/ErrorSistema";
+import Spinner from "../../../components/loader/Spinner";
 
 const CrudPlantas = ({ titulos, notificaciones }) => {
     //--------------------| Importacion de metodos axios |--------------------
@@ -137,11 +139,10 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
     //------> Botones parte derecha
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => _editProduct(rowData)} />
-
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => confirmDeleteProduct(rowData)} />
-            </React.Fragment>
+            </>
         );
     };
 
@@ -157,7 +158,7 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
             if (data.ok) {
                 throw new Error("Algo salio mal");
             }
-            console.log(data)
+            // console.log(data)
             setProducts(data);
         } catch (error) {
             setError(error.message);
@@ -165,29 +166,34 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
         setIsLoading(false);
     }
 
-    let content = <p>Sin registros</p>;
-    if (!isLoading && !error) {
-        content = <TablaPlantas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />;
-    }
+    // let content = <p>Sin registros</p>;
+    // if (!isLoading && !error) {
+    //     content = <TablaPlantas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />;
+    // }
 
-    if (error) content = <p>{error}</p>;
-    if (isLoading) content = <p>Cargando...</p>;
+    // if (error) content = <ErrorSistema texto={error} />
+    // if (isLoading) content = <Spinner/>;
 
     //---> Funcion de manejo de respuesta axios
     useEffect(() => {
-        CargarDatos();
+        CargarDatos()
+        return () => {
+            setProducts([])
+        }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     //---> Cuando cambien los registros
-    useEffect(() => {
-        plantaService.readAll().then((data) => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    // useEffect(() => {
+    //     plantaService.readAll().then((data) => setProducts(data));
+    // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     //--------------------| Valor que regresara |--------------------
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
-            {content}
+            {!isLoading && !error && (<TablaPlantas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />)}
+            {isLoading && <Spinner />}
+            {error && <ErrorSistema texto={error} />}
 
             <CrearModificar productDialog={productDialog} titulos={titulos} saveProduct={saveProduct} hideDialog={hideDialog} product={product} updateField={updateField} />
 
