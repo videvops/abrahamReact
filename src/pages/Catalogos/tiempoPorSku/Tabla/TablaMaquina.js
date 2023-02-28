@@ -3,7 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
 
-const TablaVariables = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate }) => {
+const TablaMaquinas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate }) => {
     //--------------------| Valor que regresara |--------------------
     return (
         <div className="card">
@@ -11,6 +11,7 @@ const TablaVariables = ({ BotonesCabezal, ExportarRegistros, dt, products, selec
             <DataTable
                 ref={dt}
                 value={products}
+                //value={maquinasFicticios}
                 selection={selectedProducts}
                 filters={filters}
                 onSelectionChange={(e) => setSelectedProducts(e.value)}
@@ -27,19 +28,18 @@ const TablaVariables = ({ BotonesCabezal, ExportarRegistros, dt, products, selec
                 header={header}
                 responsiveLayout="scroll"
             >
-                <Column selectionMode="multiple" headerStyle={{ width:"3%" }} exportable={false} />
-                <Column field="variable" header="Variable" sortable style={{ width:"10%",textAlign: "center" }} />
-                <Column field="unidad" filter header="Unidad" sortable style={{ width:"5%",textAlign: "center" }} />
-                <Column field="maquina" header="Maquina" sortable style={{ width:"10%",textAlign: "center" }} />
-                <Column field="linea" header="Linea" sortable style={{ width:"10%", textAlign: "center" }} />
-                <Column field="area" header="Área" sortable style={{ width:"10%", textAlign: "center" }} />
-                <Column field="planta" header="Planta" sortable style={{ width:"10%", textAlign: "center" }} />
-                <Column field="estatus" header="Estatus " sortable style={{ width:"10%", textAlign: "center" }} />
-                <Column field="fechaCreacion" header="Fecha de Creacion" sortable style={{width:"15%",textAlign: "center" }} />
-                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"10%" }} />
+                {/* // CAMBIAR.............. */}
+                <Column selectionMode="multiple" headerStyle={{ width:"3%", minWidth: "3rem" }} exportable={false} />
+                <Column field="inicio" header="Inicio" sortable style={{ width:"15%",textAlign: "center" }} />
+                <Column field="fin" header="Fin" sortable style={{ width:"15%", textAlign: "center" }} />
+                <Column field="fecha" header="Fecha" sortable style={{ width:"15%", textAlign: "center" }} />
+                <Column field="linea" header="Linea" sortable style={{ width:"15%", textAlign: "center" }} />
+                <Column field="producto" header="Producto " sortable style={{ width:"10%", textAlign: "center" }} />
+                <Column field="estatus" header="Estatus" sortable style={{width:"15%",textAlign: "center" }} />
+                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"20%", minWidth: "10rem" }} />
             </DataTable>
         </div>
     );
 };
 
-export default TablaVariables;
+export default TablaMaquinas;

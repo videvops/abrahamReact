@@ -206,9 +206,6 @@ const Crud = (props) => {
         CargarDatos();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect(() => {
-        maquinasService.readAll().then((data) => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(() => {
         if (product.id) {

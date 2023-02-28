@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { VariablesService } from "../../../service/VariablesService";
+import { TiempoPorSKUService } from "../../../service/TiempoPorSKUService";
 import { emptyProduct } from "./Objetos/ProductoVacio";
 import Exportar from "./Botones/Exportar";
 import { leftToolbarTemplate } from "../ComponentsCat/Botones/AgregarEliminar";
@@ -8,15 +8,16 @@ import { renderHeader } from "../ComponentsCat/Buscador/Cabezal";
 import EliminarVarios from "./Dialogos/EliminarVarios";
 import EliminarUno from "./Dialogos/EliminarUno";
 import CrearModificar from "./Dialogos/CrearModificar";
-import TablaVariables from "./Tabla/TablaVariables";
+import TablaMaquinas from "./Tabla/TablaMaquina";
 
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { FilterMatchMode } from "primereact/api";
 
+
 const Crud = (props) => {
     //--------------------| Importacion de metodos axios |--------------------
-    const variablesService = new VariablesService();
+    const tiempoPorSKUService = new TiempoPorSKUService();
 
     //--------------------| Uso de Contextos |--------------------
     const {
@@ -100,15 +101,15 @@ const Crud = (props) => {
             toast.current.show({
                 severity: "success",
                 summary: "Atencion!",
-                detail: "Variable creada",
+                detail: "Maquina creada",
                 life: 3000,
             });
-         } else {
+        } else {
             updateProduct(product);
             toast.current.show({
                 severity: "success",
                 summary: "Atencion!",
-                detail: "Variable Actualizada",
+                detail: "Maquina Actualizada",
                 life: 3000,
             });
         }
@@ -122,7 +123,7 @@ const Crud = (props) => {
         toast.current.show({
             severity: "error",
             summary: "Atencion!",
-            detail: "Variable eliminada",
+            detail: "Modos de falla eliminado",
             life: 3000,
         });
         setDeleteProductDialog(false);
@@ -138,10 +139,10 @@ const Crud = (props) => {
         toast.current.show({
             severity: "error",
             summary: "Atencion!",
-            detail: "Variables eliminadas",
+            detail: "Maquinas eliminadas",
             life: 3000,
         });
-        variablesService.readAll().then((data) => setProducts(data));
+        tiempoPorSKUService.readAll().then((data) => setProducts(data));
     };
     //------> Editar producto
     const _editProduct = (product) => {
@@ -164,10 +165,8 @@ const Crud = (props) => {
                     icon="pi pi-pencil"
                     className="p-button-rounded p-button-success mr-2"
                     onClick={() => {
-                        variablesService.getById(rowData.id).then (res =>{
-                            _editProduct(res);
-                        })
-                        
+                        console.log(rowData);
+                        _editProduct(rowData);
                     }}
                 />
 
@@ -181,20 +180,25 @@ const Crud = (props) => {
     const [error, setError] = useState(null);
 
     async function CargarDatos() {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const data = await variablesService.readAll(); 
-            setProducts(data);
-        } catch (error) {
-            setError(error.message);
-        }
-        setIsLoading(false);
+        setProducts([
+            {inicio:"15:23:34",fin:"17:45:34",linea:"URA2l",fecha:"2023-02-27",producto:"prodcuto 1",estatus:"Activo"},
+            {inicio:"15:23:34",fin:"17:45:34",linea:"URA2l",fecha:"2023-02-27",producto:"prodcuto 2",estatus:"Activo"},
+            {inicio:"15:23:34",fin:"17:45:34",linea:"URA2l",fecha:"2023-02-27",producto:"prodcuto 3",estatus:"Activo"}
+        ])
+        // setIsLoading(true);
+        // setError(null);
+        // try {
+        //     const data = await maquinasService.readAll(); // Hasta que no se termine de ejecutar la maquina
+        //     setProducts(data);
+        // } catch (error) {
+        //     setError(error.message);
+        // }
+        // setIsLoading(false);
     }
 
     let content = <p>Sin registros</p>;
     if (true) {
-        content = <TablaVariables BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />;
+        content = <TablaMaquinas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />;
     }
 
     useEffect(() => {
@@ -212,6 +216,7 @@ const Crud = (props) => {
         }
     }, [product]);
 
+    //--------------------| Valor que regresara |--------------------
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
@@ -225,4 +230,5 @@ const Crud = (props) => {
         </div>
     );
 };
+
 export default Crud;

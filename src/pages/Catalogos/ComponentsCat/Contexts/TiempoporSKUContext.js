@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { VariablesService } from "../../../../service/VariablesService";
+import { MaquinasService } from "../../../../service/MaquinasService";
 import { ProductContext } from "./ProductContext";
 
-const VariablesProvider = (props) => {
+const TiempoPorSKUProvider = (props) => {
     //--------------------| Importacion de metodos axios |--------------------
-    const variablesService = new VariablesService();
+    const tiempoPorSKUService = new TiempoPorSKUService();
 
     //--------------------| Uso de estados |--------------------
     const [products, setProducts] = useState([]);
@@ -12,19 +12,16 @@ const VariablesProvider = (props) => {
     //--------------------| Funciones de Crud |--------------------
     //------> Crear nuevo producto
     const createProduct = (product) => {
-        console.log("Creando")
-        console.log(product)
-        variablesService.create(product).then(res=>variablesService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
+       console.log(product)
+        // tiempoPorSKUService.create(product).then(res=>tiempoPorSKUService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
     //------> Actualizar producto
     const updateProduct = (product) => {
-        console.log("Editando")
-        console.log(product)
-        variablesService.update(product).then(res=>variablesService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
+        tiempoPorSKUService.update(product).then(res=>tiempoPorSKUService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     }
     //------> Eliminar producto
     const deleteProduct = (id) => {
-        variablesService.delete(id).then(res=>variablesService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
+        tiempoPorSKUService.delete(id).then(res=>tiempoPorSKUService.readAll().then(res=>setProducts(res)).catch(e=>console.log(e)));
     };
 
     //--------------------| Funciones de Crud |--------------------
@@ -44,4 +41,4 @@ const VariablesProvider = (props) => {
     );
 };
 
-export default VariablesProvider;
+export default TiempoPorSKUProvider;

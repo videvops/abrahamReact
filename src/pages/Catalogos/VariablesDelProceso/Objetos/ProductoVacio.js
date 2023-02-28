@@ -1,10 +1,9 @@
 //--------------------| Objeto vacio  |--------------------
 export let emptyProduct = {
     id:null,
-    idPlanta:"",
-    idArea:"",
-    idLinea:"",
     idMaquina:"",
     variable:"",
-    unidad:""
+    unidad:"",
+    idLinea:"",
+    valor:"default"
 };

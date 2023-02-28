@@ -10,6 +10,7 @@ import Environment from '../../../../Environment';
 const getRoute = Environment();
 
 const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateField, saveProduct }) => {
+    console.log(product)
     //--------------------| Validar campos  |--------------------
     const [validarNombre, setValidarNombre] = useState(""); // Validar nombre de planta
     const [boton, setBoton] = useState(false); // Activar o desactivar boton

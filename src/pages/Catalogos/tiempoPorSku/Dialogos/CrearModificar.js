@@ -1,77 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
 import Axios from "axios";
 import { productDialogFooter } from "../../ComponentsCat/Botones/CrearRegistro";
 import Environment from '../../../../Environment';
-
-
-const getRoute = Environment();
+import { Calendar } from "primereact/calendar";
+import {formatearFecha} from "../../../../components/helpers/funciones"
 
 const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateField, saveProduct }) => {
-
-    const [validarNombre, setValidarNombre] = useState("");
-    const [validarAbr, setValidarAbr] = useState(""); 
+    const getRoute = Environment();
     const [boton, setBoton] = useState(false); 
     const Advertencia=(<p style={{color:"red", marginTop:"20px", textAlign:"center"}}>Campos no validos</p>); 
-    const expresion = /^[a-zA-Z0-9._-\s]{1,40}$/; 
-    const exprChar =  /^[a-zA-Z0-9._-\s]{1,40}$/; 
-
- 
+    
     const [plantasDisponibles, setPlantasDisponibles] = useState([]);
     useEffect(() => {
         Axios.get(getRoute+"/plantas/list").then((res) => setPlantasDisponibles(res.data));
     }, []);
-
+    
     const [areasDisponibles, setAreasDisponibles] = useState([]);
     useEffect(() => {
-        if (product.idPlanta !== undefined && product.idPlanta !== "" ) {
+        if (product.idPlanta !== undefined) {
             Axios.get(getRoute+`/areas/planta/${product.idPlanta}`).then((res) => setAreasDisponibles(res.data));
         }
     }, [product.idPlanta]);
 
     const [lineasDisponibles, setLineasDisponibles] = useState([]);
     useEffect(() => {
-        if (product.idArea !== undefined && product.idArea !== "") {
+        if (product.idArea !== undefined) {
             Axios.get(getRoute+`/lineas/area/${product.idArea}`).then((res) => setLineasDisponibles(res.data));
         }
     }, [product.idArea]);
 
-    const [maquinasDisponibles, setMaquinasDisponibles] = useState([]);
+    const [productosDisponibles,setProductosDisponibles] = useState([]);
     useEffect(() => {
-        if (product.idLinea !== undefined  && product.idLinea !== "") {
-            Axios.post(getRoute+`/maquinas/linea/${product.idLinea}`,).then((res) => setMaquinasDisponibles(res.data));
+        if (product.idLinea !== undefined) {
+            // Axios.get(getRoute+`/lineas/area/${product.idArea}`).then((res) => setLineasDisponibles(res.data));
+            setProductosDisponibles([{id:1,producto:"producto 1"},{id:2,producto:"producto 2"}])
         }
     }, [product.idLinea]);
-
-
-
-    const VerificarAbr = (texto) => {
-        if (!exprChar.test(texto) || Object.values(texto).includes(" ")) {
-            setValidarAbr("p-invalid");
-            setBoton(true);
-        } else {
-            setValidarAbr("");
-            setBoton(false);
-        }
-    };
-    const Verificar = (texto) => {
-        if (!expresion.test(texto) || Object.values(texto).includes(" ")) {
-            setValidarNombre("p-invalid");
-            setBoton(true);
-        } else {
-            setValidarNombre("");
-            setBoton(false);
-        }
-    };
-
+    
     const crearRegistro = productDialogFooter(hideDialog, saveProduct, boton, product, setBoton);
+
 
     return (
         <Dialog visible={productDialog} style={{ width: "450px" }} header={titulos.VentanaCrear} modal className="p-fluid" footer={crearRegistro} onHide={hideDialog}>
             <div className="field">
-                <label>Planta</label>
+                <label className="font-bold">Planta</label>
                 <Dropdown
                     optionLabel="planta"
                     optionValue="id"
@@ -84,8 +58,9 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
                     placeholder="--Selecciona una planta--"
                 />
             </div>
+
             <div className="field">
-                <label>Area</label>
+                <label className="font-bold">Area</label>
                 <Dropdown
                     optionLabel="area"
                     optionValue="id"
@@ -98,8 +73,9 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
                     placeholder="--Selecciona una area--"
                 />
             </div>
+
             <div className="field">
-                <label>Linea</label>
+                <label className="font-bold">Linea</label>
                 <Dropdown
                     optionLabel="linea"
                     optionValue="id"
@@ -112,55 +88,54 @@ const CrearModificar = ({ productDialog, titulos, hideDialog, product, updateFie
                     placeholder="--Selecciona una linea--"
                 />
             </div>
+
             <div className="field">
-                <label>Maquinas</label>
+                <label className="font-bold">Producto</label>
                 <Dropdown
-                    optionLabel="maquina"
+                    optionLabel="producto"
                     optionValue="id"
-                    value={product.idMaquina}
-                    options={maquinasDisponibles}
+                    value={product.idProducto}
+                    options={productosDisponibles}
                     onChange={(e) => {
-                        updateField(e.value, "idMaquina");
+                        updateField(e.value, "idProducto");
                         setBoton(false);
+
                     }}
-                    placeholder="--Selecciona una Maquina--"
+                    placeholder="--Selecciona un producto--"
                 />
             </div>
+
             <div className="field">
-                <label htmlFor="variable">                    
-                    Variable
-                </label>
-                <InputText
-                    id="variable" 
-                    value={product.variable} 
-                    onChange={(e) => {
-                        updateField(e.target.value, "variable"); 
-                        Verificar(e.target.value);
-                    }}
-                    required
-                    autoFocus
-                    className={validarNombre}
-                    maxLength="40"
+                <label className="font-bold">Hora Inicio</label>
+                <Calendar 
+                    id="time24" 
+                    dateFormat="yy/mm/dd" 
+                    value={product.fechaIni} 
+                    onChange={(e) =>{
+                        setBoton(false);
+                        product.fechaIni= formatearFecha(e.value);
+                    }} 
+                    showTime 
+                    placeholder="--Fecha Inicio--" 
                 />
-            </div>            
-            <div className="field">
-                <label htmlFor="unidad">                    
-                    Unidad
-                </label>
-                <InputText
-                    id="unidad" 
-                    value={product.unidad} 
-                    onChange={(e) => {
-                        updateField(e.target.value.trim(), "unidad"); 
-                        VerificarAbr(e.target.value);
-                    }}
-                    required
-                    autoFocus
-                    className={validarAbr}
-                    maxLength="10"
-                />
-                {boton && Advertencia}
             </div>
+
+            <div className="field">
+                <label className="font-bold">Hora Fin</label>
+                <Calendar 
+                    id="time24" 
+                    dateFormat="yy/mm/dd" 
+                    value={product.fechaFin} 
+                    onChange={(e) =>{ 
+                            setBoton(false);
+                            product.fechaFin= formatearFecha(e.value);
+                        }
+                    } 
+                    showTime 
+                    placeholder="--Fecha Inicio--" 
+                />
+            </div>
+            {boton && Advertencia}
         </Dialog>
     );
 };

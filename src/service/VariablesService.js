@@ -5,9 +5,10 @@ const getRoute = Environment()
 
 export class VariablesService {
     //------> Link para hacer peticiones
-    baseUrl = getRoute+"/variables";
+    baseUrl = getRoute+"/variablesProceso";
     //------> Agregar nuevo registro
     create(product) {
+        // console.log(product)
         return axios.post(this.baseUrl, product).then((res) => res.data);
     }
     //------> Obtener registros de BD
@@ -21,5 +22,8 @@ export class VariablesService {
     //------> Eliminar registro
     delete(id) {
         return axios.delete(this.baseUrl + "/" + id).then((res) => res.data);
+    }
+    getById(id){
+        return axios.get(this.baseUrl+"/"+id).then (res =>res.data);
     }
 }

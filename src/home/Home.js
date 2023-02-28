@@ -28,7 +28,7 @@ import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
 import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
 import Desperdicio from  '../components/desperdicio/Desperdicio'
 
-
+import CatalogoTSKU from "../pages/Catalogos/tiempoPorSku/CatalogoTSKU";
 
 import MonitorDeLineasTiempoReal from "../components/monitorDeLineas/tiempoReal/MonitorDeLineasTiempoReal"
 
@@ -226,7 +226,11 @@ const Home = ({ setLogueado }) => {
         {
             label: "Configuración",
             icon: "pi pi-fw pi-sitemap",
-            items: [{ label: "Configuración", icon: "pi pi-fw pi-cog text-blue-500", to: "/table" }],
+            items: [
+                { label: "Configuración", icon: "pi pi-fw pi-cog text-blue-500", to: "/table" },
+                { label: "Tiempo de produccion por SKU", icon: "pi pi-fw pi-cog text-blue-500", to: "/tiempoProduccionSKU" },
+                { label: "Tiempo fuera de produccion", icon: "pi pi-fw pi-cog text-blue-500", to: "/table" }
+            ],
         },
     ];
 
@@ -293,6 +297,7 @@ const Home = ({ setLogueado }) => {
                     <Route path="/monitorDeLineasTiempoReal" component={MonitorDeLineasTiempoReal}/>
                     <Route path="/variablesDelProceso" component={VariablesDelProceso}/>
                     <Route path="/catalogoVariables" component={CatalogoVariables}/>
+                    <Route path="/tiempoProduccionSKU" component={CatalogoTSKU}/>
                 </div>
 
                 {/* <AppFooter layoutColorMode={layoutColorMode} /> */}

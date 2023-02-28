@@ -55,9 +55,21 @@ const CrearModificar = ({
             setBoton(false)
         }
     }
+    const validarMeta = (texto) =>{
+        const expresion=/^[0-9]+$/;
+        if (!expresion.test(texto) || Object.values(texto).includes(" ")){
+            setValidarNombre("p-invalid")   // Input rojo
+            setTexto("Campo invalido")      // Texto de advertencia de input
+            setBoton(true);                 // Validacion para input invalido
+        }else{
+            setValidarNombre("")
+            setTexto("")
+            setBoton(false)
+        }   
+
+    }
     //--> Validar datos antes de envio
     const enviarDatos = () => {
-        console.log(product)
         if (Object.values(product).includes("")) {
             setMensaje("Todos los campos son obligatorios")
             setDatosInvalidos(true)
@@ -123,6 +135,23 @@ const CrearModificar = ({
                     options={areasDisponibles} 
                     onChange={(e) => {updateField(e.value, "idArea")}} 
                     placeholder="--Selecciona una area--"
+                />
+            </div>
+            <div className="field">
+                <label htmlFor="meta">
+                    Meta
+                </label>
+                <InputText 
+                    id="linea"                                      // CAMBIAR...
+                    value={product.meta}                           // CAMBIAR...
+                    onChange={(e) => {
+                        updateField(e.target.value.trim(), "meta");       // CAMBIAR...
+                        validarMeta(e.target.value)
+                    }} 
+                    required 
+                    autoFocus 
+                    className={validarNombre}
+                    maxLength="2" 
                 />
             </div>
             <div className="field">
