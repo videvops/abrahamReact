@@ -7,6 +7,7 @@ import { Ripple } from "primereact/ripple";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
+import { TablaVacia } from "../../../../components/mensajes/Mensajes";
 
 const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate }) => {
     const [customers1, setCustomers1] = useState([]);
@@ -103,35 +104,36 @@ const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selecte
     return (
         <div className="card">
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros} />
-
-            <DataTable
-                ref={dt}
-                value={products}
-                selection={selectedProducts}
-                filters={filters}
-                totalRecords={100}
-                onSelectionChange={(e) => setSelectedProducts(e.value)}
-                dataKey="id"
-                paginator
-                onPage={onCustomPage1}
-                rows={rows1}
-                first={first1}
-                rowsPerPageOptions={[5, 10, 25]}
-                showGridlines
-                paginatorTemplate={template1}
-                // CAMBIAR...
-                globalFilterFields={["id", "planta"]}
-                emptyMessage="No se encontraron resultados."
-                header={header}
-                responsiveLayout="scroll"
-            >
-                {/* // CAMBIAR.............. */}
-                <Column selectionMode="multiple" headerStyle={{ width:"5%"}} exportable={false} />
-                <Column field="planta" header="Planta" sortable style={{width:"30%", minWidth: "7rem", textAlign: "center" }} />
-                <Column field="estatus" header="Estatus" sortable style={{ width:"15%", minWidth: "7rem", textAlign: "center" }} />
-                <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{width:"30%",minWidth: "3rem", textAlign: "center" }} />
-                <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"15%", minWidth: "3rem" }} />
-            </DataTable>
+            {products.length > 0 ? (
+                <DataTable
+                    ref={dt}
+                    value={products}
+                    selection={selectedProducts}
+                    filters={filters}
+                    totalRecords={100}
+                    onSelectionChange={(e) => setSelectedProducts(e.value)}
+                    dataKey="id"
+                    paginator
+                    onPage={onCustomPage1}
+                    rows={rows1}
+                    first={first1}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    showGridlines
+                    paginatorTemplate={template1}
+                    globalFilterFields={["id", "planta"]}
+                    emptyMessage="No se encontraron resultados."
+                    header={header}
+                    responsiveLayout="scroll"
+                >
+                    <Column selectionMode="multiple" headerStyle={{ width:"5%"}} exportable={false} />
+                    <Column field="planta" header="Planta" sortable style={{width:"30%", minWidth: "7rem", textAlign: "center" }} />
+                    <Column field="estatus" header="Estatus" sortable style={{ width:"15%", minWidth: "7rem", textAlign: "center" }} />
+                    <Column field="fechaCreacion" header="Fecha de Creación" sortable style={{width:"30%",minWidth: "3rem", textAlign: "center" }} />
+                    <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"15%", minWidth: "3rem" }} />
+                </DataTable>
+            ) : (
+                    <TablaVacia categoria='plantas' />
+            )}
         </div>
     );
 };

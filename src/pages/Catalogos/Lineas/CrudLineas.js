@@ -14,6 +14,7 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FilterMatchMode } from 'primereact/api';
 import Spinner from '../../../components/loader/Spinner';
+import ErrorSistema from '../../../components/error/ErrorSistema';
 
 const CrudLineas = ({titulos, notificaciones}) => {
 //--------------------| Importacion de metodos axios |--------------------
@@ -211,8 +212,8 @@ const CrudLineas = ({titulos, notificaciones}) => {
                 header={header}
                 actionBodyTemplate={actionBodyTemplate} 
             />)}
-            {isLoading&&<Spinner/>}
-            {error&&<p>{error}</p>}
+            {isLoading && <Spinner />}
+            {error && <ErrorSistema texto={error} />}
 
             <CrearModificar
                 productDialog={productDialog}

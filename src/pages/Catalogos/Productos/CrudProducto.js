@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Axios from 'axios';
-//CAMBIAR...
+
 import Crear from './Dialogos/Crear';
 import Spinner from '../../../components/loader/Spinner';
 import Exportar from './Botones/Exportar';
@@ -9,39 +9,39 @@ import EliminarUno from './Dialogos/EliminarUno';
 import EliminarVarios from './Dialogos/EliminarVarios';
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
 import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
-//CAMBIAR...
+
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { productoVacio } from './Objetos/ProductoVacio';
-
-import Environment from '../../../Environment';
 import Desicion from './Dialogos/Desicion';
 import Editar from './Dialogos/Editar';
+import ErrorSistema from '../../../components/error/ErrorSistema'
+
+import Environment from '../../../Environment';
 const getRoute = Environment()
 
 const CrudProducto = ({titulos, notificaciones}) => {
 //--------------------| Uso de Contextos |--------------------
     const {
-        // createProduct,
-        // updateProduct,
         deleteProduct,
-
         products,
         setProducts
     }=useContext(ProductContext);
 
-    const registroVacio = { idProducto: null, producto: "", lineasAsignadas: [], lineasDisponibles: [] }
-//--------------------| Uso de estados |--------------------
+    const edicionVacio = { idProducto: null, producto: "", lineasAsignadas: null }
+//--------------------| Variables |--------------------
+    //---> Objetos
+    const [edicion, setEdicion] = useState(edicionVacio)        // Informacion para actualizar
+    const [product, setProduct] = useState(productoVacio)
+    //---> Modales
     const [productDialog, setProductDialog] = useState(false)
     const [deleteProductDialog, setDeleteProductDialog] = useState(false)
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false)
-    const [product, setProduct] = useState(productoVacio)
     const [selectedProducts, setSelectedProducts] = useState(null)
     //---> Para editar registro
     const [modalDesicion, setModalDesicion] = useState(false)       // Pregunta al usuario
     const [modalEditar, setModalEditar] = useState(false)           // Editar registro
     const [dataProducto, setDataProducto] = useState({})            // Informacion de 1 producto
-    const [dataEnvio, setDataEnvio] = useState(registroVacio)       // Informacion para actualizar
 
     const toast = useRef(null);
     const dt = useRef(null);
@@ -57,24 +57,19 @@ const CrudProducto = ({titulos, notificaciones}) => {
     const hideDialog = () => {
         setProductDialog(false);
         mostrarM1()
+        setEdicion(edicionVacio)
     }
     //------> Ocultar dialogo de eliminar 1 producto
-    const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
-    }
+    const hideDeleteProductDialog = () => { setDeleteProductDialog(false) }
     //------> Ocultar dialogo de eliminar varios productos
-    const hideDeleteProductsDialog = () => {
-        setDeleteProductsDialog(false);
-    }
+    const hideDeleteProductsDialog = () => { setDeleteProductsDialog(false) }
     //------> Ventana para eliminar 1 producto
     const confirmDeleteProduct = (product) => {
         setProduct(product);
         setDeleteProductDialog(true);
     }
     //------> Ventana para eliminar varios productos
-    const confirmDeleteSelected = () => {
-        setDeleteProductsDialog(true);
-    }
+    const confirmDeleteSelected = () => { setDeleteProductsDialog(true) }
 
 //--------------------| Acciones de crud |--------------------
     //------> Actualizar campo de producto
@@ -83,21 +78,16 @@ const CrudProducto = ({titulos, notificaciones}) => {
         ...product,
         [field]: data,
         });
-        console.log(product);
+        // console.log(product);
     };
-    //------> Agregar nuevo registro
-    // const saveProduct = () => {
-    //     console.log("[+]ID: " + product.id);
-    //     if (!product.id) {
-    //         createProduct(product);
-    //         toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.creacion}`, life: 3000 });
-    //     } else {
-    //         updateProduct(product);
-    //         toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
-    //     }
-    //     setProduct(productoVacio);
-    //     setProductDialog(false);
-    // }
+    const actualizarEdicion = (data, field) => {
+        setEdicion({
+        ...edicion,
+        [field]: data,
+        });
+        // console.log(edicion);
+    };
+
     //------> Eliminar 1 producto
     const _deleteProduct = () => {
         console.log("Se elimino el ID: "+product.id);
@@ -116,16 +106,11 @@ const CrudProducto = ({titulos, notificaciones}) => {
         setSelectedProducts(null);                                              // Elemetos seleccionados = 0
         toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${notificaciones.eliminaciones}`, life: 3000 });
     }
-    //------> Editar producto
-    // const _editProduct = (product) => {
-    //     setProduct({...product});
-    //     setProductDialog(true);
-    // }
+
     const decision = (informacion) => {
         setModalDesicion(true)
         setDataProducto(informacion)
         // console.log(informacion)
-
     }
 
 //--------------------| Botones en pantalla |--------------------
@@ -173,7 +158,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
         setIsLoading(true)
         setError(null)
         try{
-            const respuesta = await Axios.post(getRoute+"/productos/filter", informacion)
+            const respuesta = await Axios.post(getRoute + "/productos/filter", informacion)
             const datos = await respuesta.data.registros
             const total = await respuesta.data.numTotalReg
             setProducts(datos)  
@@ -191,7 +176,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
         }// eslint-disable-next-line
     }, [filas]);
 
-//--------------------| Modal |--------------------
+//--------------------| Modal Creacion |--------------------
     const [m1, setM1] = useState(true)
     const [m2, setM2] = useState(false)
     const [objetoParte2, setObjetoParte2] = useState([])
@@ -212,66 +197,71 @@ const CrudProducto = ({titulos, notificaciones}) => {
             <Toast ref={toast} />
             {!isLoading && !error && (
                 <TablaProducto
-                    BotonesCabezal={BotonesCabezal} 
-                    ExportarRegistros={ExportarRegistros} 
                     dt={dt} 
                     products={products} 
-                    selectedProducts={selectedProducts} 
-                    setSelectedProducts={setSelectedProducts} 
-                    actionBodyTemplate={actionBodyTemplate}
-                    paginacion={paginacion}
+                    cargarDatos={cargarDatos}
+                    //--> paginacion
                     first={first}
-                    setFirst={setFirst}
                     filas={filas}
                     pagina={pagina}
+                    setFirst={setFirst}
                     setPagina={setPagina}
+                    paginacion={paginacion}
                     totalRegistros={totalRegistros}
+                    //--> Acciones de tabla
+                    BotonesCabezal={BotonesCabezal} 
+                    selectedProducts={selectedProducts} 
+                    ExportarRegistros={ExportarRegistros} 
+                    actionBodyTemplate={actionBodyTemplate}
+                    setSelectedProducts={setSelectedProducts} 
                     titulo={titulos.TituloTabla}
-                    cargarDatos={cargarDatos}
-                />)}
+                />
+            )}
 
-            {isLoading&&<Spinner/>}
-            {error&&<p className='uppercase font-bold text-center'>{error}</p>}
+            {isLoading && <Spinner />}
+            {error && <ErrorSistema texto={error}/>}
 
             <Crear
-                titulos={titulos}
-                productDialog={productDialog}
-                hideDialog={hideDialog}
-                updateField={updateField}
-                product={product}
                 m1={m1}
                 m2={m2}
+                product={product}
+                titulos={titulos}
+                edicion={edicion}
                 mostrarM1={mostrarM1}
                 mostrarM2={mostrarM2}
+                hideDialog={hideDialog}
+                updateField={updateField}
                 objetoParte2={objetoParte2}
-                setObjetoParte2={setObjetoParte2}
-            />
+                productDialog={productDialog}
+                setObjetoParte2={setObjetoParte2} />
+
             <Desicion
-                modalDesicion={modalDesicion}
-                setModalDesicion={setModalDesicion}
-                setModalEditar={setModalEditar}
                 openNew={openNew}
+                setEdicion={setEdicion}
                 dataProducto={dataProducto}
-                setDataEnvio={setDataEnvio} />
-            <Editar
-                modalEditar={modalEditar}
+                modalDesicion={modalDesicion}
                 setModalEditar={setModalEditar}
-                dataEnvio={dataEnvio}
-                setDataEnvio={setDataEnvio} />
+                setModalDesicion={setModalDesicion} />
+
+            <Editar
+                edicion={edicion}
+                setEdicion={setEdicion}
+                modalEditar={modalEditar}
+                edicionVacio={edicionVacio}
+                setModalEditar={setModalEditar}
+                actualizarEdicion={actualizarEdicion} />
 
             <EliminarUno
-                deleteProductDialog={deleteProductDialog} 
-                _deleteProduct={_deleteProduct}
-                hideDeleteProductDialog={hideDeleteProductDialog} 
                 product={product}
-            />
+                _deleteProduct={_deleteProduct}
+                deleteProductDialog={deleteProductDialog} 
+                hideDeleteProductDialog={hideDeleteProductDialog} />
 
             <EliminarVarios 
+                product={product}
                 deleteProductsDialog={deleteProductsDialog}
                 deleteSelectedProducts={deleteSelectedProducts}
-                hideDeleteProductsDialog={hideDeleteProductsDialog}
-                product={product}
-            />
+                hideDeleteProductsDialog={hideDeleteProductsDialog} />
         </div>
     );
 }

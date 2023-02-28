@@ -3,12 +3,12 @@ import Axios from 'axios';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { MensajeAdvertencia, TextoAdvertencia } from '../../ComponentsCat/Mensajes/Mensajes';
+import { MensajeAdvertencia, TextoAdvertencia } from '../../../../components/mensajes/Mensajes'
 
 import Environment from '../../../../Environment';
 const getRoute = Environment()
 
-const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) => {
+const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneMaquinas, setIdProduto }) => {
 //--------------------| Dropdown dinamico|--------------------
     //---> Plantas
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
@@ -25,9 +25,20 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) =>
     //---> Lineas
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     useEffect(() => {
-        if(product.idArea!==''){
-            Axios.get(getRoute+`/lineas/area/${product.idArea}`).then(res=>setLineasDisponibles(res.data))
-        }
+        if (edicion.idProducto) {
+            console.log("Es edicion")
+            if (product.idArea !== '') {
+                Axios.get(getRoute + `/lineas/producto/area/${product.idArea}/producto/${edicion.idProducto}`).then(res => {
+                    setLineasDisponibles(res.data)
+                    console.log(res.data)
+                })
+            }
+        } else {
+            console.log("No es edicion")
+            if (product.idArea !== '') {
+                Axios.get(getRoute + `/lineas/area/${product.idArea}`).then(res => setLineasDisponibles(res.data))
+            }
+        }// eslint-disable-next-line
     }, [product.idArea])
 
 //--------------------| Validar campos  |--------------------
@@ -51,8 +62,15 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) =>
     }
 //--------------------| Envio de datos  |--------------------
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post("http://localhost:8080/productos", datos)
-        setResultado(respuesta.data.maquinas)
+        const respuesta = await Axios.post(getRoute+"/productos", datos)
+        setIdProduto(respuesta.data.id)
+        setTieneMaquinas(respuesta.data.hayMaquinas)
+    }
+    const actualizarDatos = async (datos) => {
+        const datosEditados = await Axios.put(getRoute+`/productos/${edicion.idProducto}`, datos)
+        // console.log(datosEditados.data)
+        setIdProduto(datosEditados.data.id)
+        setTieneMaquinas(datosEditados.data.hayMaquinas)
     }
 
     const enviarParte1 = () => {
@@ -73,10 +91,32 @@ const Step1 = ({ hideDialog, product, updateField, mostrarM2, setResultado }) =>
                 return
             }
         }
-        const objeto = { producto: product.producto, idLinea: product.idLinea }
-        enviarDatos(objeto)
+        if (!edicion.idProducto) {                 // No es edicion
+            console.log("Nuevo producto")
+            // console.log(edicion.idProducto)
+            const objetoNuevo = { producto: product.producto, idLinea: product.idLinea }
+            enviarDatos(objetoNuevo)
+        } else {                        // Es edicion
+            console.log("Producto Editado")
+            // console.log(edicion.idProducto)
+            const objetoEditado = {
+                producto: product.producto,
+                idLinea: product.idLinea,
+                opcionSeleccionada:"LINEA_NUEVA"
+            }
+            actualizarDatos(objetoEditado) 
+        }
         mostrarM2()
     }
+    //--> Validar nombre de edicion
+    useEffect(() => { 
+        if (edicion.idProducto) {
+            product.producto = edicion.producto
+        } else {
+            product.producto = ""
+        }
+        // eslint-disable-next-line
+    }, [edicion.idProducto])
     
 //--------------------| Valor que regresara  |--------------------
     return (

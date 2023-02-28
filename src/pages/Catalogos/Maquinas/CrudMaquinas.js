@@ -13,6 +13,8 @@ import TablaMaquinas from "./Tabla/TablaMaquina";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { FilterMatchMode } from "primereact/api";
+import Spinner from "../../../components/loader/Spinner";
+import ErrorSistema from "../../../components/error/ErrorSistema";
 
 const Crud = (props) => {
     //--------------------| Importacion de metodos axios |--------------------
@@ -193,19 +195,25 @@ const Crud = (props) => {
         setIsLoading(false);
     }
 
-    let content = <p>Sin registros</p>;
-    if (true) {
-        // if(!isLoading && !error){
-        content = <TablaMaquinas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />;
-    }
+    // let content = <p>Sin registros</p>;
+    // if (true) {
+    //     // if(!isLoading && !error){
+    //     content = <TablaMaquinas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />;
+    // }
 
     // if(error)content=<p>{error}</p>
     // if(isLoading)content=<p>Cargando...</p>
 
     useEffect(() => {
         CargarDatos();
+        return () => {
+            setProducts([])
+        }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // useEffect(() => {
+    //     maquinasService.readAll().then((data) => setProducts(data));
+    // }, []); // eslint-disable-line react-hooks/exhaustive-deps
     //--------------------| Abilitar o inhabilitar boton |--------------------
     useEffect(() => {
         if (product.id) {
@@ -221,7 +229,9 @@ const Crud = (props) => {
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
-            {content}
+            {!isLoading && !error && (<TablaMaquinas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />)}
+            {isLoading && <Spinner />}
+            {error && <ErrorSistema texto={error} />}
 
             <CrearModificar productDialog={productDialog} titulos={props.titulos} saveProduct={saveProduct} hideDialog={hideDialog} product={product} updateField={updateField} tieneId={tieneId} />
 
