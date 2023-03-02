@@ -74,7 +74,7 @@ const Consultas =  ({filtros}) =>{
                 Axios.post(urlTacometros,datosDeConsulta).then(res => setTacometrosData(res.data) ).catch(e=>console.log(e));
             }
             setReload(Date.now())            
-        },1000)
+        },60000)
     },[reload])
 
 
