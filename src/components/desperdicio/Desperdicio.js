@@ -66,7 +66,7 @@ const Desperdicio = () => {
             </div>             
             <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
                 <TablaDesperdicio 
-                    registros={registros}
+                    registros={registros} 
                  />
             </div> 
         </div>
