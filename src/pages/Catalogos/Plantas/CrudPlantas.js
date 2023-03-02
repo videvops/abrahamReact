@@ -5,14 +5,12 @@ import EliminarUno from "./Dialogos/EliminarUno";
 import EliminarVarios from "./Dialogos/EliminarVarios";
 import CrearModificar from "./Dialogos/CrearModificar";
 import { emptyProduct } from "./Objetos/ProductoVacio";
-import { renderHeader } from "../ComponentsCat/Buscador/Cabezal";
 import { PlantaService } from "../../../service/PlantaService";
 import { ProductContext } from "../ComponentsCat/Contexts/ProductContext";
 import { leftToolbarTemplate } from "../ComponentsCat/Botones/AgregarEliminar";
 
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { FilterMatchMode } from "primereact/api";
 import ErrorSistema from "../../../components/error/ErrorSistema";
 import Spinner from "../../../components/loader/Spinner";
 
@@ -36,28 +34,8 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
     const [selectedProducts, setSelectedProducts] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState("");
-    // CAMBIAR...
-    const [filters, setFilters] = useState({
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        estatus: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        planta: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    });
     const toast = useRef(null);
     const dt = useRef(null);
-
-    //--------------------| Barra de Buscar |--------------------
-    const onGlobalFilterChange = (e) => {
-        const value = e.target.value;
-        let _filters = { ...filters };
-        _filters["global"].value = value;
-
-        setFilters(_filters);
-        setGlobalFilter(value);
-    };
-    //------> Cabezal de buscador
-    const header = renderHeader(globalFilter, onGlobalFilterChange, titulos.Buscador, titulos.TituloTabla);
 
     //--------------------| Funciones para mostrar dialogos |--------------------
     //------> Nuevo gasto
@@ -191,7 +169,7 @@ const CrudPlantas = ({ titulos, notificaciones }) => {
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
-            {!isLoading && !error && (<TablaPlantas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} filters={filters} setSelectedProducts={setSelectedProducts} header={header} actionBodyTemplate={actionBodyTemplate} />)}
+            {!isLoading && !error && (<TablaPlantas BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros} dt={dt} products={products} selectedProducts={selectedProducts} setSelectedProducts={setSelectedProducts} actionBodyTemplate={actionBodyTemplate} />)}
             {isLoading && <Spinner />}
             {error && <ErrorSistema texto={error} />}
 

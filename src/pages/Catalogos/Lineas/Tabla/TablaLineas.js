@@ -9,7 +9,7 @@ import { classNames } from 'primereact/utils';
 import { InputText } from 'primereact/inputtext';
 import { Ripple } from 'primereact/ripple';
 
-const TablaLineas = ({BotonesCabezal,ExportarRegistros,dt,products,selectedProducts,filters,setSelectedProducts,header,actionBodyTemplate}) => {
+const TablaLineas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, setSelectedProducts, actionBodyTemplate }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [first1, setFirst1] = useState(0);
     const [rows1, setRows1] = useState(5);
@@ -98,7 +98,7 @@ const TablaLineas = ({BotonesCabezal,ExportarRegistros,dt,products,selectedProdu
                     ref={dt} 
                     value={products} 
                     selection={selectedProducts} 
-                    filters={filters}
+                    // filters={filters}
                     onSelectionChange={(e) => setSelectedProducts(e.value)} 
                     dataKey="id" 
                     paginator 
@@ -108,7 +108,7 @@ const TablaLineas = ({BotonesCabezal,ExportarRegistros,dt,products,selectedProdu
                     showGridlines 
                     globalFilterFields={['id', 'linea','area']}
                     emptyMessage="No se encontraron resultados."
-                    header={header} 
+                    // header={header} 
                     responsiveLayout="scroll"
                     filterDisplay="row"
                 >

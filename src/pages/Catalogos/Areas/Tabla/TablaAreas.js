@@ -9,7 +9,7 @@ import { classNames } from 'primereact/utils';
 import { InputText } from 'primereact/inputtext';
 import { Ripple } from 'primereact/ripple';
 
-const TablaAreas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate }) => {
+const TablaAreas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, setSelectedProducts, actionBodyTemplate }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [first1, setFirst1] = useState(0);
     const [rows1, setRows1] = useState(5);
@@ -95,12 +95,10 @@ const TablaAreas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedP
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros} />
             {products.length > 0 ? (
                 <DataTable
-                    header={header}
                     ref={dt}
                     value={products}
                     
                     selection={selectedProducts}
-                    filters={filters}
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
                     dataKey="id"
                     paginator

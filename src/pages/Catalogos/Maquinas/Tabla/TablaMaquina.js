@@ -9,7 +9,7 @@ import { classNames } from 'primereact/utils';
 import { InputText } from 'primereact/inputtext';
 import { Ripple } from 'primereact/ripple';
 
-const TablaMaquinas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate }) => {
+const TablaMaquinas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, setSelectedProducts, actionBodyTemplate }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [first1, setFirst1] = useState(0);
     const [rows1, setRows1] = useState(5);
@@ -98,7 +98,6 @@ const TablaMaquinas = ({ BotonesCabezal, ExportarRegistros, dt, products, select
                     ref={dt}
                     value={products}
                     selection={selectedProducts}
-                    filters={filters}
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
                     paginator
 
@@ -109,7 +108,6 @@ const TablaMaquinas = ({ BotonesCabezal, ExportarRegistros, dt, products, select
                     currentPageReportTemplate="Mostrar de {first} a {last} de {totalRecords} productos"
                     globalFilterFields={["id", "calle", "num_ext", "fecha_creacion", "fecha_modificacion", "creado_por", "modificado_por"]}
                     emptyMessage="No se encontraron resultados."
-                    header={header}
                     responsiveLayout="scroll"
                     filterDisplay="row"
                 >

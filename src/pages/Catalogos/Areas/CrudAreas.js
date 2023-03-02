@@ -6,13 +6,11 @@ import EliminarVarios from './Dialogos/EliminarVarios';
 import CrearModificar from './Dialogos/CrearModificar';
 import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
-import { renderHeader } from '../ComponentsCat/Buscador/Cabezal';
 import { AreaService } from '../../../service/AreaService';
 import { emptyProduct } from './Objetos/AreaVacio';
 
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { FilterMatchMode } from 'primereact/api';
 import Spinner from '../../../components/loader/Spinner';
 import ErrorSistema from '../../../components/error/ErrorSistema';
 
@@ -35,29 +33,10 @@ const CrudAreas = ({titulos, notificaciones}) => {
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
     const [selectedProducts, setSelectedProducts] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState('');
     const [tieneId, setTieneId] = useState(false)
 
-    // CAMBIAR...
-    const [filters, setFilters] = useState({
-        'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'id': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        'area': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    });
     const toast = useRef(null);
     const dt = useRef(null);
-    
-//--------------------| Barra de Buscar |--------------------
-    const onGlobalFilterChange = (e) => {
-        const value = e.target.value;
-        let _filters = { ...filters };
-        _filters['global'].value = value;
-
-        setFilters(_filters);
-        setGlobalFilter(value);
-    }
-    //------> Cabezal de buscador
-    const header=renderHeader(globalFilter,onGlobalFilterChange,titulos.Buscador,titulos.TituloTabla)
 
 //--------------------| Funciones para mostrar dialogos |--------------------
     //------> Nuevo gasto
@@ -104,8 +83,8 @@ const CrudAreas = ({titulos, notificaciones}) => {
             updateProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
         }
-          setProduct(emptyProduct);
-          setProductDialog(false);
+        setProduct(emptyProduct);
+        setProductDialog(false);
 
     }
     //------> Eliminar 1 producto
@@ -140,19 +119,15 @@ const CrudAreas = ({titulos, notificaciones}) => {
     //------> Botones parte derecha
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button 
-                icon="pi pi-pencil" 
-                className="p-button-rounded p-button-success mr-2" 
-                onClick={() => _editProduct(rowData)} 
-                />
+                icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" 
+                onClick={() => _editProduct(rowData)} />
 
                 <Button 
-                icon="pi pi-trash" 
-                className="p-button-rounded p-button-warning" 
-                onClick={() => confirmDeleteProduct(rowData)} 
-                />
-            </React.Fragment>
+                icon="pi pi-trash" className="p-button-rounded p-button-warning" 
+                onClick={() => confirmDeleteProduct(rowData)} />
+            </>
         );
     }
 
@@ -199,9 +174,7 @@ const CrudAreas = ({titulos, notificaciones}) => {
                 dt={dt} 
                 products={products} 
                 selectedProducts={selectedProducts} 
-                filters={filters} 
                 setSelectedProducts={setSelectedProducts} 
-                header={header}
                 actionBodyTemplate={actionBodyTemplate} 
             />)}
             {isLoading && <Spinner />}

@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
-import { Button } from "primereact/button";
 import { Ripple } from "primereact/ripple";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { TablaVacia } from "../../../../components/mensajes/Mensajes";
 
-const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate }) => {
+const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, setSelectedProducts, actionBodyTemplate }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [first1, setFirst1] = useState(0);
     const [rows1, setRows1] = useState(5);
@@ -98,7 +97,7 @@ const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selecte
                     ref={dt}
                     value={products}
                     selection={selectedProducts}
-                    filters={filters}
+
                     totalRecords={100}
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
                     dataKey="id"
@@ -111,7 +110,7 @@ const TablaPlantas = ({ BotonesCabezal, ExportarRegistros, dt, products, selecte
                     showGridlines
                     globalFilterFields={["id", "planta"]}
                     emptyMessage="No se encontraron resultados."
-                    header={header}
+                    
                     responsiveLayout="scroll"
                     filterDisplay="row"
                 >

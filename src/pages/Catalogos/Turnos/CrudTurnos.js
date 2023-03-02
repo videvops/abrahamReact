@@ -9,7 +9,6 @@ import EliminarVarios from './Dialogos/EliminarVarios';
 import CrearModificar from './Dialogos/CrearModificar';
 import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
-import { renderHeader } from '../ComponentsCat/Buscador/Cabezal';
 //CAMBIAR...
 import { TurnoService } from '../../../service/TurnoService';
 
@@ -17,7 +16,6 @@ import { emptyProduct } from './Objetos/TurnoVacio';
 
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { FilterMatchMode } from 'primereact/api';
 import ErrorSistema from '../../../components/error/ErrorSistema';
 
 
@@ -41,30 +39,10 @@ const CrudTurnos = ({titulos, notificaciones}) => {
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
     const [selectedProducts, setSelectedProducts] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState('');
     const [tieneId, setTieneId] = useState(false)
 
-    // CAMBIAR...
-    const [filters, setFilters] = useState({
-        'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'id': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        'turno': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        'linea': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    });
     const toast = useRef(null);
     const dt = useRef(null);
-
-//--------------------| Barra de Buscar |--------------------
-    const onGlobalFilterChange = (e) => {
-        const value = e.target.value;
-        let _filters = { ...filters };
-        _filters['global'].value = value;
-
-        setFilters(_filters);
-        setGlobalFilter(value);
-    }
-    //------> Cabezal de buscador
-    const header=renderHeader(globalFilter,onGlobalFilterChange,titulos.Buscador,titulos.TituloTabla)
 
 //--------------------| Funciones para mostrar dialogos |--------------------
     //------> Nuevo gasto
@@ -212,9 +190,7 @@ const CrudTurnos = ({titulos, notificaciones}) => {
                 dt={dt} 
                 products={products} 
                 selectedProducts={selectedProducts} 
-                filters={filters} 
                 setSelectedProducts={setSelectedProducts} 
-                header={header}
                 actionBodyTemplate={actionBodyTemplate} 
             />)}
             {isLoading && <Spinner />}
