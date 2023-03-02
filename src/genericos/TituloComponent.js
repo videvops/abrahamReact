@@ -1,13 +1,13 @@
 import React  from "react";
 
 
-const TituloComponent = () =>{
+const TituloComponent = ({titulo}) =>{
 
 
     return (
-        <div className="card mb-0" style={{ textAlign: "center", background: "#6366f2" }}>
+        <div className="card mb-1" style={{ textAlign: "center", background: "#6366f2" }}>
             <span className=" font-bold" style={{ fontSize: "25px", color: "white" }}>
-                Bitácora
+                {titulo}
             </span>
         </div>
     );

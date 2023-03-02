@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { TablaVacia } from '../../../../components/mensajes/Mensajes';
+import TituloComponent from '../../../../genericos/TituloComponent';
 
 const TablaProducto = ({
     dt,
@@ -126,6 +127,7 @@ const TablaProducto = ({
 //--------------------| Valor que regresara |--------------------
     return (
         <div className="card">
+            <TituloComponent titulo='Productos' />
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros}  />
             {products.length > 0 ? (
                 <div>

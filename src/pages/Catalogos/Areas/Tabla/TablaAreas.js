@@ -8,6 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { classNames } from 'primereact/utils';
 import { InputText } from 'primereact/inputtext';
 import { Ripple } from 'primereact/ripple';
+import TituloComponent from "../../../../genericos/TituloComponent";
 
 const TablaAreas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, setSelectedProducts, actionBodyTemplate }) => {
     const [currentPage, setCurrentPage] = useState(1)
@@ -92,6 +93,7 @@ const TablaAreas = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedP
 //--------------------| Valor que regresara |--------------------
     return (
         <div className="card">
+            <TituloComponent titulo='Areas' />
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros} />
             {products.length > 0 ? (
                 <DataTable
