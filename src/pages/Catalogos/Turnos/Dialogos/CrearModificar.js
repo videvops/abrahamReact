@@ -67,7 +67,7 @@ const CrearModificar = ({productDialog,titulos,hideDialog,product,updateField,sa
     //---> Hora inicio
     const VerificarHoraI = (texto) => {
         //---> Comparar con expresion regular
-        if(texto[0]==2){
+        if(texto[0]===2){
             const exprHora2=/^[0-2][0-3]:[0-5][0-9]$/;
             if (!exprHora2.test(texto)){
                 setEstiloHoraI("p-invalid")

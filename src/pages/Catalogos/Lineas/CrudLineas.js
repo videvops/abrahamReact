@@ -6,13 +6,11 @@ import EliminarVarios from './Dialogos/EliminarVarios';
 import CrearModificar from './Dialogos/CrearModificar';
 import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
-import { renderHeader } from '../ComponentsCat/Buscador/Cabezal';
 import { LineaService } from '../../../service/LineaService';
 import { emptyProduct } from './Objetos/ProductoVacio';
 
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { FilterMatchMode } from 'primereact/api';
 import Spinner from '../../../components/loader/Spinner';
 import ErrorSistema from '../../../components/error/ErrorSistema';
 
@@ -36,32 +34,12 @@ const CrudLineas = ({titulos, notificaciones}) => {
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
     const [selectedProducts, setSelectedProducts] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState('');
     const [tieneId, setTieneId] = useState(false)
     const [validarNombre, setValidarNombre] = useState("");                
     const [boton, setBoton] = useState(false);
 
-    // CAMBIAR...
-    const [filters, setFilters] = useState({
-        'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'id': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        'linea': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        'area': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    });
     const toast = useRef(null);
     const dt = useRef(null);
-
-//--------------------| Barra de Buscar |--------------------
-    const onGlobalFilterChange = (e) => {
-        const value = e.target.value;
-        let _filters = { ...filters };
-        _filters['global'].value = value;
-
-        setFilters(_filters);
-        setGlobalFilter(value);
-    }
-    //------> Cabezal de buscador
-    const header=renderHeader(globalFilter,onGlobalFilterChange,titulos.Buscador,titulos.TituloTabla)
 
 //--------------------| Funciones para mostrar dialogos |--------------------
     //------> Nuevo gasto
@@ -149,7 +127,7 @@ const CrudLineas = ({titulos, notificaciones}) => {
     //------> Botones parte derecha
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button 
                 icon="pi pi-pencil" 
                 className="p-button-rounded p-button-success mr-2" 
@@ -161,7 +139,7 @@ const CrudLineas = ({titulos, notificaciones}) => {
                 className="p-button-rounded p-button-warning" 
                 onClick={() => confirmDeleteProduct(rowData)} 
                 />
-            </React.Fragment>
+            </>
         );
     }
 
@@ -207,9 +185,7 @@ const CrudLineas = ({titulos, notificaciones}) => {
                 dt={dt} 
                 products={products} 
                 selectedProducts={selectedProducts} 
-                filters={filters} 
                 setSelectedProducts={setSelectedProducts} 
-                header={header}
                 actionBodyTemplate={actionBodyTemplate} 
             />)}
             {isLoading && <Spinner />}

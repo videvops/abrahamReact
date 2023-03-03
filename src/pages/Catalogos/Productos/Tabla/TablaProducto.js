@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { TablaVacia } from '../../../../components/mensajes/Mensajes';
+import TituloComponent from '../../../../genericos/TituloComponent';
 
 const TablaProducto = ({
     dt,
@@ -126,6 +127,7 @@ const TablaProducto = ({
 //--------------------| Valor que regresara |--------------------
     return (
         <div className="card">
+            <TituloComponent titulo='Productos' />
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros}  />
             {products.length > 0 ? (
                 <div>
@@ -155,6 +157,10 @@ const TablaProducto = ({
                             style={{ textAlign: 'center' }} />
                         <Column
                             field="planta" header="Planta"
+                            sortable filter filterPlaceholder="Buscar"
+                            style={{ textAlign: 'center' }} />
+                        <Column
+                            field="creadorPor" header="Creado Por"
                             sortable filter filterPlaceholder="Buscar"
                             style={{ textAlign: 'center' }} />
                         <Column

@@ -23,15 +23,12 @@ import CatalogoProducto from "../pages/Catalogos/Productos/CatalogoProducto";
 import CatalogoMaquinas from "../pages/Catalogos/Maquinas/CatalogoMaquinas";
 import CatalogoModoFalla from "../pages/Catalogos/ModoFalla/CatalogoModoFalla"
 import CatalogoVariables from "../pages/Catalogos/VariablesDelProceso/CatalogoVariables";
-
 import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
 import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
 import Desperdicio from  '../components/desperdicio/Desperdicio'
-
 import CatalogoTSKU from "../pages/Catalogos/tiempoPorSku/CatalogoTSKU";
-
 import MonitorDeLineasTiempoReal from "../components/monitorDeLineas/tiempoReal/MonitorDeLineasTiempoReal"
-
+import Bitacora  from "../pages/Catalogos/Bitacora/Bitacora";
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
 
@@ -229,7 +226,8 @@ const Home = ({ setLogueado }) => {
             items: [
                 { label: "Configuración", icon: "pi pi-fw pi-cog text-blue-500", to: "/table" },
                 { label: "Tiempo de produccion por SKU", icon: "pi pi-fw pi-cog text-blue-500", to: "/tiempoProduccionSKU" },
-                { label: "Tiempo fuera de produccion", icon: "pi pi-fw pi-cog text-blue-500", to: "/table" }
+                { label: "Tiempo fuera de produccion", icon: "pi pi-fw pi-cog text-blue-500", to: "/table" },
+                {label: "Bitacora", icon: "pi pi-fw pi-cog text-blue-500", to: "/Bitacora"}
             ],
         },
     ];
@@ -298,6 +296,7 @@ const Home = ({ setLogueado }) => {
                     <Route path="/variablesDelProceso" component={VariablesDelProceso}/>
                     <Route path="/catalogoVariables" component={CatalogoVariables}/>
                     <Route path="/tiempoProduccionSKU" component={CatalogoTSKU}/>
+                    <Route path="/Bitacora" component={Bitacora} />
                 </div>
 
                 {/* <AppFooter layoutColorMode={layoutColorMode} /> */}
