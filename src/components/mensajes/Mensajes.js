@@ -32,6 +32,16 @@ export const TextoAdvertencia = ({children}) => {
     )
 }
 
+export const SelecconaFiltros = ({ categoria }) => {
+    return (
+        <div className="card">
+            <h5 className="uppercase text-center">Sin registros.</h5>
+            <p className="text-lg">Lo sentimos, la tabla no cuenta con {categoria} todavia.</p>
+            <p className="text-lg">Modifique los filtros o ingrese al menos un registro.</p>
+        </div>
+    )
+}
+
 export const TablaVacia = ({ categoria }) => {
     return (
         <div className="card">

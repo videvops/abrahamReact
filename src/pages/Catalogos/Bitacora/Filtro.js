@@ -1,23 +1,17 @@
-import React,{useEffect, useState} from "react"
+import React from "react"
 import BitacoraTbl from './BitacoraTbl';
 import {CardTabla } from "../../../components/indicadoresTurno/UI/Cards";
 
-
-
 const Filtro = () =>{
-
 
     return (
        <>
-
-                <CardTabla>
-                  <BitacoraTbl >
-                  </BitacoraTbl> 
-            </CardTabla>     
+        <CardTabla>
+          <BitacoraTbl >
+          </BitacoraTbl> 
+        </CardTabla>     
        </>
-
     );
-
 } 
 
 export default Filtro;

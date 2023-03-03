@@ -7,10 +7,11 @@ import DesperdicioLinea from '../../components/graficas/barChartDesperdicio/Desp
 import DesperdicioMaquina from '../../components/graficas/barChartDesperdicio/DesperdicioMaquina'
 
 const Desperdicio = () => {
-    //---> Variable donde se almacena la informacion del back-end
-    const [registros, setRegistros] = useState([]) 
-    const [chartFiltros, setChartFiltros] =useState([])
-    const [val, setVal]=useState(0)
+    
+    const [registros, setRegistros] = useState([]) ;
+    const [chartFiltros, setChartFiltros] =useState([]);
+    const [val, setVal]=useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const headers  = [
         {label: 'Grafica Desperdicio Por Linea'},
@@ -47,6 +48,7 @@ const Desperdicio = () => {
             <CabezalListParos 
                 setRegistros={setRegistros}
                 setChartFiltros={setChartFiltros}
+                setIsLoading ={setIsLoading}
             />         
             <div className='col-12 md:col-12 grid p-fluid'>
                 <SelectButton className='col-12 md:col-12 grid p-fluid'
@@ -66,7 +68,8 @@ const Desperdicio = () => {
             </div>             
             <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
                 <TablaDesperdicio 
-                    registros={registros} 
+                    registros={registros}
+                    isLoading={isLoading} 
                  />
             </div> 
         </div>
