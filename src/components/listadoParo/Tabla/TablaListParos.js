@@ -80,7 +80,7 @@ const TablaListParos = ({ filtro }) => {
        }
        catch(error){
            console.log(error)
-        //    setLoading(false)
+            setLoading(false)
        }
        
      }
@@ -102,7 +102,7 @@ const TablaListParos = ({ filtro }) => {
                 setLoading(false)
             }
             catch(error){
-                setLoading(false)
+                // setLoading(false)
                 console.log(error)
             }
         }, 1500);
