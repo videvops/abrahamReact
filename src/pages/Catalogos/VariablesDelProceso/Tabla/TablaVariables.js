@@ -2,13 +2,15 @@ import React from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
+import { TablaVacia } from "../../../../components/mensajes/Mensajes";
 
-const TablaVariables = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate }) => {
-    //--------------------| Valor que regresara |--------------------
+const TablaVariables = ({ BotonesCabezal, ExportarRegistros, dt, products, selectedProducts, filters, setSelectedProducts, header, actionBodyTemplate, isLoading }) => {
+    
     return (
         <div className="card">
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros} />
-            <DataTable
+            {products.length >0 ?(
+                <DataTable
                 ref={dt}
                 value={products}
                 selection={selectedProducts}
@@ -26,7 +28,7 @@ const TablaVariables = ({ BotonesCabezal, ExportarRegistros, dt, products, selec
                 emptyMessage="No se encontraron resultados."
                 header={header}
                 responsiveLayout="scroll"
-            >
+                >
                 <Column selectionMode="multiple" headerStyle={{ width:"3%" }} exportable={false} />
                 <Column field="variable" header="Variable" sortable style={{ width:"10%",textAlign: "center" }} />
                 <Column field="unidad" filter header="Unidad" sortable style={{ width:"5%",textAlign: "center" }} />
@@ -38,6 +40,9 @@ const TablaVariables = ({ BotonesCabezal, ExportarRegistros, dt, products, selec
                 <Column field="fechaCreacion" header="Fecha de Creacion" sortable style={{width:"15%",textAlign: "center" }} />
                 <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width:"10%" }} />
             </DataTable>
+            ):(
+                <TablaVacia categoria='variables de proceso' />
+            )}
         </div>
     );
 };

@@ -8,8 +8,9 @@ import { formatearFecha } from '../../helpers/funciones'
 import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
 import Environment from "../../../Environment";
 import { Toast } from 'primereact/toast';
+import { constrainPoint } from '@fullcalendar/core'
 
-const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
+const CabezalListParos = ({ setRegistros, setChartFiltros,setIsLoading }) => {
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
 
@@ -65,10 +66,14 @@ const CabezalListParos = ({ setRegistros, setChartFiltros }) => {
     const [esValido, setEsValido] = useState(true)
     //---> Enviar datos de back-end a otro componente
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post(`${getRoute}/paros/filter`, datos)
-        const resultado = await respuesta.data.registros
-        setRegistros(resultado)
-        setChartFiltros(datos)
+        setRegistros([{data:"data"}])
+        await Axios.post(`${getRoute}/paros/filter`, datos).then(res=>{
+            // console.log()
+            setRegistros(res.data.registros)
+            setChartFiltros(datos)
+            setIsLoading(false)
+        })
+        .catch(e=>console.log(e))
     }
     //---> Validara antes de mandar el filtro
     const enviarFiltro = () => {

@@ -9,7 +9,7 @@ import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/M
 import Environment from "../../../Environment";
 import { Toast } from 'primereact/toast';
 
-const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
+const CabezalDesperdicio = ({ setRegistros, setChartFiltros, setIsLoading }) => {
     
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
@@ -66,9 +66,13 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
     const [esValido, setEsValido] = useState(true)
     //---> Enviar datos de back-end a otro componente
     const enviarDatos = async (datos) => {
-        const desperdicioMaquinas = await Axios.post(`${getRoute}/desperdicio/table/rechazos`,datos)
-        setRegistros(desperdicioMaquinas.data)
-        setChartFiltros(datos)
+        setRegistros([{data:"data"}])
+        await Axios.post(`${getRoute}/desperdicio/table/rechazos`,datos).then(res =>{
+            setRegistros(res.data)
+            setChartFiltros(datos)
+            setIsLoading(false)
+        })
+        .catch(e=>console.log(e));
     }
     //---> Validara antes de mandar el filtro
     const enviarFiltro = () => {

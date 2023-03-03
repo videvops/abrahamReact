@@ -8,10 +8,11 @@ import BarChartModoFallaGrafica from '../graficas/barChartModosFalla/BarChartMod
 
 
 const ListadoParos = () => {
-    //---> Variable donde se almacena la informacion del back-end
-    const [registros, setRegistros] = useState([]) 
-    const [chartFiltros, setChartFiltros] =useState([])
-    const [value, setValue]=useState(0)
+    
+    const [registros, setRegistros] = useState([]) ;
+    const [chartFiltros, setChartFiltros] =useState([]);
+    const [value, setValue]=useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const headers  = [
         {label: 'Grafica Modos de Falla'},
@@ -47,6 +48,7 @@ const ListadoParos = () => {
             <CabezalListParos 
                 setRegistros={setRegistros}
                 setChartFiltros={setChartFiltros}
+                setIsLoading ={setIsLoading}
             />
             <div className='col-12 md:col-12 grid p-fluid'>
                 <SelectButton className='col-12 md:col-12 grid p-fluid'
@@ -67,6 +69,7 @@ const ListadoParos = () => {
             <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
                 <TablaListParos 
                     registros={registros}
+                    isLoading={isLoading}
                 />
             </div>
         </div>
