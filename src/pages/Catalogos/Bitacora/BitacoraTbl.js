@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React,{ useState, useEffect,useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Ripple } from 'primereact/ripple';
@@ -9,9 +9,11 @@ import { classNames } from 'primereact/utils';
 import {Service} from "../../../service/Service";
 import {BITACORA_POST_TABLE_FILTER} from "../../../genericos/Uris"
 import {BITACORA_POST_FILTER} from "../../../genericos/Uris"
+import {BITACORA_REPORTE} from "../../../genericos/Uris"
 import Spinner from '../../../components/loader/Spinner';
 import DialogCustom from "./DialogCustom";
 import { Toolbar } from 'primereact/toolbar';
+import { Toast } from 'primereact/toast';
 
 
 const BitacoraTbl = () =>{
@@ -44,6 +46,7 @@ const BitacoraTbl = () =>{
         fechaFin:null
     });
 
+    const toast = useRef(null)
     let loadLazyTimeout = null;
 
 
@@ -241,9 +244,43 @@ const BitacoraTbl = () =>{
         setCurrentPage(event.target.value);
     }
 
-    const exportToExcel = () =>{
+    const exportToExcel = async () =>{
        console.log('exporting to excel')
+
+
+    try{
+        setLoading(true)         
+        servicioBitacora.baseUrl=servicioBitacora.baseUrl+BITACORA_REPORTE
+        console.log('url'+servicioBitacora.baseUrl)
+        const JSobj = JSON.parse(JSON.stringify(lazyParams));
+        const data = await servicioBitacora.createReport(JSobj);
+        downloadData(data)
+        setLoading(false)
+        toast.current.show({ severity: 'success', summary: 'Descargando!', detail: `${"Por favor guarda tu archivo"}`, life: 3000 });
+
     }
+    catch(error){
+        setLoading(false)
+        console.log(error)
+    }
+
+
+    }
+
+
+
+    const downloadData = (blob) => {
+        import("file-saver").then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8";
+                const data = new Blob([blob], {
+                    type: EXCEL_TYPE,
+                });
+                module.default.saveAs(data, "Bitacora" + "_export_" + new Date().getTime());
+            }
+        });
+    }
+
 
     const rightToolbarTemplate = () => {
         return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportToExcel} />;
@@ -258,6 +295,7 @@ const BitacoraTbl = () =>{
         ):(<>
         
             <DialogCustom   enviarFiltroP={enviarFiltro}></DialogCustom>
+            <Toast ref={toast} />
             <Toolbar className="mb-4 mt-1"  right={rightToolbarTemplate}></Toolbar>
             <DataTable value={bitacoraList} lazy filterDisplay="row" dataKey="id" paginator
                 first={lazyParams.first} rows={10} totalRecords={totalRecords} onPage={onPage} 

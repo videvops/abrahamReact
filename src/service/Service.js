@@ -23,4 +23,10 @@ export class Service {
     delete(id) {
         return axios.delete(this.baseUrl + "/" + id).then((res) => res.data);
     }
+
+    createReport(body){
+        return axios.post(this.baseUrl,body,{responseType: 'blob'}).then((res) => res.data);
+    }
+
+
 }
