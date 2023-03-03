@@ -29,7 +29,7 @@ const BitacoraTbl = () =>{
     const [totalRecords, setTotalRecords] = useState(0);
     const [fechaIncAux, setFechaIncAux] = useState();
     const [fechaFinAux, setFechaFinAux] = useState();
-    
+    const [idPlanta, setIdPlanta] = useState();
     const [lazyParams, setLazyParams] = useState({
         first: 1,
         rows: 10,
@@ -43,7 +43,8 @@ const BitacoraTbl = () =>{
             'fechaCreacion': { value: '', matchMode: 'contains' }
         },
         fechaInc:null,
-        fechaFin:null
+        fechaFin:null,
+        idPlanta:null
     });
 
     const toast = useRef(null)
@@ -62,12 +63,13 @@ const BitacoraTbl = () =>{
         console.log(request);
         setFechaIncAux(request.fechaInicio)
         setFechaFinAux(request.fechaFin)
+        setIdPlanta(request.idPlanta)
         let bodyBitacora = {
            "page":0,
            "total":10,
            "fechaInc": request.fechaInicio,
            "fechaFin": request.fechaFin,
-           "idPlanta": 1
+           "idPlanta": request.idPlanta
            
        }
         servicioBitacora.baseUrl=servicioBitacora.baseUrl+BITACORA_POST_FILTER
@@ -104,6 +106,7 @@ const BitacoraTbl = () =>{
             console.log("lazy request sending")
             lazyParams.fechaInc = fechaIncAux;
             lazyParams.fechaFin = fechaFinAux;
+            lazyParams.idPlanta = idPlanta;
             console.log('lazyparams after adding dates')
             console.log(lazyParams)
             try{
@@ -297,17 +300,19 @@ const BitacoraTbl = () =>{
             <DialogCustom   enviarFiltroP={enviarFiltro}></DialogCustom>
             <Toast ref={toast} />
             <Toolbar className="mb-4 mt-1"  right={rightToolbarTemplate}></Toolbar>
-            <DataTable value={bitacoraList} lazy filterDisplay="row" dataKey="id" paginator
-                first={lazyParams.first} rows={10} totalRecords={totalRecords} onPage={onPage} 
-                onSort={onSort} sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
-                onFilter={onFilter} filters={lazyParams.filters} 
-                >
-                <Column  headerStyle={{ width: '3rem' }} />
-                <Column field="accion" header="Acción" sortable filter filterPlaceholder="Search" />
-                <Column field="modulo" sortable header="Módulo"   filter filterPlaceholder="Search" />
-                <Column field="creadoPor" sortable filter header="Creado Por" filterPlaceholder="Search" />
-                <Column field="fechaCreacion" header="Fecha" sortable  filterPlaceholder="Search" />
-            </DataTable> 
+            <div className="card">
+                <DataTable value={bitacoraList} lazy filterDisplay="row" dataKey="id" paginator
+                    first={lazyParams.first} rows={10} totalRecords={totalRecords} onPage={onPage} 
+                    onSort={onSort} sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
+                    onFilter={onFilter} filters={lazyParams.filters} 
+                    tableStyle={{ minWidth: '60rem' }}
+                    >
+                    <Column style={{ width: '25%' }} field="accion" header="Acción" sortable filter filterPlaceholder="Search" />
+                    <Column style={{ width: '25%' }} field="modulo" sortable header="Módulo"   filter filterPlaceholder="Search" />
+                    <Column style={{ width: '25%' }} field="creadoPor" sortable filter header="Creado Por" filterPlaceholder="Search" />
+                    <Column style={{ width: '25%' }} field="fechaCreacion" header="Fecha" sortable  filterPlaceholder="Search" />
+                </DataTable> 
+            </div>
         </>
         )}
     </div>

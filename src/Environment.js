@@ -3,7 +3,7 @@ const AZURE_URL = "https://backendublick.azurewebsites.net";
 
 
 const Environment = ()=>{
-    return LOCAL_URL;
+    return AZURE_URL;
 }
 
 export default Environment;
