@@ -1,10 +1,10 @@
 import React,{useEffect, useState} from "react"
 import {Service} from "../../../service/Service";
-import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Dialog } from "primereact/dialog";
 import { Button } from 'primereact/button';
 import {PLANTAS_GET_COMBO} from "../../../genericos/Uris"
+import { Dropdown } from 'primereact/dropdown';
 
 
 
@@ -38,7 +38,7 @@ const DialogCustom = (props) =>{
         return (
             <div>
                 <Button label="Cancelar" icon="pi pi-times" onClick={()=> setDialog(false)} className="p-button-text" />
-                <Button label="Consultar" icon="pi pi-check" onClick={()=> enviarRequest({from:"button",fechaInicio:fechaInicio,fechaFin:fechaFin})} autoFocus />
+                <Button label="Consultar" icon="pi pi-check" onClick={()=> enviarRequest({from:"button",fechaInicio:fechaInicio,fechaFin:fechaFin,idPlanta:planta.id})} autoFocus />
             </div>
         );
       }
@@ -53,45 +53,64 @@ const DialogCustom = (props) =>{
     
        }
 
+       const selectedPlanta = (option, props) => {
+        if (option) {
+            return (
+                <div className="flex align-items-center">
+                    <div>{option.planta}</div>
+                </div>
+            );
+        }
+
+        return <span>{props.placeholder}</span>;
+    };
+
+    const plantaOptionTemplate = (option) => {
+        return (
+            <div className="flex align-items-center">
+                <div>{option.planta}</div>
+            </div>
+        );
+    };
+
     return (
        <>
                <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialog(true)} /> 
                 <Dialog header="Filtro para Bítacora" visible={dialog} footer={botonesAccion}  onHide={() => setDialog(false)}  >
                     <div className="grid p-fluid">
                         <div className="col-12 ">
-                            <label className="font-bold">Planta</label>
-                            <MultiSelect
-                            optionLabel="planta" 
-                            optionValue="id"
-                            placeholder="Selecciona una planta" 
-                            options={plantas} 
-                            value={planta} 
-                            filter
-                            onChange={(e) => {setPlanta(e.target.value)}} 
-                            maxSelectedLabels={1}
-                            />
                             <div className="field col-12">
-                            <label className="font-bold">Hora inicio</label>
-                            <Calendar 
-                            id="time24" 
-                            dateFormat="yy/mm/dd"
-                            value={fechaInicio} 
-                            onChange={(e) => setFechaInicio(e.value)} 
-                            showTime 
-                            placeholder="--Fecha Inicio--" 
-                            />
-                        </div>
-                        <div className="field col-12">
-                            <label className="font-bold">Hora Fin</label>
-                            <Calendar 
-                            id="time24" 
-                            dateFormat="yy/mm/dd"
-                            value={fechaFin} 
-                            onChange={(e) => setFechaFin(e.value)} 
-                            showTime 
-                            placeholder="--Fecha Fin--" 
-                            />
-                        </div>
+                                <label className="font-bold">Planta</label>
+                                <Dropdown value={planta}
+                                onChange={(e) => setPlanta(e.value)}
+                                options={plantas} optionLabel="planta" 
+                                placeholder="Selecciona una planta" 
+                                ilter valueTemplate={selectedPlanta} 
+                                itemTemplate={plantaOptionTemplate}
+                               />
+                            </div>
+                            <div className="field col-12">
+                                <label className="font-bold">Hora inicio</label>
+                                <Calendar 
+                                id="time24" 
+                                dateFormat="yy/mm/dd"
+                                value={fechaInicio} 
+                                onChange={(e) => setFechaInicio(e.value)} 
+                                showTime 
+                                placeholder="--Fecha Inicio--" 
+                                />
+                            </div>
+                            <div className="field col-12">
+                                <label className="font-bold">Hora Fin</label>
+                                <Calendar 
+                                id="time24" 
+                                dateFormat="yy/mm/dd"
+                                value={fechaFin} 
+                                onChange={(e) => setFechaFin(e.value)} 
+                                showTime 
+                                placeholder="--Fecha Fin--" 
+                                />
+                            </div>
                         </div>
                     </div>
                 </Dialog>    
