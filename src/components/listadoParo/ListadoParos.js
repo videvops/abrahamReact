@@ -46,9 +46,7 @@ const ListadoParos = () => {
     return (
         <div>
             <CabezalListParos 
-                setRegistros={setRegistros}
                 setChartFiltros={setChartFiltros}
-                setIsLoading ={setIsLoading}
             />
             <div className='col-12 md:col-12 grid p-fluid'>
                 <SelectButton className='col-12 md:col-12 grid p-fluid'
@@ -68,8 +66,7 @@ const ListadoParos = () => {
             </div>             
             <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
                 <TablaListParos 
-                    registros={registros}
-                    isLoading={isLoading}
+                    filtro={chartFiltros}
                 />
             </div>
         </div>

@@ -1,15 +1,14 @@
 import React from "react";
 import Iframe from 'react-iframe'
 import {getDateSplitted,getStringData} from "../../helpers/funciones"
+import { SelecconaFiltros } from '../../mensajes/Mensajes';
 
 const BarChartTiempoMuertoGrafica = ({filtros}) => {
 
     if(Object.entries(filtros).length === 0){
-        return (
-            <div className="col-12 md:col-12 grid p-fluid">
-                <h3>No hay informacion disponible</h3>
-            </div>
-        )
+        return(<SelecconaFiltros 
+            categoria="los paros necesarios"
+        />)
     }else{
 
         const strMaquinas = getStringData(filtros.maquinas)

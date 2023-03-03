@@ -4,6 +4,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { CardGeneral, CardTabla } from '../UI/Cards';
 import Spinner from "../../loader/Spinner";
+import { SelecconaFiltros } from '../../mensajes/Mensajes';
 
 const TablaDesperdicio = ({registros,isLoading}) => {
 
@@ -17,7 +18,9 @@ const TablaDesperdicio = ({registros,isLoading}) => {
     });
 
     if(Object.entries(registros).length === 0){
-        return(<h3>No hay informacion disponible</h3>)
+        return(<SelecconaFiltros 
+            categoria="desperdicios"
+        />)
     }else{
         return (
             <div className='flex justify-content-center col-12 md:col-12 grid p-fluid a'>

@@ -1,11 +1,14 @@
 import React from "react";
-import Iframe from 'react-iframe'
-import {getDateSplitted,getStringData} from "../../helpers/funciones"
+import Iframe from 'react-iframe';
+import {getDateSplitted,getStringData} from "../../helpers/funciones";
+import { SelecconaFiltros } from '../../mensajes/Mensajes';
 
 const BarChartModoFallaGrafica = ({filtros}) => {
     
     if(Object.entries(filtros).length === 0){
-        return(<h3>No hay informacion disponible</h3>)
+        return(<SelecconaFiltros 
+            categoria="los modos de falla necesarios"
+        />)
     }else{
 
         const strMaquinas = getStringData(filtros.maquinas)

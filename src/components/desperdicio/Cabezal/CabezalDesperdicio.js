@@ -12,9 +12,9 @@ import {Service} from "../../../service/Service";
 import {DESPERDICIO_REPORTE} from "../../../genericos/Uris"
 import Spinner from '../../../components/loader/Spinner';
 
-const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
+const CabezalDesperdicio = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const servicio = new Service();
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
@@ -141,15 +141,14 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
             return ;
         }
         const filtrosDownload = {
-            fechaInc:formatearFecha(fechaInicio),//'2022-11-21 15:37:21',   
-            fechaFin:formatearFecha(fechaFin), //'2022-11-26 11:47:17' ,  //
+            fechaInc:formatearFecha(fechaInicio),
+            fechaFin:formatearFecha(fechaFin), 
             maquinas:maquinas
         }
         
         try{
             setLoading(true)         
             servicio.baseUrl=servicio.baseUrl+DESPERDICIO_REPORTE;
-            console.log('url'+servicio.baseUrl)
             const JSobj = JSON.parse(JSON.stringify(filtrosDownload));
             const data = await servicio.createReport(JSobj);
             downloadData(data)
@@ -158,7 +157,8 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
     
         }
         catch(error){
-            setLoading(false)
+            toast.current.show({ severity: 'error', summary: 'Algo ha salido mal!', detail: `${"Comunicate con el administrador del sistema"}`, life: 3000 });
+            // setLoading(false)
             console.log(error)
         }
 
@@ -175,7 +175,7 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
             <br/>
             <div className='clas col-12 md:col-12 flex justify-content-between '>
                 <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
-                <Button label="Excel" icon="pi pi-file-excel" className="p-button-success mr-2" onClick={loadFilter} />
+                <Button label="Excel" icon="pi pi-file-excel"  loading={loading} className="p-button-success mr-2" onClick={loadFilter} />
             </div>
             <Dialog
                 header="Filtro para Desperdicio"

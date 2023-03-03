@@ -1,11 +1,14 @@
 import React from "react";
-import Iframe from 'react-iframe'
-import {getDateSplitted,getStringData} from "../../helpers/funciones"
+import Iframe from 'react-iframe';
+import {getDateSplitted,getStringData} from "../../helpers/funciones";
+import { SelecconaFiltros } from '../../mensajes/Mensajes';
 
 const DesperdicioLinea = ({filtros}) => {
 
     if(Object.entries(filtros).length === 0){
-        return(<h3>No hay informacion disponible</h3>)
+        return(<SelecconaFiltros 
+            categoria="desperdicios"
+        />)
     }else{
         
         const strLineas = getStringData(filtros.lineas)

@@ -10,7 +10,7 @@ import Environment from "../../../Environment";
 import { Toast } from 'primereact/toast';
 import { constrainPoint } from '@fullcalendar/core'
 
-const CabezalListParos = ({ setRegistros, setChartFiltros,setIsLoading }) => {
+const CabezalListParos = ({ setChartFiltros}) => {
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
 
@@ -65,15 +65,14 @@ const CabezalListParos = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     const [dialogo, setDialogo] = useState(false)              // Para mostrar dialogo
     const [esValido, setEsValido] = useState(true)
     //---> Enviar datos de back-end a otro componente
-    const enviarDatos = async (datos) => {
-        setRegistros([{data:"data"}])
-        await Axios.post(`${getRoute}/paros/filter`, datos).then(res=>{
-            // console.log()
-            setRegistros(res.data.registros)
+    const enviarDatos = (datos) => {
+        // setRegistros([{data:"data"}])
+        // await Axios.post(`${getRoute}/paros/filter`, datos).then(res=>{
+            // setRegistros(res.data.registros)
             setChartFiltros(datos)
-            setIsLoading(false)
-        })
-        .catch(e=>console.log(e))
+            // setIsLoading(false)
+        // })
+        // .catch(e=>console.log(e))
     }
     //---> Validara antes de mandar el filtro
     const enviarFiltro = () => {
@@ -135,6 +134,7 @@ const CabezalListParos = ({ setRegistros, setChartFiltros,setIsLoading }) => {
             toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${"Por favor selecciona las maquinas"}`, life: 3000 });
             return ;
         }
+        setLoading(true)
         const filtrosDownload = {
             fechaInc:formatearFecha(fechaInicio),//'2022-11-21 15:37:21',   
             fechaFin:formatearFecha(fechaFin), //'2022-11-26 11:47:17' ,  //
@@ -145,12 +145,17 @@ const CabezalListParos = ({ setRegistros, setChartFiltros,setIsLoading }) => {
         Axios.post(`${getRoute}/reportes/listadoParos`,filtrosDownload,{responseType: 'blob'}).then(res =>{
             toast.current.show({ severity: 'success', summary: 'Descargando!', detail: `${"Por favor guarda tu archivo"}`, life: 3000 });
             downloadData(res.data)
+            setLoading(false)
         })
-        .catch( e => console.log(e))
+        .catch( e =>{
+            toast.current.show({ severity: 'error', summary: 'Algo ha salido mal!', detail: `${"Comunicate con el administrador del sistema"}`, life: 3000 });
+            // setLoading(false)
+            console.log(e)
+        })
 
     }
 
-//--------------------| Valor que regresara  |--------------------
+    const [loading, setLoading] = useState(false)
     return (
         <div className="col-12 ">
             <div className="card mb-0" style={{ textAlign: "center", background: "#6366f2" }}>
@@ -162,7 +167,7 @@ const CabezalListParos = ({ setRegistros, setChartFiltros,setIsLoading }) => {
             <br/>
             <div className='clas col-12 md:col-12 flex justify-content-between '>
                 <Button label="Filtro" icon="pi pi-filter-fill" onClick={() => setDialogo(true)} />
-                <Button label="Excel" icon="pi pi-file-excel" className="p-button-success mr-2" onClick={loadFilter} />
+                <Button label="Excel" icon="pi pi-file-excel" loading={loading} className="p-button-success mr-2" onClick={loadFilter} />
             </div>
                 <Dialog
                     header="Filtro para listado de paros"
