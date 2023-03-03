@@ -160,6 +160,10 @@ const TablaProducto = ({
                             sortable filter filterPlaceholder="Buscar"
                             style={{ textAlign: 'center' }} />
                         <Column
+                            field="creadorPor" header="Creado Por"
+                            sortable filter filterPlaceholder="Buscar"
+                            style={{ textAlign: 'center' }} />
+                        <Column
                             header="Editar" body={actionBodyTemplate}
                             style={{ minWidth: '3rem' }} exportable={false} />
                         

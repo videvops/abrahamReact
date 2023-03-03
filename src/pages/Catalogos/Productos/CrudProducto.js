@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, lazy } from 'react';
 import Axios from 'axios';
 
 import Crear from './Dialogos/Crear';
 import Spinner from '../../../components/loader/Spinner';
 import Exportar from './Botones/Exportar';
-import TablaProducto from './Tabla/TablaProducto';
+// import TablaProducto from './Tabla/TablaProducto';
 import EliminarUno from './Dialogos/EliminarUno';
 import EliminarVarios from './Dialogos/EliminarVarios';
 import { ProductContext } from '../ComponentsCat/Contexts/ProductContext';
@@ -18,6 +18,7 @@ import Editar from './Dialogos/Editar';
 import ErrorSistema from '../../../components/error/ErrorSistema'
 
 import Environment from '../../../Environment';
+import TablaProductos from './Tabla/TablaProductos';
 const getRoute = Environment()
 
 const CrudProducto = ({titulos, notificaciones}) => {
@@ -139,42 +140,95 @@ const CrudProducto = ({titulos, notificaciones}) => {
     }
 
 //--------------------| Obtener registros de back-end |--------------------
-    const [pagina, setPagina] = useState(0)
-    const [first, setFirst] = useState(0)
-    const [filas, setFilas] = useState(5)
-    const [totalRegistros, setTotalRegistros] = useState(0)
+    const [totalRecords, setTotalRecords] = useState(0);                // total registros
+    const [lazyState, setlazyState] = useState({                        // Envio
+        first: 0,
+        rows: 2,
+        page: 0,
+        sortField: null,
+        sortOrder: null,
+        filters: {
+            producto: { value: '', matchMode: 'contains' },
+            area: { value: '', matchMode: 'contains' },
+            planta: { value: '', matchMode: 'contains' },
+            creadoPor: { value: '', matchMode: 'contains' },
+        }
+    });
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
-    //---> Obtendra los datos del back-end
-    const paginacion = (event) => {
-        setFirst(event.first)
-        setFilas(event.rows)
-        setPagina(event.page)
-    }
+    //--> Funcion oyente
+    useEffect(() => {
+        loadLazyData()
+        return () => {
+            setProducts([])
+        }
+    }, [lazyState])
 
-    const cargarDatos = async (datos) => {
-        const informacion = datos
+    //--> Funcion envio
+    const loadLazyData = async() => {
         setIsLoading(true)
         setError(null)
+        
         try{
-            const respuesta = await Axios.post(getRoute + "/productos/filter", informacion)
+            const respuesta = await Axios.post("http://localhost:8080/productos/table/filter", lazyState)
+            // const respuesta = await Axios.post(`${getRoute}/productos/table/filter`, lazyState)
+            console.log(lazyState)
             const datos = await respuesta.data.registros
             const total = await respuesta.data.numTotalReg
-            setProducts(datos)  
-            setTotalRegistros(total)
+            setProducts(datos)
+            console.log(datos)
+            setTotalRecords(total)
         } catch(error){
             setError(error.message)
         }
         setIsLoading(false)
-    }
 
-    useEffect(() => {
-        cargarDatos({ page: pagina, total: filas })
-        return () => {                                      // Funcion de limpieza
-            setProducts([])
-        }// eslint-disable-next-line
-    }, [filas]);
+        //--> Llamada al back-end
+        // networkTimeout = setTimeout(() => {
+        //     CustomerService.getCustomers({ lazyEvent: JSON.stringify(lazyState) }).then((data) => {
+        //         setTotalRecords(data.totalRecords);
+        //         setCustomers(data.customers);
+        //         setLoading(false);
+        //     });
+        // }, Math.random() * 1000 + 250);
+    };
+    //--> Pagina
+    // const onPage = (event) => {
+    //     setlazyState(event);
+    // };
+    //--> Ordenar
+    const onSort = (event) => {
+        setlazyState(event);
+    };
+    //--> Filtrar
+    const onFilter = (event) => {
+        // event['first'] = 0;
+        setlazyState(event);
+    };
+
+    // const cargarDatos = async (datos) => {
+    //     // const informacion = datos
+    //     setIsLoading(true)
+    //     setError(null)
+    //     try{
+    //         const respuesta = await Axios.post(getRoute + "/productos/table/filter", lazyState)
+    //         const datos = await respuesta.data.registros
+    //         const total = await respuesta.data.numTotalReg
+    //         setProducts(datos)  
+    //         setTotalRecords(total)
+    //     } catch(error){
+    //         setError(error.message)
+    //     }
+    //     setIsLoading(false)
+    // }
+
+    // useEffect(() => {
+    //     cargarDatos({ page: pagina, total: filas })
+    //     return () => {                                      // Funcion de limpieza
+    //         setProducts([])
+    //     }// eslint-disable-next-line
+    // }, [filas]);
 
 //--------------------| Modal Creacion |--------------------
     const [m1, setM1] = useState(true)
@@ -196,25 +250,37 @@ const CrudProducto = ({titulos, notificaciones}) => {
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
             {!isLoading && !error && (
-                <TablaProducto
-                    dt={dt} 
-                    products={products} 
-                    cargarDatos={cargarDatos}
-                    //--> paginacion
-                    first={first}
-                    filas={filas}
-                    pagina={pagina}
-                    setFirst={setFirst}
-                    setPagina={setPagina}
-                    paginacion={paginacion}
-                    totalRegistros={totalRegistros}
-                    //--> Acciones de tabla
-                    BotonesCabezal={BotonesCabezal} 
-                    selectedProducts={selectedProducts} 
-                    ExportarRegistros={ExportarRegistros} 
+                // <TablaProducto
+                //     dt={dt} 
+                //     products={products} 
+                //     cargarDatos={cargarDatos}
+                //     //--> paginacion
+                //     first={first}
+                //     filas={filas}
+                //     pagina={pagina}
+                //     setFirst={setFirst}
+                //     setPagina={setPagina}
+                //     paginacion={paginacion}
+                //     totalRegistros={totalRegistros}
+                //     //--> Acciones de tabla
+                //     BotonesCabezal={BotonesCabezal} 
+                //     selectedProducts={selectedProducts} 
+                //     ExportarRegistros={ExportarRegistros} 
+                //     actionBodyTemplate={actionBodyTemplate}
+                //     setSelectedProducts={setSelectedProducts} 
+                //     titulo={titulos.TituloTabla}
+                // />
+                <TablaProductos
+                    products={products}
+                    lazyState={lazyState}
+                    totalRecords={totalRecords}
+                    // onPage={onPage}
+                    onSort={onSort} onFilter={onFilter}
                     actionBodyTemplate={actionBodyTemplate}
-                    setSelectedProducts={setSelectedProducts} 
-                    titulo={titulos.TituloTabla}
+                    BotonesCabezal={BotonesCabezal} ExportarRegistros={ExportarRegistros}
+                    selectedProducts={selectedProducts}
+                    setSelectedProducts={setSelectedProducts}
+                    setlazyState={setlazyState}
                 />
             )}
 
