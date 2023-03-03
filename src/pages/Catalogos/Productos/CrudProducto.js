@@ -143,7 +143,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
     const [totalRecords, setTotalRecords] = useState(0);                // total registros
     const [lazyState, setlazyState] = useState({                        // Envio
         first: 0,
-        rows: 2,
+        rows: 5,
         page: 0,
         sortField: null,
         sortOrder: null,
@@ -173,11 +173,11 @@ const CrudProducto = ({titulos, notificaciones}) => {
         try{
             const respuesta = await Axios.post("http://localhost:8080/productos/table/filter", lazyState)
             // const respuesta = await Axios.post(`${getRoute}/productos/table/filter`, lazyState)
-            console.log(lazyState)
+            // console.log(lazyState)
             const datos = await respuesta.data.registros
             const total = await respuesta.data.numTotalReg
             setProducts(datos)
-            console.log(datos)
+            // console.log(datos)
             setTotalRecords(total)
         } catch(error){
             setError(error.message)

@@ -82,7 +82,7 @@ const TablaProductos = ({
         },
         'RowsPerPageDropdown': (options) => {
             const dropdownOptions = [
-                { label: 2, value: 2 },
+                // { label: 2, value: 2 },
                 { label: 5, value: 5 },
                 { label: 10, value: 10 },
                 { label: 15, value: 15 },
@@ -93,13 +93,16 @@ const TablaProductos = ({
         },
         'CurrentPageReport': (options) => {
             return (
-                <span className="mx-3" style={{ color: 'var(--text-color)', userSelect: 'none' }}>
-                    Ir a <InputText size="2" className="ml-1" value={lazyState.page} tooltip={pageInputTooltip}
-                        onKeyDown={(e) => onPageInputKeyDown(e, options)}
-                        // onChange={onPageInputChange}
-                        onChange={(e) => setlazyState({ ...lazyState, page: parseInt(e.target.value) })}
-                    />
-                </span>
+                <div>
+                    <span className="mx-3" style={{ color: 'var(--text-color)', userSelect: 'none' }}>
+                        Ir a <InputText size="2" className="ml-1" value={lazyState.page} tooltip={pageInputTooltip}
+                            onKeyDown={(e) => onPageInputKeyDown(e, options)}
+                            // onChange={onPageInputChange}
+                            onChange={(e) => setlazyState({ ...lazyState, page: parseInt(e.target.value) })}
+                        />
+                    </span>
+                    {options.first} - {options.last} de {options.totalRecords}
+                </div>
             )
         }
     };
