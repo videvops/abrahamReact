@@ -8,9 +8,16 @@ import { formatearFecha } from '../../helpers/funciones'
 import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
 import Environment from "../../../Environment";
 import { Toast } from 'primereact/toast';
+import {Service} from "../../../service/Service";
+import {DESPERDICIO_REPORTE} from "../../../genericos/Uris"
+import Spinner from '../../../components/loader/Spinner';
 
 const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
-    
+
+//--------------------| ABRAHAM VARGAS  |--------------------
+const [loading, setLoading] = useState(true);
+
+const servicio = new Service();
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
     
@@ -122,7 +129,7 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
     
     const toast = useRef(null)
     
-    const loadFilter = () => {
+    const loadFilter = async () => {
         if(fechaFin === null || fechaInicio === null){
             toast.current.show({ severity: 'error', summary: 'Atencion!', detail: `${"Por favor selecciona una fecha"}`, life: 3000 });
             return ;
@@ -134,15 +141,24 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros }) => {
         const filtrosDownload = {
             fechaInc:formatearFecha(fechaInicio),//'2022-11-21 15:37:21',   
             fechaFin:formatearFecha(fechaFin), //'2022-11-26 11:47:17' ,  //
-            page:0,
-            total:500,
             maquinas:maquinas
         }
-        // Axios.post(`${getRoute}/reportes/listadoParos`,filtrosDownload,{responseType: 'blob'}).then(res =>{
-        //     toast.current.show({ severity: 'success', summary: 'Descargando!', detail: `${"Por favor guarda tu archivo"}`, life: 3000 });
-        //     downloadData(res.data)
-        // })
-        // .catch( e => console.log(e))
+        
+        try{
+            setLoading(true)         
+            servicio.baseUrl=servicio.baseUrl+DESPERDICIO_REPORTE;
+            console.log('url'+servicio.baseUrl)
+            const JSobj = JSON.parse(JSON.stringify(filtrosDownload));
+            const data = await servicio.createReport(JSobj);
+            downloadData(data)
+            setLoading(false)
+            toast.current.show({ severity: 'success', summary: 'Descargando!', detail: `${"Por favor guarda tu archivo"}`, life: 3000 });
+    
+        }
+        catch(error){
+            setLoading(false)
+            console.log(error)
+        }
 
     }
 //--------------------| Valor que regresara  |--------------------
