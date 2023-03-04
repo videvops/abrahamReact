@@ -249,28 +249,23 @@ const BitacoraTbl = () =>{
 
     const exportToExcel = async () =>{
        console.log('exporting to excel')
+       
+        try{
+            setLoading(true)         
+            servicioBitacora.baseUrl=servicioBitacora.baseUrl+BITACORA_REPORTE
+            console.log('url'+servicioBitacora.baseUrl)
+            const JSobj = JSON.parse(JSON.stringify(lazyParams));
+            const data = await servicioBitacora.createReport(JSobj);
+            downloadData(data)
+            setLoading(false)
+            toast.current.show({ severity: 'success', summary: 'Descargando!', detail: `${"Por favor guarda tu archivo"}`, life: 3000 });
 
-
-    try{
-        setLoading(true)         
-        servicioBitacora.baseUrl=servicioBitacora.baseUrl+BITACORA_REPORTE
-        console.log('url'+servicioBitacora.baseUrl)
-        const JSobj = JSON.parse(JSON.stringify(lazyParams));
-        const data = await servicioBitacora.createReport(JSobj);
-        downloadData(data)
-        setLoading(false)
-        toast.current.show({ severity: 'success', summary: 'Descargando!', detail: `${"Por favor guarda tu archivo"}`, life: 3000 });
-
+        }
+        catch(error){
+            setLoading(false)
+            console.log(error)
+        }
     }
-    catch(error){
-        setLoading(false)
-        console.log(error)
-    }
-
-
-    }
-
-
 
     const downloadData = (blob) => {
         import("file-saver").then((module) => {
@@ -283,7 +278,6 @@ const BitacoraTbl = () =>{
             }
         });
     }
-
 
     const rightToolbarTemplate = () => {
         return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportToExcel} />;
@@ -301,12 +295,23 @@ const BitacoraTbl = () =>{
             <Toast ref={toast} />
             <Toolbar className="mb-4 mt-1"  right={rightToolbarTemplate}></Toolbar>
             <div className="card">
-                <DataTable value={bitacoraList} lazy filterDisplay="row" dataKey="id" paginator
-                    first={lazyParams.first} rows={10} totalRecords={totalRecords} onPage={onPage} 
-                    onSort={onSort} sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
-                    onFilter={onFilter} filters={lazyParams.filters} 
+                <DataTable 
+                    value={bitacoraList} 
+                    lazy 
+                    filterDisplay="row" 
+                    dataKey="id" 
+                    paginator
+                    first={lazyParams.first} 
+                    rows={10} 
+                    totalRecords={totalRecords}
+                    onPage={onPage} 
+                    onSort={onSort}
+                    sortField={lazyParams.sortField}
+                    sortOrder={lazyParams.sortOrder}
+                    onFilter={onFilter}
+                    filters={lazyParams.filters} 
                     tableStyle={{ minWidth: '60rem' }}
-                    >
+                >
                     <Column style={{ width: '25%' }} field="accion" header="Acción" sortable filter filterPlaceholder="Search" />
                     <Column style={{ width: '25%' }} field="modulo" sortable header="Módulo"   filter filterPlaceholder="Search" />
                     <Column style={{ width: '25%' }} field="creadoPor" sortable filter header="Creado Por" filterPlaceholder="Search" />
