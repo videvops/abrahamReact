@@ -16,7 +16,8 @@ const TablaProductos = ({
     onSort, onFilter,
     actionBodyTemplate, BotonesCabezal, ExportarRegistros, selectedProducts, setSelectedProducts
 }) => {
-    const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
+    const [numPagina, setNumPagina] = useState(lazyState.page)
+    const [pageInputTooltip, setPageInputTooltip] = useState('Presiona \'Enter\' para cambiar de pagina.')
 
     const onCustomPageChange1 = (event) => {
         // setlazyState(event.first);
@@ -27,27 +28,22 @@ const TablaProductos = ({
         // setlazyState(event.page + 1);
         // setlazyState({ ...lazyState, page: event.page })
     }
-
+    //--> Se ejecuta con cada 'enter'
     const onPageInputKeyDown = (event, options) => {
-        console.log(event)
-        console.log(options)
         // 'event' para revisar que presiono enter
         if (event.key === 'Enter') {
-            const page = parseInt(lazyState.page);
+            const page = parseInt(numPagina);
             if (page < 0 || page > options.totalPages) {
-                setPageInputTooltip(`Value must be between 1 and ${options.totalPages}.`);
+                setPageInputTooltip(`Ingresa un valor entre 1 y ${options.totalPages}.`);
             }
             else {
                 const first = lazyState.page ? options.rows * (page - 1) : 0;
-
-                // setCustomFirst1(first);
-                setlazyState({ ...lazyState, first: first })
-
-                setPageInputTooltip('Press \'Enter\' key to go to this page.');
+                setPageInputTooltip('Presiona \'Enter\' para cambiar de pagina.');
+                setlazyState({ ...lazyState, first: first, page: numPagina })
             }
         }
     }
-
+    //--> Plantilla paginacion
     const template1 = {
         layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
         'PrevPageLink': (options) => {
@@ -82,7 +78,6 @@ const TablaProductos = ({
         },
         'RowsPerPageDropdown': (options) => {
             const dropdownOptions = [
-                // { label: 2, value: 2 },
                 { label: 5, value: 5 },
                 { label: 10, value: 10 },
                 { label: 15, value: 15 },
@@ -95,10 +90,11 @@ const TablaProductos = ({
             return (
                 <div>
                     <span className="mx-3" style={{ color: 'var(--text-color)', userSelect: 'none' }}>
-                        Ir a <InputText size="2" className="ml-1" value={lazyState.page} tooltip={pageInputTooltip}
+                        Ir a <InputText size="2" className="ml-1" value={numPagina} tooltip={pageInputTooltip}
                             onKeyDown={(e) => onPageInputKeyDown(e, options)}
                             // onChange={onPageInputChange}
-                            onChange={(e) => setlazyState({ ...lazyState, page: parseInt(e.target.value) })}
+                            // onChange={(e) => setlazyState({ ...lazyState, page: parseInt(e.target.value) })}
+                            onChange={(e) => setNumPagina(e.target.value)}
                         />
                     </span>
                     {options.first} - {options.last} de {options.totalRecords}
@@ -112,6 +108,7 @@ const TablaProductos = ({
             <TituloComponent titulo='Productos' />
             <Toolbar className="mb-4" left={BotonesCabezal} right={ExportarRegistros}  />
             <DataTable value={products} filterDisplay="row" showGridlines rowsPerPageOptions={[5, 10, 25, 50]}
+                responsiveLayout="scroll"
                 lazy paginator first={lazyState.first} rows={lazyState.rows} totalRecords={totalRecords}
                 // onPage={onPage}
                 onSort={onSort} sortField={lazyState.sortField}
@@ -124,22 +121,22 @@ const TablaProductos = ({
                 <Column
                     field="producto" header="Producto"
                     sortable filter filterPlaceholder="Buscar"
-                    style={{ textAlign: 'center' }} />
+                    style={{ minWidth: '16rem' }} />
                 <Column
                     field="area" header="Area"
                     sortable filter filterPlaceholder="Buscar"
-                    style={{ textAlign: 'center' }} />
+                    style={{ minWidth: '16rem' }} />
                 <Column
                     field="planta" header="Planta"
                     sortable filter filterPlaceholder="Buscar"
-                    style={{ textAlign: 'center' }} />
+                    style={{ minWidth: '16rem' }} />
                 <Column
                     field="creadoPor" header="Creado Por"
                     sortable filter filterPlaceholder="Buscar"
-                    style={{ textAlign: 'center' }} />
+                    style={{ minWidth: '16rem' }} />
                 <Column
                     header="Editar" body={actionBodyTemplate}
-                    style={{ minWidth: '3rem' }} exportable={false} />
+                    style={{ minWidth: '12rem' }} exportable={false} />
             </DataTable>
         </div>
     )
