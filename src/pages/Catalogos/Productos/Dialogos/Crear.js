@@ -8,33 +8,33 @@ import Environment from '../../../../Environment'
 const getRoute = Environment();
 
 const Crear = ({
-    m1,
-    m2,
-    titulos,
-    edicion,
-    product,
-    mostrarM1,
-    mostrarM2,
-    hideDialog,
-    updateField,
-    objetoParte2,
-    productDialog,
-    setObjetoParte2,
+    m1,m2,
+    titulos,edicion,
+    mostrarM1,mostrarM2,
+    product,productDialog,
+    hideDialog,updateField,
+    objetoParte2,setObjetoParte2,
 }) => {
     //--------------------| Crear objeto para componente 2 |--------------------
     const [tieneMaquinas, setTieneMaquinas] = useState(false)
     const [idProducto, setIdProduto] = useState({})
     const [informacion, setInformacion] = useState({})
-    //--> Obtiene informacion 
+
+    //--> Obtiene informacion parte 1
     useEffect(() => { 
         if (tieneMaquinas) {
-            Axios.get(getRoute + `/productos/getById/${idProducto}`).then((res) => setInformacion(res.data))
+            Axios.get(getRoute + `/productos/getById/${idProducto}`).then((res) => {
+                console.log(res.data)
+                setInformacion(res.data)
+            })
         }
         // eslint-disable-next-line
     }, [tieneMaquinas])
+
     //--> Crea tabla de componente 2
     useEffect(() => {
-        if (informacion.lineasAsignadas) {               // Tiene informacion
+        // Tiene informacion
+        if (informacion.lineasAsignadas) {
             let arregloLM=[]
             if (!informacion.lineasAsignadas[0].config) {
                 arregloLM.push({
@@ -48,13 +48,20 @@ const Crear = ({
                 })
             } else {
                 arregloLM.push({
-                    id: informacion.lineasAsignadas[0].id,
+                    // id: informacion.lineasAsignadas[0].id,
+                    // tipo: "linea",
+                    // nombre: informacion.lineasAsignadas[0].linea,
+                    // velocidadEstandar: informacion.lineasAsignadas[0].config.velocidadEstandar,
+                    // factorConversionI: informacion.lineasAsignadas[0].config.factorConversionI,
+                    // factorConversionO: informacion.lineasAsignadas[0].config.factorConversionO,
+                    // habilitado:`${informacion.lineasAsignadas[0].config.habilitado}`
+                    id: product.idLinea,
                     tipo: "linea",
-                    nombre: informacion.lineasAsignadas[0].linea,
-                    velocidadEstandar: informacion.lineasAsignadas[0].config.velocidadEstandar,
-                    factorConversionI: informacion.lineasAsignadas[0].config.factorConversionI,
-                    factorConversionO: informacion.lineasAsignadas[0].config.factorConversionO,
-                    habilitado:`${informacion.lineasAsignadas[0].config.habilitado}`
+                    nombre: "linea",
+                    velocidadEstandar: 0,
+                    factorConversionI: 0,
+                    factorConversionO: 0,
+                    habilitado:"false"
                 })
             }
             //--> Si hay maquinas configuradas

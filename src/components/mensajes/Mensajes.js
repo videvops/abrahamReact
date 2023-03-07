@@ -18,7 +18,7 @@ export const MensajeFiltro=(
 
 export const MensajeAdvertencia = ({ children }) => {
     return (
-        <div className="uppercase text-center font-bold text-white" style={{background:"red"}}>
+        <div className="uppercase text-center font-bold text-white mt-3" style={{background:"red"}}>
             {children}
         </div>
     )
