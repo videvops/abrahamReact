@@ -124,11 +124,11 @@ const TablaProductos = ({
                     style={{ minWidth: '16rem' }} />
                 <Column
                     field="area" header="Area"
-                    sortable filter filterPlaceholder="Buscar"
+                    // sortable filter filterPlaceholder="Buscar" 
                     style={{ minWidth: '16rem' }} />
                 <Column
                     field="planta" header="Planta"
-                    sortable filter filterPlaceholder="Buscar"
+                    // sortable filter filterPlaceholder="Buscar" 
                     style={{ minWidth: '16rem' }} />
                 <Column
                     field="creadoPor" header="Creado Por"
