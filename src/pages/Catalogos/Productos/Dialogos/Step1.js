@@ -19,7 +19,7 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
     const [areasDisponibles, setAreasDisponibles] = useState([])
     useEffect(() => {
         if(product.idPlanta!==''){
-            Axios.get(getRoute+`/areas/planta/${product.idPlanta}`).then(res=>setAreasDisponibles(res.data))
+            Axios.get(getRoute + `/areas/planta/${product.idPlanta}`).then(res => setAreasDisponibles(res.data))
         }
     }, [product.idPlanta])
     //---> Lineas
@@ -36,7 +36,10 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
         } else {
             console.log("No es edicion")
             if (product.idArea !== '') {
-                Axios.get(getRoute + `/lineas/area/${product.idArea}`).then(res => setLineasDisponibles(res.data))
+                Axios.get(getRoute + `/lineas/area/${product.idArea}`).then(res => {
+                    console.log(res.data)
+                    setLineasDisponibles(res.data)
+                })
             }
         }// eslint-disable-next-line
     }, [product.idArea])

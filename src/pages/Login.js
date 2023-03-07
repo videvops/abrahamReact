@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
-import { Button } from 'primereact/button';
-import { MensajeAdvertencia } from '../components/mensajes/Mensajes';
+import { MensajeAdvertencia } from '../components/mensajes/Mensajes'
+
+import Logo from '../img/logoublick.png'
 
 const Login = ({ setLogueado }) => {
 //--------------------| Variables para iniciar sesion  |--------------------
@@ -46,35 +48,43 @@ const Login = ({ setLogueado }) => {
 
 //--------------------| Valor que regresara  |--------------------
     return (
-        <form onSubmit={enviarDatos} noValidate>
-            <div className="card">
-                <div className="flex flex-column md:flex-row">
-                    <div className="w-full md:w-5 flex flex-column align-items-s justify-content-center gap-3 py-5">
-                        <div className="flex flex-wrap justify-content-center align-items-center gap-2">
-                            <label htmlFor="username" className="w-6rem">Usuario</label>
-                            <InputText
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                placeholder="Ingresa tu correo"
-                            />
-                        </div>
-                        <div className="flex flex-wrap justify-content-center align-items-center gap-2">
-                            <label htmlFor="password" className="w-6rem">Contraseña</label>
-                            <InputText
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                placeholder="Ingresa tu contraseña"
-                            />
-                        </div>
-                        <Button label="Iniciar Sesion" icon="pi pi-user" className="w-12rem mx-auto"/>
-                        {texto && <MensajeAdvertencia>{texto}</MensajeAdvertencia>}
+        <form onSubmit={enviarDatos} noValidate
+            className='card'
+            style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
+        >
+            <img
+                src={Logo} alt='logo ublick'
+                style={{ justifyContent: 'center', alignItems: 'center', width: '600px', height: '300px' }}
+            />
+            <div className="flex flex-column md:flex-row">
+                <div
+                    // className="w-full md:w-5 flex flex-column align-items-s justify-content-center gap-3 py-5"
+                    style={{ display: 'flex', justifyContent: 'center' }}
+                >
+                    <div className="flex flex-wrap justify-content-center align-items-center gap-2">
+                        <label htmlFor="username" className="w-6rem font-bold">Usuario</label>
+                        <InputText
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            placeholder="Ingresa tu correo"
+                        />
                     </div>
+                    <div className="flex flex-wrap justify-content-center align-items-center gap-2">
+                        <label htmlFor="password" className="w-6rem font-bold">Contraseña</label>
+                        <InputText
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            placeholder="Ingresa tu contraseña"
+                        />
+                    </div>
+                    <Button label="Iniciar Sesion" icon="pi pi-user" className="w-12rem mx-auto"/>
                 </div>
             </div>
+            {texto && <MensajeAdvertencia>{texto}</MensajeAdvertencia>}
         </form>
     )
 }
