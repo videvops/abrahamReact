@@ -149,8 +149,8 @@ const CrudProducto = ({titulos, notificaciones}) => {
         sortOrder: null,
         filters: {
             producto: { value: '', matchMode: 'contains' },
-            area: { value: '', matchMode: 'contains' },
-            planta: { value: '', matchMode: 'contains' },
+            // area: { value: '', matchMode: 'contains' },
+            // planta: { value: '', matchMode: 'contains' },
             creadoPor: { value: '', matchMode: 'contains' },
         }
     });
