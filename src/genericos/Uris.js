@@ -24,3 +24,7 @@ export const LISTADO_DE_PAROS_REPORTE = "reportes/listadoParos";
 export const ULTIMOS_PAROS = "paros/ultimosParos/linea";
 export const TOP_FIVE ="paros/topFive/linea";
 
+// CATALOGO PRODUCTOS
+export const RECUPERAR_DATOS_PRODUCTO = "productos/getById";
+export const ENVIAR_PARTE1_PRODUCTOS = "productos";
+export const ENVIAR_PARTE2_PRODUCTOS = "productos/config/velocidades";

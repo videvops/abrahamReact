@@ -3,13 +3,11 @@ import Axios from 'axios';
 import { Dialog } from 'primereact/dialog';
 import useBotones from '../../../../components/hooks/useBotones';
 
-const Desicion = ({
-    openNew,
-    setEdicion,
-    dataProducto,
-    modalDesicion,
-    setModalEditar,
-    setModalDesicion }) => {
+import { RECUPERAR_DATOS_PRODUCTO } from '../../../../genericos/Uris';
+import Environment from '../../../../Environment';
+const getRoute = Environment()
+
+const Desicion = ({ openNew, setEdicion, dataProducto, modalDesicion, setModalEditar, setModalDesicion }) => {
     //---> Destructuracion
     const { id } = dataProducto
     //---> Opcion crear registro
@@ -29,7 +27,7 @@ const Desicion = ({
     )
     useEffect(() => {
         if (modalDesicion) {
-            Axios.get(`http://localhost:8080/productos/getById/${id}`).then(res => setEdicion(res.data))
+            Axios.get(`${getRoute}/${RECUPERAR_DATOS_PRODUCTO}/${id}`).then(res => setEdicion(res.data))
         }
         // eslint-disable-next-line
     }, [modalDesicion])

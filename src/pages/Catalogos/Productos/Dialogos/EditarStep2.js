@@ -56,7 +56,6 @@ const EditarStep2 = ({ registrosEditados, setRegistrosEditados }) => {
     return (
         <div>
             <div>
-                <p>Descripcion: Galleta mini chispa chocolate 20 oz</p>
                 <DataTable value={registrosEditados} editMode="row" onRowEditComplete={onRowEditComplete} responsiveLayout="scroll">
                     <Column field="id" header="ID"  style={{ width: '20%' }}/>
                     <Column field="tipo" header="Tipo" style={{ width: '20%' }}/>

@@ -2,6 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Home from './home/Home'
 import Login from './pages/Login'
 
+//theme
+import "primereact/resources/themes/lara-light-indigo/theme.css";     
+    
+//core
+import "primereact/resources/primereact.min.css";
+
+//icons
+import "primeicons/primeicons.css"; 
+
 const App = () => {
     const [logueado, setLogueado] = useState(false)
 
