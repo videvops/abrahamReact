@@ -5,6 +5,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { MensajeAdvertencia, TextoAdvertencia } from '../../../../components/mensajes/Mensajes'
 
+import { ENVIAR_PARTE1_PRODUCTOS } from '../../../../genericos/Uris';
 import Environment from '../../../../Environment';
 const getRoute = Environment()
 
@@ -19,14 +20,14 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
     const [areasDisponibles, setAreasDisponibles] = useState([])
     useEffect(() => {
         if(product.idPlanta!==''){
-            Axios.get(getRoute+`/areas/planta/${product.idPlanta}`).then(res=>setAreasDisponibles(res.data))
+            Axios.get(getRoute + `/areas/planta/${product.idPlanta}`).then(res => setAreasDisponibles(res.data))
         }
     }, [product.idPlanta])
     //---> Lineas
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     useEffect(() => {
         if (edicion.idProducto) {
-            console.log("Es edicion")
+            // console.log("Es edicion")
             if (product.idArea !== '') {
                 Axios.get(getRoute + `/lineas/producto/area/${product.idArea}/producto/${edicion.idProducto}`).then(res => {
                     setLineasDisponibles(res.data)
@@ -34,9 +35,12 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
                 })
             }
         } else {
-            console.log("No es edicion")
+            // console.log("No es edicion")
             if (product.idArea !== '') {
-                Axios.get(getRoute + `/lineas/area/${product.idArea}`).then(res => setLineasDisponibles(res.data))
+                Axios.get(getRoute + `/lineas/area/${product.idArea}`).then(res => {
+                    console.log(res.data)
+                    setLineasDisponibles(res.data)
+                })
             }
         }// eslint-disable-next-line
     }, [product.idArea])
@@ -62,13 +66,14 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
     }
 //--------------------| Envio de datos  |--------------------
     const enviarDatos = async (datos) => {
-        const respuesta = await Axios.post(getRoute+"/productos", datos)
+        // const respuesta = await Axios.post(getRoute+"/productos", datos)
+        const respuesta = await Axios.post(`${getRoute}/${ENVIAR_PARTE1_PRODUCTOS}`, datos)
         setIdProduto(respuesta.data.id)
         setTieneMaquinas(respuesta.data.hayMaquinas)
     }
     const actualizarDatos = async (datos) => {
-        const datosEditados = await Axios.put(getRoute+`/productos/${edicion.idProducto}`, datos)
-        // console.log(datosEditados.data)
+        // const datosEditados = await Axios.put(getRoute+`/productos/${edicion.idProducto}`, datos)
+        const datosEditados = await Axios.put(`${getRoute}/${ENVIAR_PARTE1_PRODUCTOS}/${edicion.idProducto}`, datos)
         setIdProduto(datosEditados.data.id)
         setTieneMaquinas(datosEditados.data.hayMaquinas)
     }
@@ -92,12 +97,12 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
             }
         }
         if (!edicion.idProducto) {                 // No es edicion
-            console.log("Nuevo producto")
+            // console.log("Nuevo producto")
             // console.log(edicion.idProducto)
             const objetoNuevo = { producto: product.producto, idLinea: product.idLinea }
             enviarDatos(objetoNuevo)
         } else {                        // Es edicion
-            console.log("Producto Editado")
+            // console.log("Producto Editado")
             // console.log(edicion.idProducto)
             const objetoEditado = {
                 producto: product.producto,

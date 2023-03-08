@@ -4,38 +4,43 @@ import Axios from 'axios'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import { Dialog } from 'primereact/dialog'
+
+import { RECUPERAR_DATOS_PRODUCTO } from '../../../../genericos/Uris'
 import Environment from '../../../../Environment'
-const getRoute = Environment();
+const getRoute = Environment()
 
 const Crear = ({
-    m1,
-    m2,
-    titulos,
-    edicion,
-    product,
-    mostrarM1,
-    mostrarM2,
-    hideDialog,
-    updateField,
-    objetoParte2,
-    productDialog,
-    setObjetoParte2,
+    m1, m2,
+    titulos, edicion,
+    mostrarM1, mostrarM2,
+    product, productDialog,
+    hideDialog, updateField,
+    objetoParte2, setObjetoParte2,
+    setProducts, lazyState
 }) => {
     //--------------------| Crear objeto para componente 2 |--------------------
     const [tieneMaquinas, setTieneMaquinas] = useState(false)
     const [idProducto, setIdProduto] = useState({})
     const [informacion, setInformacion] = useState({})
-    //--> Obtiene informacion 
+
+    //--> Obtiene informacion parte 1
     useEffect(() => { 
         if (tieneMaquinas) {
-            Axios.get(getRoute + `/productos/getById/${idProducto}`).then((res) => setInformacion(res.data))
+            Axios.get(`${getRoute}/${RECUPERAR_DATOS_PRODUCTO}/${idProducto}`).then((res) => {
+                console.log(res.data)
+                setInformacion(res.data)
+            })
         }
         // eslint-disable-next-line
     }, [tieneMaquinas])
+
     //--> Crea tabla de componente 2
     useEffect(() => {
-        if (informacion.lineasAsignadas) {               // Tiene informacion
-            let arregloLM=[]
+        console.log(informacion)
+        // Tiene informacion
+        if (informacion.lineasAsignadas) {
+            let arregloLM = []
+            // Si no tiene informacion de las lineas
             if (!informacion.lineasAsignadas[0].config) {
                 arregloLM.push({
                     id: informacion.lineasAsignadas[0].id,
@@ -109,7 +114,11 @@ const Crear = ({
                     tieneMaquinas={tieneMaquinas}
                     setObjetoParte2={setObjetoParte2}
                     setTieneMaquinas={setTieneMaquinas}
-                    idProducto={informacion.idProducto} />
+                    idProducto={informacion.idProducto}
+
+                    lazyState={lazyState}
+                    setProducts={setProducts}
+                />
             )}
         </Dialog>
     )

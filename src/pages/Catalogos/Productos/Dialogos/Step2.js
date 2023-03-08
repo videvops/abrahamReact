@@ -7,6 +7,10 @@ import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { InputNumber } from 'primereact/inputnumber';
 
+import { ENVIAR_PARTE2_PRODUCTOS } from '../../../../genericos/Uris';
+import Environment from '../../../../Environment';
+const getRoute = Environment()
+
 const Step2 = ({
     mostrarM1,
     hideDialog,
@@ -15,6 +19,7 @@ const Step2 = ({
     tieneMaquinas,
     setObjetoParte2,
     setTieneMaquinas,
+    setProducts, lazyState
 }) => {
 //--------------------| Editar tabla  |--------------------
     //---> Funcion principal
@@ -65,9 +70,10 @@ const Step2 = ({
 //--------------------| Envio de datos  |--------------------
     const enviarParte2 = () => {
         const objetoEnviar = { idProducto: idProducto, config: objetoParte2 }
-        Axios.post("http://localhost:8080/productos/config/velocidades", objetoEnviar)
-        console.log("Datos enviados")
-        console.log(objetoEnviar)
+        // Axios.post("http://localhost:8080/productos/config/velocidades", objetoEnviar)
+        Axios.post(`${getRoute}/${ENVIAR_PARTE2_PRODUCTOS}`, objetoEnviar)
+        console.log("Datos enviados", objetoEnviar)
+        Axios.post(`${getRoute}/productos/table/filter`, lazyState).then(res=>setProducts(res.data.registros))
         hideDialog()
     }
 
