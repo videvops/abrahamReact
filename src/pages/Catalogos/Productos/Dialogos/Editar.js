@@ -7,6 +7,7 @@ import EditarStep2 from './EditarStep2'
 import { Dialog } from 'primereact/dialog'
 import { MensajeAdvertencia } from '../../../../components/mensajes/Mensajes'
 
+import { ENVIAR_PARTE2_PRODUCTOS } from '../../../../genericos/Uris'
 import Environment from '../../../../Environment'
 const getRoute = Environment()
 
@@ -34,9 +35,8 @@ const Editar = ({ modalEditar, setModalEditar, edicion, actualizarEdicion, setEd
     //--> Registros tabla 
     useEffect(() => {
         if (lineaSeleccionada) {
-            const datosLinea = edicion.lineasAsignadas.filter(linea => linea.id===lineaSeleccionada)
+            const datosLinea = edicion.lineasAsignadas.filter(linea => linea.id === lineaSeleccionada)
             let arregloLM=[]
-            // console.log(datosLinea)
             if (!datosLinea[0].config) {
                 arregloLM.push({
                     id: datosLinea[0].id,
@@ -86,7 +86,8 @@ const Editar = ({ modalEditar, setModalEditar, edicion, actualizarEdicion, setEd
 
     const enviarParte2 = () => {
         const objetoEnviar = { idProducto: edicion.idProducto, config: registrosEditados }
-        Axios.put(getRoute + "/productos/config/velocidades", objetoEnviar)
+        // Axios.put(getRoute + "/productos/config/velocidades", objetoEnviar)
+        Axios.put(`${getRoute}/${ENVIAR_PARTE2_PRODUCTOS}`, objetoEnviar)
         console.log("Datos enviados")
         console.log(objetoEnviar)
         cerrarTodo()

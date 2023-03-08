@@ -4,16 +4,19 @@ import Axios from 'axios'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import { Dialog } from 'primereact/dialog'
+
+import { RECUPERAR_DATOS_PRODUCTO } from '../../../../genericos/Uris'
 import Environment from '../../../../Environment'
-const getRoute = Environment();
+const getRoute = Environment()
 
 const Crear = ({
-    m1,m2,
-    titulos,edicion,
-    mostrarM1,mostrarM2,
-    product,productDialog,
-    hideDialog,updateField,
-    objetoParte2,setObjetoParte2,
+    m1, m2,
+    titulos, edicion,
+    mostrarM1, mostrarM2,
+    product, productDialog,
+    hideDialog, updateField,
+    objetoParte2, setObjetoParte2,
+    setProducts, lazyState
 }) => {
     //--------------------| Crear objeto para componente 2 |--------------------
     const [tieneMaquinas, setTieneMaquinas] = useState(false)
@@ -23,7 +26,7 @@ const Crear = ({
     //--> Obtiene informacion parte 1
     useEffect(() => { 
         if (tieneMaquinas) {
-            Axios.get(getRoute + `/productos/getById/${idProducto}`).then((res) => {
+            Axios.get(`${getRoute}/${RECUPERAR_DATOS_PRODUCTO}/${idProducto}`).then((res) => {
                 console.log(res.data)
                 setInformacion(res.data)
             })
@@ -33,9 +36,11 @@ const Crear = ({
 
     //--> Crea tabla de componente 2
     useEffect(() => {
+        console.log(informacion)
         // Tiene informacion
         if (informacion.lineasAsignadas) {
-            let arregloLM=[]
+            let arregloLM = []
+            // Si no tiene informacion de las lineas
             if (!informacion.lineasAsignadas[0].config) {
                 arregloLM.push({
                     id: informacion.lineasAsignadas[0].id,
@@ -48,20 +53,13 @@ const Crear = ({
                 })
             } else {
                 arregloLM.push({
-                    // id: informacion.lineasAsignadas[0].id,
-                    // tipo: "linea",
-                    // nombre: informacion.lineasAsignadas[0].linea,
-                    // velocidadEstandar: informacion.lineasAsignadas[0].config.velocidadEstandar,
-                    // factorConversionI: informacion.lineasAsignadas[0].config.factorConversionI,
-                    // factorConversionO: informacion.lineasAsignadas[0].config.factorConversionO,
-                    // habilitado:`${informacion.lineasAsignadas[0].config.habilitado}`
-                    id: product.idLinea,
+                    id: informacion.lineasAsignadas[0].id,
                     tipo: "linea",
-                    nombre: "linea",
-                    velocidadEstandar: 0,
-                    factorConversionI: 0,
-                    factorConversionO: 0,
-                    habilitado:"false"
+                    nombre: informacion.lineasAsignadas[0].linea,
+                    velocidadEstandar: informacion.lineasAsignadas[0].config.velocidadEstandar,
+                    factorConversionI: informacion.lineasAsignadas[0].config.factorConversionI,
+                    factorConversionO: informacion.lineasAsignadas[0].config.factorConversionO,
+                    habilitado:`${informacion.lineasAsignadas[0].config.habilitado}`
                 })
             }
             //--> Si hay maquinas configuradas
@@ -116,7 +114,11 @@ const Crear = ({
                     tieneMaquinas={tieneMaquinas}
                     setObjetoParte2={setObjetoParte2}
                     setTieneMaquinas={setTieneMaquinas}
-                    idProducto={informacion.idProducto} />
+                    idProducto={informacion.idProducto}
+
+                    lazyState={lazyState}
+                    setProducts={setProducts}
+                />
             )}
         </Dialog>
     )

@@ -299,7 +299,11 @@ const CrudProducto = ({titulos, notificaciones}) => {
                 updateField={updateField}
                 objetoParte2={objetoParte2}
                 productDialog={productDialog}
-                setObjetoParte2={setObjetoParte2} />
+                setObjetoParte2={setObjetoParte2}
+                
+                lazyState={lazyState}
+                setProducts={setProducts}
+            />
 
             <Desicion
                 openNew={openNew}
