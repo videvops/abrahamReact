@@ -2,7 +2,7 @@ import React from "react";
 import GaugeChart from "react-gauge-chart"
 
 const Tacometros = ({data}) =>{
-    
+    console.log(data)
     if(Object.entries(data).length === 0){
         return (
             <div className="col-12 md:col-12 grid p-fluid">
@@ -16,6 +16,7 @@ const Tacometros = ({data}) =>{
                 <div className="col-12 md:col-12 grid p-fluid">
                     <div className="col-12 md:col-4">
                         <GaugeChart id="gauge-chart1" 
+                            animate={false} 
                             nrOfLevels={420}
                             arcsLength={[0.6, 0.4]}
                             arcWidth={.3}
@@ -29,6 +30,7 @@ const Tacometros = ({data}) =>{
                     </div>
                     <div className="col-12 md:col-4">
                         <GaugeChart id="gauge-chart1" 
+                            animate={false} 
                             nrOfLevels={420}
                             arcsLength={[0.7, 0.3]}
                             arcWidth={.3}
@@ -42,6 +44,7 @@ const Tacometros = ({data}) =>{
                     </div>
                     <div className="col-12 md:col-4">
                         <GaugeChart id="gauge-chart1" 
+                            animate={false} 
                             nrOfLevels={420}
                             arcsLength={[0.7, 0.3]}
                             arcWidth={.3}
@@ -57,6 +60,7 @@ const Tacometros = ({data}) =>{
                 <div className="col-12 md:col-12 grid p-fluid flex align-items-center justify-content-center ">
                     <div className="col-12 md:col-4">
                         <GaugeChart id="gauge-chart1" 
+                            animate={false} 
                             nrOfLevels={420}
                             arcsLength={[0.7, 0.3]}
                             arcWidth={.3}
@@ -70,6 +74,7 @@ const Tacometros = ({data}) =>{
                     </div>
                     <div className="col-12 md:col-4">
                         <GaugeChart id="gauge-chart1" 
+                            animate={false} 
                             nrOfLevels={420}
                             arcsLength={[0.7, 0.3]}
                             arcWidth={.3}
