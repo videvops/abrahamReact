@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import CabezalListParos from './Cabezal/CabezalDesperdicio'
+import CabezalListParos from './Cabezal/CabezalDesperdicio';
 import TablaDesperdicio from './Tabla/TablaDesperdicio';
 import { SelectButton } from 'primereact/selectbutton';
+import Spinner from '../loader/Spinner';
 
-import DesperdicioLinea from '../../components/graficas/barChartDesperdicio/DesperdicioLinea'
-import DesperdicioMaquina from '../../components/graficas/barChartDesperdicio/DesperdicioMaquina'
+import DesperdicioLinea from '../../components/graficas/barChartDesperdicio/DesperdicioLinea';
+import DesperdicioMaquina from '../../components/graficas/barChartDesperdicio/DesperdicioMaquina';
+import { SelecconaFiltros } from '../mensajes/Mensajes';
 
 const Desperdicio = () => {
     
@@ -41,39 +43,52 @@ const Desperdicio = () => {
             tablaDesp.style.display ='inline'; 
         break;
     }
-
-//--------------------| Valor que regresara  |--------------------
     return (
         <div>
             <CabezalListParos 
-                setRegistros={setRegistros}
-                setChartFiltros={setChartFiltros}
-                setIsLoading ={setIsLoading}
-            />         
-            <div className='col-12 md:col-12 grid p-fluid'>
-                <SelectButton className='col-12 md:col-12 grid p-fluid'
-                    options={headers} 
-                    onChange={(e) => setVal(e.value)}
-                />
-            </div>
-            <div className='col-12 md:col-12 grid p-fluid' id='despLineaDiv' style={{display:'inline'}}>
-                <DesperdicioLinea
-                    filtros = {chartFiltros}
-                />
-            </div>
-            <div className='col-12 md:col-12 grid p-fluid' id='despMaquinaDiv' style={{display:'none'}}>
-                <DesperdicioMaquina
-                    filtros = {chartFiltros}
-                />
-            </div>             
-            <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
-                <TablaDesperdicio 
-                    registros={registros}
-                    isLoading={isLoading} 
-                 />
-            </div> 
+            setRegistros={setRegistros}
+            setChartFiltros={setChartFiltros}
+            setIsLoading ={setIsLoading}
+            />  
+            {registros.length > 0? (
+                <>
+                    {isLoading ? (
+                        <Spinner />
+                    ):(
+                        <>
+                            <div className='col-12 md:col-12 grid p-fluid'>
+                                <SelectButton className='col-12 md:col-12 grid p-fluid'
+                                    options={headers} 
+                                    onChange={(e) => setVal(e.value)}
+                                />
+                            </div>
+                            <div className='col-12 md:col-12 grid p-fluid' id='despLineaDiv' style={{display:'inline'}}>
+                                <DesperdicioLinea
+                                    filtros = {chartFiltros}
+                                />
+                            </div>
+                            <div className='col-12 md:col-12 grid p-fluid' id='despMaquinaDiv' style={{display:'none'}}>
+                                <DesperdicioMaquina
+                                    filtros = {chartFiltros}
+                                />
+                            </div>             
+                            <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
+                                <TablaDesperdicio 
+                                    registros={registros}
+                                    isLoading={isLoading} 
+                                />
+                            </div>
+                        </>
+                    ) }
+                </>
+            ):(
+                <SelecconaFiltros categoria="desperdicios" />
+            )}
         </div>
-    )
+        )
+    
+
+
 }
 
 const comparisonFn = function (prevProps, nextProps) {

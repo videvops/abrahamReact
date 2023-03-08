@@ -4,96 +4,83 @@ import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { formatearFecha } from '../helpers/funciones'
- import { MensajeFiltro } from '../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
- import { Dropdown } from 'primereact/dropdown'
- import Environment from "../../Environment";
- import {LineaService} from "../../service/LineaService"
+import { MensajeFiltro } from '../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
+import { Dropdown } from 'primereact/dropdown'
+import Environment from "../../Environment";
 
-export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosParos,setFiltroTacometro,setDataTacometro}) => {
+// URIS
+ import { ULTIMOS_PAROS,TOP_FIVE,PLANTAS_GET_COMBO,PLANTAS_AREAS,LINEAS_AREAS } from '../../genericos/Uris';
 
-//--------------------| MultiSelect de Plantas  |--------------------
-    //---> Obtener registros de back-end
+export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosParos,setIsLoading}) => {
+
+
     const getRoute = Environment();
-    const lineaService = new LineaService();
 
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
         const cargarPlantas = async () => {
-            const respuesta = await Axios.get(`${getRoute}/plantas/list`)
+            const respuesta = await Axios.get(`${getRoute}/${PLANTAS_GET_COMBO}`)
             setPlantasDisponibles(respuesta.data)
         }
         cargarPlantas()
     }, [])
-    //---> Lista de plantas seleccionadas
     const [plantas, setPlantas] = useState([])
 
-//--------------------| MultiSelect de Areas  |--------------------
-    //---> Obtener registros de back-end
+
     const [areasDisponibles, setAreasDisponibles] = useState([])
     const obtenerAreas = async () => {
         let plantasArr = [plantas]
-        const respuesta = await Axios.post(`${getRoute}/areas/plantas`, plantasArr)
+        const respuesta = await Axios.post(`${getRoute}/${PLANTAS_AREAS}`, plantasArr)
         setAreasDisponibles(respuesta.data)
     }
-    //---> Lista de areas seleccionados
     const [areas, setAreas] = useState([])
 
-//--------------------| MultiSelect de Lineas  |--------------------
-    //---> Obtener registros de back-end
+
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     const obtenerLineas = async () => {
         let areasArr = [areas]
-        const respuesta = await Axios.post(`${getRoute}/lineas/areas`, areasArr)
+        const respuesta = await Axios.post(`${getRoute}/${LINEAS_AREAS}`, areasArr)
         setLineasDisponibles(respuesta.data)
     }
-    //---> Lista de lineas seleccionadas
     const [lineas, setLineas] = useState([])
 
-//--------------------| Campo para fecha con horas  |--------------------
     const [fechaInicio, setFechaInicio] = useState(null)
     const [fechaFin, setFechaFin] = useState(null)
 
-//--------------------| Funciones para filtro  |--------------------
-    const [dialogo, setDialogo] = useState(false)              // Para mostrar dialogo
+    const [dialogo, setDialogo] = useState(false)             
     const [esValido, setEsValido] = useState(true)
 
-    //---> Enviar datos de back-end a otro componente
-    const enviarDatos = async (datos) => {
-        const urlUltimosParos =`${getRoute}/paros/ultimosParos/linea/${datos.linea}`
-        const urlTopFive = `${getRoute}/paros/topFive/linea/${datos.linea}`
-        const respuestaUltimosParos = await Axios.post(urlUltimosParos, datos)
-        const respuestaTopFive = await Axios.post(urlTopFive,datos)
-        if(Object.entries(respuestaUltimosParos.data).length >0){
-            setFiltroTacometro(datos)
-            setRegistrosUltimosParos(respuestaUltimosParos.data)
-            setRegistrosTopFive(respuestaTopFive.data)
-        }
+    const enviarDatos = (datos) => {
+        setIsLoading(true)
+        setRegistrosUltimosParos([{}])
+        const urlUltimosParos =`${getRoute}/${ULTIMOS_PAROS}/${datos.linea}`
+        const urlTopFive = `${getRoute}/${TOP_FIVE}/${datos.linea}`
+        Axios.post(urlUltimosParos, datos).then( res =>{
+            setRegistrosUltimosParos(res.data)
+            Axios.post(urlTopFive,datos). then(res => {
+                setRegistrosTopFive(res.data)
+                setIsLoading(false)
+            }).catch(e => console.log(e))
+        }).catch(e=> console.log(e))
+
     }
-    const enviarTacometros = async (datos) =>{
-        const urlDataTacometro = `${getRoute}/indicadores/linea/${datos.linea}`
-        const respuestaTacometros = await Axios.post(urlDataTacometro,datos)
-        setDataTacometro(respuestaTacometros.data)    
-    }
-    
-    //---> Validara antes de mandar el filtro
+
     const enviarFiltro = () => {
         if (lineas.length < 1 || plantas.length < 1 || areas.length < 1 || [fechaInicio, fechaFin].includes(null)) {
             setEsValido(false)
             setTimeout(() => {
                 setEsValido(true)
             }, 2500);
-            return;                                                     // No permite avanzar
+            return;                                                     
         }
         const nuevaFechaInicio = formatearFecha(fechaInicio)
         const nuevaFechaFin = formatearFecha(fechaFin)
         const objeto = { linea:lineas, fechaInicio: nuevaFechaInicio, fechaFin: nuevaFechaFin }
         enviarDatos(objeto)
-        const objeto2 = {linea:lineas, fechaInc:nuevaFechaInicio, fechaFin :nuevaFechaFin}
-        enviarTacometros(objeto2)
         setEsValido(true)
         setDialogo(false)
     }
-    //---> Limpiara los filtros
+    
     const cancelarFiltro=()=>{
         setPlantas([])
         setAreas([])
@@ -103,7 +90,7 @@ export const FiltroMonitorDeParos = ({ setRegistrosTopFive,setRegistrosUltimosPa
         setEsValido(true)
         setDialogo(false)
     }
-    //---> Botones para filtro
+
     const botonesAccion = () => {
         return (
             <div>

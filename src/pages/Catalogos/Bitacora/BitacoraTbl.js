@@ -7,9 +7,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import {Service} from "../../../service/Service";
-import {BITACORA_POST_TABLE_FILTER} from "../../../genericos/Uris"
-import {BITACORA_POST_FILTER} from "../../../genericos/Uris"
-import {BITACORA_REPORTE} from "../../../genericos/Uris"
+import {BITACORA_POST_TABLE_FILTER,BITACORA_POST_FILTER,BITACORA_REPORTE} from "../../../genericos/Uris";
 import Spinner from '../../../components/loader/Spinner';
 import DialogCustom from "./DialogCustom";
 import { Toolbar } from 'primereact/toolbar';
@@ -33,7 +31,7 @@ const BitacoraTbl = () =>{
     const [lazyParams, setLazyParams] = useState({
         first: 1,
         rows: 10,
-        page: 0,
+        page: 1,
         sortField: null,
         sortOrder: null,
         filters: {
@@ -52,7 +50,7 @@ const BitacoraTbl = () =>{
 
 
     useEffect(() => {
-        console.log("bitacora")
+        // console.log("bitacora")
         loadLazyData();
     },[lazyParams]);
 
@@ -65,7 +63,7 @@ const BitacoraTbl = () =>{
         setFechaFinAux(request.fechaFin)
         setIdPlanta(request.idPlanta)
         let bodyBitacora = {
-           "page":0,
+           "page":1,
            "total":10,
            "fechaInc": request.fechaInicio,
            "fechaFin": request.fechaFin,
@@ -95,7 +93,7 @@ const BitacoraTbl = () =>{
      }
 
     const  loadLazyData =  () => {
-        console.log(" loadLazyData useeffect")
+        // console.log(" loadLazyData useeffect")
         setLoading(true)
         if (loadLazyTimeout) {
             clearTimeout(loadLazyTimeout);
@@ -103,11 +101,11 @@ const BitacoraTbl = () =>{
 
         //imitate delay of a backend call
         loadLazyTimeout = setTimeout(async () => {
-            console.log("lazy request sending")
+            // console.log("lazy request sending")
             lazyParams.fechaInc = fechaIncAux;
             lazyParams.fechaFin = fechaFinAux;
             lazyParams.idPlanta = idPlanta;
-            console.log('lazyparams after adding dates')
+            // console.log('lazyparams after adding dates')
             console.log(lazyParams)
             try{
                  

@@ -28,9 +28,10 @@ const TablaListParos = ({ filtro }) => {
     const [fechaFinAux, setFechaFinAux] = useState();
     const [idPlanta, setIdPlanta] = useState();
     const [lazyParams, setLazyParams] = useState({
+        total:0,
         first: 1,
         rows: 10,
-        page: 0,
+        page: 1,
         sortField: null,
         sortOrder: null,
         filters: {
@@ -47,7 +48,7 @@ const TablaListParos = ({ filtro }) => {
     let loadLazyTimeout = null;
 
     useEffect(() => {
-        console.log("ejecutar")
+        // console.log("ejecutar")
         loadLazyData();
     },[lazyParams,filtro]);
 
@@ -58,15 +59,17 @@ const TablaListParos = ({ filtro }) => {
         setFechaIncAux(request.fechaInicio)
         setFechaFinAux(request.fechaFin)
         setIdPlanta(request.idPlanta)
+        console.log("request")
+        console.log(request)
         let bodyParosList = {
-           "page":0,
+           "page":1,
            "total":10,
            "fechaInc": request.fechaInicio,
            "fechaFin": request.fechaFin,
-           "idPlanta": request.idPlanta
+           "idMaquinas": request.idPlanta
            
        }
-        serviceParosList.baseUrl=serviceParosList.baseUrl+LISTADO_DE_PAROS_POST_FILTER
+        serviceParosList.baseUrl=serviceParosList.baseUrl+LISTADO_DE_PAROS_POST_TABLE_FILTER
         if(!(request.from==="button")){
             bodyParosList.page=request.page
             bodyParosList.total=request.rows
@@ -86,7 +89,7 @@ const TablaListParos = ({ filtro }) => {
      }
 
     const  loadLazyData =  () => {
-        setLoading(true)
+        // setLoading(true)
         if (loadLazyTimeout) {
             clearTimeout(loadLazyTimeout);
         }
@@ -97,6 +100,7 @@ const TablaListParos = ({ filtro }) => {
             try{
                 serviceParosList.baseUrl=serviceParosList.baseUrl+LISTADO_DE_PAROS_POST_FILTER
                 const JSobj = JSON.parse(JSON.stringify(lazyParams));
+                console.log(JSobj)
                 const data = await serviceParosList.create(JSobj);
                 getBitacora(data)
                 setLoading(false)
@@ -127,7 +131,7 @@ const TablaListParos = ({ filtro }) => {
 
     const getBitacora = (data)=>{
 
-        console.log("printing from parent")
+       console.log("printing from parent")
        console.log(data);
        setBitacoraList([]);
        if(data.bitacora!=null){
@@ -225,7 +229,7 @@ const TablaListParos = ({ filtro }) => {
         const registros =[{}]
         return (
             <div>
-                {loading ? (
+                {!loading ? (
                     <Spinner/>
                 ):(
                     <>

@@ -1,14 +1,13 @@
 import React from 'react'
 import { Column } from "primereact/column";
 import TablaDesing from "../UI/DiseñoTabla"
-import { CardTabla , CardGeneral } from "../UI/Cards"
+import { CardTabla , CardGeneral } from "../UI/Cards";
 
 const TablaMayorImpacto = ({registros}) => {
+    
     if(Object.entries(registros).length === 0){
         return (
-            <div className="col-12 md:col-12 grid p-fluid">
-                <h3>No hay informacion disponible</h3>
-            </div>
+            <></>
         )
     }else{
         return (
