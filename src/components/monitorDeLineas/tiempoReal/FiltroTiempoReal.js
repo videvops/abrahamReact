@@ -21,7 +21,6 @@ const FiltroTiempoReal = () => {
     const [areasDb, setAreasDb] = useState([]);
     const [lineasDb, setLineasDb] = useState([]);
 
-
     useEffect(() => {plantaService.readAll().then(res=>{setPlantasDb(res)}).catch((e)=>{console.error(e)})},[])
 
     useEffect(() => {
@@ -43,10 +42,6 @@ const FiltroTiempoReal = () => {
             console.error(e)
         })
     },[selectedArea])
-
-
-
-
 
     const T_ACTUAL="TURNO_ACTUAL";
     const ULT_HORA="ULTIMA_HORA";
