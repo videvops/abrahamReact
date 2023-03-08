@@ -5,6 +5,8 @@ import { SelectButton } from 'primereact/selectbutton';
 
 import BarChartTiempoMuertoGrafica from "../graficas/barChartTiempoMuerto/BarChartTiempoMuertoGrafica"
 import BarChartModoFallaGrafica from '../graficas/barChartModosFalla/BarChartModoFallaGrafica';
+import Spinner from '../loader/Spinner';
+import { SelecconaFiltros } from '../mensajes/Mensajes';
 
 
 const ListadoParos = () => {
@@ -48,27 +50,40 @@ const ListadoParos = () => {
             <CabezalListParos 
                 setChartFiltros={setChartFiltros}
             />
-            <div className='col-12 md:col-12 grid p-fluid'>
-                <SelectButton className='col-12 md:col-12 grid p-fluid'
-                    options={headers} 
-                    onChange={(e) => setValue(e.value)}
-                />
-            </div>
-            <div className='col-12 md:col-12 grid p-fluid' id='modoFallaDiv' style={{display:'inline'}}>
-                <BarChartModoFallaGrafica
-                    filtros = {chartFiltros}
-                />
-            </div>
-            <div className='col-12 md:col-12 grid p-fluid' id='tiempoMuertoDiv' style={{display:'none'}}>
-                <BarChartTiempoMuertoGrafica
-                    filtros = {chartFiltros}
-                />
-            </div>             
-            <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
-                <TablaListParos 
-                    filtro={chartFiltros}
-                />
-            </div>
+            {registros.length >0 ? (
+                <>
+                    {isLoading ? (
+                        <Spinner/>
+                    ):(
+                        <>
+                            <div className='col-12 md:col-12 grid p-fluid'>
+                                <SelectButton className='col-12 md:col-12 grid p-fluid'
+                                    options={headers} 
+                                    onChange={(e) => setValue(e.value)}
+                                />
+                            </div>
+                            <div className='col-12 md:col-12 grid p-fluid' id='modoFallaDiv' style={{display:'inline'}}>
+                                <BarChartModoFallaGrafica
+                                    filtros = {chartFiltros}
+                                />
+                            </div>
+                            <div className='col-12 md:col-12 grid p-fluid' id='tiempoMuertoDiv' style={{display:'none'}}>
+                                <BarChartTiempoMuertoGrafica
+                                    filtros = {chartFiltros}
+                                />
+                            </div>             
+                            <div className='col-12 md:col-12 grid p-fluid' id='tablaDiv' style={{display:'none'}}>
+                                <TablaListParos 
+                                    filtro={chartFiltros}
+                                />
+                            </div>
+                        </>
+                    )}
+                </>
+            ):(
+                <SelecconaFiltros categoria="listado de paros"/>
+            )}
+            
         </div>
     )
 }

@@ -36,8 +36,8 @@ export const SelecconaFiltros = ({ categoria }) => {
     return (
         <div className="card">
             <h5 className="uppercase text-center">Sin registros.</h5>
-            <p className="text-lg">Lo sentimos, la tabla no cuenta con {categoria} todavia.</p>
-            <p className="text-lg">Modifique los filtros o ingrese al menos un registro.</p>
+            <p className="text-lg">Lo sentimos, la tabla no cuenta con registros de {categoria} todavía o los filtros seleccionados no son válidos.</p>
+            <p className="text-lg">Modifique los filtros o ingrese información.</p>
         </div>
     )
 }
@@ -46,7 +46,7 @@ export const TablaVacia = ({ categoria }) => {
     return (
         <div className="card">
             <h5 className="uppercase text-center">Sin registros.</h5>
-            <p className="text-lg">Lo sentimos, la tabla no cuenta con {categoria} todavia.</p>
+            <p className="text-lg">Lo sentimos, la tabla no cuenta con {categoria} todavía.</p>
             <p className="text-lg">Ingrese al menos un registro.</p>
         </div>
     )

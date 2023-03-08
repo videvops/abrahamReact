@@ -1,14 +1,11 @@
 import React from "react";
 import Iframe from 'react-iframe'
 import {getDateSplitted,getStringData} from "../../helpers/funciones"
-import { SelecconaFiltros } from '../../mensajes/Mensajes';
 
 const DesperdicioMaquina = ({filtros}) => {
 
     if(Object.entries(filtros).length === 0){
-        return(<SelecconaFiltros 
-            categoria="desperdicios"
-        />)
+        return(<></>)
     }else{
         const strMaquinas = getStringData(filtros.maquinas)
         const fechaInicio = getDateSplitted(filtros.fechaInc);
