@@ -7,10 +7,13 @@ import { LineaService } from "../../../service/LineaService";
 import Axios from "axios";
 import Spinner from "../../loader/Spinner";
 import { SelecconaFiltros } from "../../mensajes/Mensajes";
+import {TimeToReload} from  "../../../Environment"
 
 const Consultas =  ({filtros}) =>{
+
     const lineaService = new LineaService ();
     const getRoute = Environment ();
+    const timeToReload = TimeToReload();
     const [nombreLinea,setNombreLinea] = useState("")
     const [indicador, setIndicador] = useState("");
 
@@ -78,7 +81,7 @@ const Consultas =  ({filtros}) =>{
         timeoutID.current = setTimeout(()=>{
             setReload(Date.now()) 
             setIsLoading(false)   
-        },2000)
+        },timeToReload)
         getData();
         return () => {
             clearTimeout(timeoutID.current)
