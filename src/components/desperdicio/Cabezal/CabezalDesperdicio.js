@@ -9,8 +9,8 @@ import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/M
 import Environment from "../../../Environment";
 import { Toast } from 'primereact/toast';
 import {Service} from "../../../service/Service";
-import {DESPERDICIO_REPORTE} from "../../../genericos/Uris"
-import Spinner from '../../../components/loader/Spinner';
+import {DESPERDICIO_REPORTE} from "../../../genericos/Uris";
+import { PLANTAS_GET_COMBO,PLANTAS_AREAS,LINEAS_AREAS,MAQUINAS_GET_COMBO,DESPERDICIO_TABLE} from '../../../genericos/Uris'
 
 const CabezalDesperdicio = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     
@@ -24,7 +24,7 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
         const cargarPlantas = async () => {
-            const respuesta = await Axios.get(`${getRoute}/plantas/list`)
+            const respuesta = await Axios.get(`${getRoute}/${PLANTAS_GET_COMBO}`)
             setPlantasDisponibles(respuesta.data)
         }
         cargarPlantas()
@@ -36,7 +36,7 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     //---> Obtener registros de back-end
     const [areasDisponibles, setAreasDisponibles] = useState([])
     const obtenerAreas = async () => {
-        const respuesta = await Axios.post(`${getRoute}/areas/plantas`, plantas)
+        const respuesta = await Axios.post(`${getRoute}/${PLANTAS_AREAS}`, plantas)
         setAreasDisponibles(respuesta.data)
     }
     //---> Lista de areas seleccionados
@@ -46,7 +46,7 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     //---> Obtener registros de back-end
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     const obtenerLineas = async () => {
-        const respuesta = await Axios.post(`${getRoute}/lineas/areas`, areas)
+        const respuesta = await Axios.post(`${getRoute}/${LINEAS_AREAS}`, areas)
         setLineasDisponibles(respuesta.data)
     }
     //---> Lista de lineas seleccionadas
@@ -56,7 +56,7 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     //---> Obtener registros de back-end
     const [maquinasDisponibles, setMaquinasDisponibles] = useState([])
     const obtenerMaquinas = async () => {
-        const respuesta = await Axios.post(`${getRoute}/maquinas/list`, lineas)
+        const respuesta = await Axios.post(`${getRoute}/${MAQUINAS_GET_COMBO}`, lineas)
         setMaquinasDisponibles(respuesta.data)
     }
     //---> Lista de lineas seleccionadas
@@ -71,8 +71,9 @@ const CabezalDesperdicio = ({ setRegistros, setChartFiltros,setIsLoading }) => {
     const [esValido, setEsValido] = useState(true)
     //---> Enviar datos de back-end a otro componente
     const enviarDatos = async (datos) => {
+        setIsLoading(true)
         setRegistros([{data:"data"}])
-        await Axios.post(`${getRoute}/desperdicio/table/rechazos`,datos).then(res =>{
+        await Axios.post(`${getRoute}/${DESPERDICIO_TABLE}`,datos).then(res =>{
             setRegistros(res.data)
             setChartFiltros(datos)
             setIsLoading(false)

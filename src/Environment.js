@@ -4,7 +4,10 @@ const AZURE_URL = "https://backendublick.azurewebsites.net";
 
 const Environment = ()=>{
     return AZURE_URL;
-    //return LOCAL_URL
+}
+
+export const TimeToReload =() => {
+    return 6000;
 }
 
 export default Environment;

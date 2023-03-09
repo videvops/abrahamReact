@@ -7,10 +7,14 @@ import { LineaService } from "../../../service/LineaService";
 import Axios from "axios";
 import Spinner from "../../loader/Spinner";
 import { SelecconaFiltros } from "../../mensajes/Mensajes";
+import {TimeToReload} from  "../../../Environment";
+import { ULTIMOS_PAROS,TOP_FIVE,INDICADORES_MONITOR_LINEA,GET_FECHAS_FOR_LIVE_SCREEN} from "../../../genericos/Uris";
 
 const Consultas =  ({filtros}) =>{
+
     const lineaService = new LineaService ();
     const getRoute = Environment ();
+    const timeToReload = TimeToReload();
     const [nombreLinea,setNombreLinea] = useState("")
     const [indicador, setIndicador] = useState("");
 
@@ -27,9 +31,9 @@ const Consultas =  ({filtros}) =>{
             indicador:tag
         }
         try{
-            // const res = await Axios.post(`${getRoute}/utilerias/getFechasForLiveScreen`,objIntervalos);
+            const res = await Axios.post(`${getRoute}/${GET_FECHAS_FOR_LIVE_SCREEN}`,objIntervalos);
             const obj = {
-                fechaInicio:"2022-11-20 08:01:00",//res.data.fechaInicio
+                fechaInicio:"2022-11-21 08:01:00",//res.data.fechaInicio
                 fechaFin:"2022-11-26 17:00:34",//res.data.fechaFin,
                 linea:id
             }
@@ -63,9 +67,9 @@ const Consultas =  ({filtros}) =>{
     let urlTacometros="";
 
     if(Object.entries(datosDeConsulta).length > 0){
-        urlUltimosParos =`${getRoute}/paros/ultimosParos/linea/${datosDeConsulta.linea}`;
-        urlTopFive = `${getRoute}/paros/topFive/linea/${datosDeConsulta.linea}`;
-        urlTacometros=`${getRoute}/indicadores/monitor/linea/${datosDeConsulta.linea}`;
+        urlUltimosParos =`${getRoute}/${ULTIMOS_PAROS}/${datosDeConsulta.linea}`;
+        urlTopFive = `${getRoute}/${TOP_FIVE}/${datosDeConsulta.linea}`;
+        urlTacometros=`${getRoute}/${INDICADORES_MONITOR_LINEA}/${datosDeConsulta.linea}`;
     }
 
     useEffect(()=>{
@@ -78,7 +82,7 @@ const Consultas =  ({filtros}) =>{
         timeoutID.current = setTimeout(()=>{
             setReload(Date.now()) 
             setIsLoading(false)   
-        },2000)
+        },timeToReload)
         getData();
         return () => {
             clearTimeout(timeoutID.current)

@@ -4,8 +4,24 @@ import { SelecconaFiltros } from "../mensajes/Mensajes";
 
 const Tacometros = ({data}) =>{
 
-    const metaInferior =(1-(data.meta/100));
-    const metaSuperior = 1-metaInferior;
+    let metaInferior=0.0;
+    let metaSuperior=0.0;
+    let oee =0.0;
+    let eficiencia =0.0;
+    let disponibilidad =0.0;
+    let rendimiento =0.0;
+    let calidad = 0.0;
+
+    if (data!== undefined){
+        metaInferior =(1-(data.meta/100));
+        metaSuperior = 1-metaInferior;
+        oee=Number(parseFloat(data.oee).toFixed(3));
+        eficiencia=Number(parseFloat(data.eficiencia).toFixed(3));
+        disponibilidad=Number(parseFloat(data.disponibilidad).toFixed(3));
+        rendimiento=Number(parseFloat(data.rendimiento).toFixed(3));
+        calidad=Number(parseFloat(data.calidad).toFixed(3));
+    }
+
     
     if(Object.entries(data).length === 0){
         return (
@@ -27,8 +43,8 @@ const Tacometros = ({data}) =>{
                             arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#cc3300','#99cc33']}
-                            percent={data.oee}
+                            colors={['#cc3300','#36802d']}
+                            percent={oee}
                             marginInPercent={.012}
                             arcPadding={0.02}
                         />
@@ -41,8 +57,8 @@ const Tacometros = ({data}) =>{
                             arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#cc3300','#99cc33']}
-                            percent={data.disponibilidad}
+                            colors={['#cc3300','#36802d']}
+                            percent={disponibilidad}
                             marginInPercent={.012}
                             arcPadding={0.02}
                         />
@@ -55,30 +71,15 @@ const Tacometros = ({data}) =>{
                             arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#cc3300','#99cc33']}
-                            percent={data.rendimiento}
+                            colors={['#cc3300','#36802d']}
+                            percent={rendimiento}
                             marginInPercent={.012}
                             arcPadding={0.02}
                         />
                         <h3>Rendimiento</h3>
                     </div>             
                 </div>
-                <div className="col-12 md:col-12 grid p-fluid flex align-items-center justify-content-center ">
-                    <div className="col-12 md:col-4">
-                        <GaugeChart id="gauge-chart1" 
-                            animate={false} 
-                            nrOfLevels={420}
-                            arcsLength={[1]}
-                            arcWidth={.3}
-                            textColor={"#000000"}
-                            colors={['#ff9966']}
-                            percent={data.produtoTerminado/100 }
-                            formatTextValue={ (produtoTerminado) => produtoTerminado +'Kg'}
-                            marginInPercent={.012}
-                            arcPadding={0.02}
-                        />
-                        <h3>Producto Terminado</h3>
-                    </div>
+                <div className="col-12 md:col-12 grid p-fluid flex justify-content-center flex-wrap ">
                     <div className="col-12 md:col-4">
                         <GaugeChart id="gauge-chart1" 
                             animate={false} 
@@ -86,13 +87,23 @@ const Tacometros = ({data}) =>{
                             arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#cc3300','#99cc33']}
-                            percent={data.calidad}
+                            colors={['#cc3300','#36802d']}
+                            percent={calidad}
                             marginInPercent={.012}
                             arcPadding={0.02}
                         />
                         <h3>Calidad</h3>
-                    </div>           
+                    </div>
+                    <div className="col-12 md:col-5">
+                        <div className="card flex justify-content-center">
+                            <div className= "grid p-fluid flex align-items-center justify-content-center pt-4">
+                                <h1>{data.produtoTerminado} Kg</h1>
+                            </div>
+                        </div>
+                        <div className="grid p-fluid flex align-items-center justify-content-center ">
+                                <h3>Producto Terminado</h3>
+                            </div>
+                    </div>    
                 </div>
             </div>
         )
