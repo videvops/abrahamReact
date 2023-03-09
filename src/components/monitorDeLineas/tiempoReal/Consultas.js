@@ -1,19 +1,25 @@
-import React,{ useEffect, useState } from "react";
+import React,{ useEffect, useState, useRef } from "react";
 import Tacometros from "../Tacometros";
 import TablaMayorImpacto from "../Tablas/TablaMayorImpacto"
 import TablaUltimosParos from "../Tablas/TablaUltimosParos"
 import Environment from "../../../Environment";
 import { LineaService } from "../../../service/LineaService";
 import Axios from "axios";
+import Spinner from "../../loader/Spinner";
+import { SelecconaFiltros } from "../../mensajes/Mensajes";
 
 const Consultas =  ({filtros}) =>{
     const lineaService = new LineaService ();
     const getRoute = Environment ();
+    const [nombreLinea,setNombreLinea] = useState("")
+    const [indicador, setIndicador] = useState("");
 
     const [registrosUltimosParos, setRegistrosUltimosParos] = useState([]);
     const [registrosTopFive, setRegistrosTopFive] = useState([]);
     const [tacometrosData, setTacometrosData] = useState([]);
     const [datosDeConsulta, setDatosDeConsulta] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    let timeoutID = useRef(null); 
 
     const intervalos = async (id,tag) =>{
         const objIntervalos = {
@@ -35,9 +41,20 @@ const Consultas =  ({filtros}) =>{
 
     const getData = () =>{
         if(Object.entries(filtros).length === 0 || Object.entries(datosDeConsulta).length === 0){
-            lineaService.readAll().then(res =>  intervalos (res[0].id,"TURNO_ACTUAL") ).catch(e => console.log(e));
+            lineaService.readAll().then(res =>  {
+                intervalos (res[0].id,"TURNO_ACTUAL")
+                setNombreLinea(res[0].linea)
+                setIndicador("TURNO_ACTUAL")
+            }).catch(e => console.log(e));
         }else{
             intervalos (filtros.linea,filtros.indicador)
+            setNombreLinea(filtros.nombre)
+            setIndicador(filtros.indicador)
+        }
+        if(Object.entries(datosDeConsulta).length !== 0){
+            Axios.post(urlUltimosParos,datosDeConsulta).then( res => setRegistrosUltimosParos(res.data)).catch (e=>console.log(e));
+            Axios.post(urlTopFive,datosDeConsulta).then( res => setRegistrosTopFive(res.data)).catch(e=>console.log(e));
+            Axios.post(urlTacometros,datosDeConsulta).then(res => setTacometrosData(res.data)).catch(e=>console.log(e));
         }
     }
 
@@ -52,52 +69,71 @@ const Consultas =  ({filtros}) =>{
     }
 
     useEffect(()=>{
+        setIsLoading(true)
         getData();
     },[filtros])
 
     const [reload,setReload] =useState(0);
     useEffect(()=>{
-        setTimeout(()=>{
-            getData();
-            if(Object.entries(datosDeConsulta).length !== 0){
-                Axios.post(urlUltimosParos,datosDeConsulta).then( res => setRegistrosUltimosParos(res.data) ).catch (e=>console.log(e) );
-                Axios.post(urlTopFive,datosDeConsulta).then( res => setRegistrosTopFive(res.data) ).catch(e=>console.log(e) );
-                Axios.post(urlTacometros,datosDeConsulta).then(res => setTacometrosData(res.data) ).catch(e=>console.log(e));
-            }
-            setReload(Date.now())            
-        },20000)
+        timeoutID.current = setTimeout(()=>{
+            setReload(Date.now()) 
+            setIsLoading(false)   
+        },2000)
+        getData();
+        return () => {
+            clearTimeout(timeoutID.current)
+            console.log("timeout cleared")
+          }
     },[reload])
 
     return (
         <>
-            <div className="col-12 md:col-12 mt-5">
-                <Tacometros
-                    data={tacometrosData}
-                />
-            </div>
-            <br></br>
-            <div className="col-12 md:col-12 grid p-fluid">
-                <div className="col-6 md:col-6">
-                    <div className="col-12 md:col-12 card mb-4" style={{ textAlign: "center", background: "#6366f2"}}>
-                        <span className=" font-bold" style={{ fontSize: "15px", color: "white" }}>
-                            Ultimos Paros
-                        </span>
-                    </div>
-                    <TablaUltimosParos
-                        registros={registrosUltimosParos}  
-                    />
-                </div>
-                <div className="col-6 md:col-6 ">
-                    <div className="col-12 md:col-12 card mb-4 " style={{ textAlign: "center", background: "#6366f2" }}>
-                        <span className=" font-bold" style={{ fontSize: "15px", color: "white" }}>
-                            Top 5 Mayor impacto
-                        </span>
-                    </div>
-                    <TablaMayorImpacto
-                        registros={registrosTopFive}
-                    />
-                    </div>
-            </div>
+            {indicador == "TURNO_ACTUAL" ? (
+                <h1>Linea {nombreLinea} turno actual.</h1> 
+            ):(
+                <h1>Linea {nombreLinea} ultima hora. </h1> 
+            )} 
+
+            {!isLoading  ?(
+                <>
+                 {registrosTopFive.length > 0? (
+                    <>
+                        <div className="col-12 md:col-12 mt-5">
+                            <Tacometros
+                                data={tacometrosData}
+                            />
+                        </div>
+                        <br></br>
+                        <div className="col-12 md:col-12 grid p-fluid">
+                            <div className="col-6 md:col-6">
+                                <div className="col-12 md:col-12 card mb-4" style={{ textAlign: "center", background: "#6366f2"}}>
+                                    <span className=" font-bold" style={{ fontSize: "15px", color: "white" }}>
+                                        Ultimos Paros
+                                    </span>
+                                </div>
+                                <TablaUltimosParos
+                                    registros={registrosUltimosParos}  
+                                />
+                            </div>
+                            <div className="col-6 md:col-6 ">
+                                <div className="col-12 md:col-12 card mb-4 " style={{ textAlign: "center", background: "#6366f2" }}>
+                                    <span className=" font-bold" style={{ fontSize: "15px", color: "white" }}>
+                                        Top 5 Mayor impacto
+                                    </span>
+                                </div>
+                                <TablaMayorImpacto
+                                    registros={registrosTopFive}
+                                />
+                                </div>
+                        </div>
+                    </>
+                ) : ( <SelecconaFiltros 
+                    categoria="monitor de lineas"
+                /> )}
+                </>
+            ):(
+                <Spinner/>
+            )}
         </>
     )
 }

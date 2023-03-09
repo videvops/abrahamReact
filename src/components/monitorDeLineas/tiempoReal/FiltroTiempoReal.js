@@ -7,7 +7,7 @@ import {AreaService} from "../../../service/AreaService"
 import {LineaService } from "../../../service/LineaService"
 
 const FiltroTiempoReal = () => {
-
+    
     const plantaService = new PlantaService();
     const areaService = new AreaService();
     const lineaService = new LineaService();
@@ -56,7 +56,8 @@ const FiltroTiempoReal = () => {
         if(selectedPlanta !== null && selectedArea !== null && selectedLinea !== null && selectedTurno !== null){
             const filtrosObj ={
                 linea:selectedLinea.id,
-                indicador:selectedTurno.data
+                indicador:selectedTurno.data,
+                nombre:selectedLinea.linea
             }
             setFiltros(filtrosObj)
         }
@@ -99,7 +100,7 @@ const FiltroTiempoReal = () => {
                 <span className="p-float-label">
                     <Dropdown 
                         value={selectedLinea} 
-                        onChange={(e) => setSelectedLinea(e.value)} 
+                        onChange={(e) =>setSelectedLinea(e.value)} 
                         options={lineasDb} 
                         optionLabel="linea" 
                         className="w-full md:w-full" 

@@ -1,12 +1,18 @@
 import React from "react";
 import GaugeChart from "react-gauge-chart"
+import { SelecconaFiltros } from "../mensajes/Mensajes";
 
 const Tacometros = ({data}) =>{
-    console.log(data)
+
+    const metaInferior =(1-(data.meta/100));
+    const metaSuperior = 1-metaInferior;
+    
     if(Object.entries(data).length === 0){
         return (
             <div className="col-12 md:col-12 grid p-fluid">
-                <h3>No hay informacion disponible</h3>
+               <SelecconaFiltros 
+                    categoria="monitor de linea"
+                />
             </div>
         )
     }
@@ -18,10 +24,10 @@ const Tacometros = ({data}) =>{
                         <GaugeChart id="gauge-chart1" 
                             animate={false} 
                             nrOfLevels={420}
-                            arcsLength={[0.6, 0.4]}
+                            arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#f44336','#8fce00']}
+                            colors={['#cc3300','#99cc33']}
                             percent={data.oee}
                             marginInPercent={.012}
                             arcPadding={0.02}
@@ -32,10 +38,10 @@ const Tacometros = ({data}) =>{
                         <GaugeChart id="gauge-chart1" 
                             animate={false} 
                             nrOfLevels={420}
-                            arcsLength={[0.7, 0.3]}
+                            arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#f44336','#8fce00']}
+                            colors={['#cc3300','#99cc33']}
                             percent={data.disponibilidad}
                             marginInPercent={.012}
                             arcPadding={0.02}
@@ -46,10 +52,10 @@ const Tacometros = ({data}) =>{
                         <GaugeChart id="gauge-chart1" 
                             animate={false} 
                             nrOfLevels={420}
-                            arcsLength={[0.7, 0.3]}
+                            arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#f44336','#8fce00']}
+                            colors={['#cc3300','#99cc33']}
                             percent={data.rendimiento}
                             marginInPercent={.012}
                             arcPadding={0.02}
@@ -62,11 +68,12 @@ const Tacometros = ({data}) =>{
                         <GaugeChart id="gauge-chart1" 
                             animate={false} 
                             nrOfLevels={420}
-                            arcsLength={[0.7, 0.3]}
+                            arcsLength={[1]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#f44336','#8fce00']}
-                            percent={data.produtoTerminado}
+                            colors={['#ff9966']}
+                            percent={data.produtoTerminado/100 }
+                            formatTextValue={ (produtoTerminado) => produtoTerminado +'Kg'}
                             marginInPercent={.012}
                             arcPadding={0.02}
                         />
@@ -76,10 +83,10 @@ const Tacometros = ({data}) =>{
                         <GaugeChart id="gauge-chart1" 
                             animate={false} 
                             nrOfLevels={420}
-                            arcsLength={[0.7, 0.3]}
+                            arcsLength={[metaSuperior,metaInferior]}
                             arcWidth={.3}
                             textColor={"#000000"}
-                            colors={['#f44336','#8fce00']}
+                            colors={['#cc3300','#99cc33']}
                             percent={data.calidad}
                             marginInPercent={.012}
                             arcPadding={0.02}
