@@ -7,19 +7,13 @@ import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { InputNumber } from 'primereact/inputnumber';
 
-import { ENVIAR_PARTE2_PRODUCTOS } from '../../../../genericos/Uris';
+import { DATOS_TABLA, ENVIAR_PARTE2_PRODUCTOS } from '../../../../genericos/Uris';
 import Environment from '../../../../Environment';
 const getRoute = Environment()
 
 const Step2 = ({
-    mostrarM1,
-    hideDialog,
-    idProducto,
-    objetoParte2,
-    tieneMaquinas,
-    setObjetoParte2,
-    setTieneMaquinas,
-    setProducts, lazyState
+    mostrarM1, hideDialog, idProducto, objetoParte2, tieneMaquinas, setObjetoParte2, setTieneMaquinas,
+    setProducts, lazyState, setIsLoading
 }) => {
 //--------------------| Editar tabla  |--------------------
     //---> Funcion principal
@@ -41,16 +35,11 @@ const Step2 = ({
     const numEditor = (options) => {
         return (
             <InputNumber
-                value={options.value}
-                onValueChange={(e) => options.editorCallback(e.value)}
-                mode="decimal"
-                minFractionDigits={2}
-                maxFractionDigits={2}
-            />
+                value={options.value} onValueChange={(e) => options.editorCallback(e.value)}
+                mode="decimal" minFractionDigits={2} maxFractionDigits={2} />
         )
     }
     //---> Dropdown para si o no
-    // operador ternario, implementar
     const opcionesHabilitado = [
         { label: 'Si', value: "true" },
         { label: 'No', value: "false" },
@@ -69,12 +58,14 @@ const Step2 = ({
 
 //--------------------| Envio de datos  |--------------------
     const enviarParte2 = () => {
+        setIsLoading(true)
         const objetoEnviar = { idProducto: idProducto, config: objetoParte2 }
         // Axios.post("http://localhost:8080/productos/config/velocidades", objetoEnviar)
         Axios.post(`${getRoute}/${ENVIAR_PARTE2_PRODUCTOS}`, objetoEnviar)
         console.log("Datos enviados", objetoEnviar)
-        Axios.post(`${getRoute}/productos/table/filter`, lazyState).then(res=>setProducts(res.data.registros))
+        Axios.post(`${getRoute}/${DATOS_TABLA}`, lazyState).then(res => setProducts(res.data.registros))
         hideDialog()
+        setIsLoading(false)
     }
 
 //--------------------| Valor que regresara  |--------------------
@@ -82,7 +73,6 @@ const Step2 = ({
         <>
             {tieneMaquinas ? (
                 <div>
-                    <p>Descripcion: Galleta mini chispa chocolate 20 oz</p>
                     <DataTable value={objetoParte2} editMode="row" dataKey="id" onRowEditComplete={onRowEditComplete} responsiveLayout="scroll">
                         <Column field="id" header="ID" style={{ width: '20%' }} />
                         <Column field="tipo" header="Tipo" style={{ width: '20%' }} />
@@ -94,7 +84,7 @@ const Step2 = ({
                         <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}/>
                     </DataTable>
                     <div className='mt-5 flex justify-content-end'>
-                        <Button label="Atras" className="w-2 p-button-rounded" onClick={mostrarM1} />
+                        <Button label="Atras" className="w-2 p-button-rounded" onClick={mostrarM1} disabled />
                         <Button label="Enviar" className="w-2 p-button-rounded" onClick={enviarParte2}/>
                     </div>
                 </div>

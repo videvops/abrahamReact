@@ -62,7 +62,7 @@ const Login = ({ setLogueado }) => {
                     style={{ display: 'flex', justifyContent: 'center' }}
                 >
                     <div className="flex flex-wrap justify-content-center align-items-center gap-2">
-                        <label htmlFor="username" className="w-6rem font-bold">Usuario</label>
+                        <label htmlFor="email" className="w-6rem font-bold">Correo</label>
                         <InputText
                             type="email"
                             id="email"

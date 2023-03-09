@@ -28,3 +28,4 @@ export const TOP_FIVE ="paros/topFive/linea";
 export const RECUPERAR_DATOS_PRODUCTO = "productos/getById";
 export const ENVIAR_PARTE1_PRODUCTOS = "productos";
 export const ENVIAR_PARTE2_PRODUCTOS = "productos/config/velocidades";
+export const DATOS_TABLA = "productos/table/filter";

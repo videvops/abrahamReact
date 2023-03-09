@@ -303,6 +303,7 @@ const CrudProducto = ({titulos, notificaciones}) => {
                 
                 lazyState={lazyState}
                 setProducts={setProducts}
+                setIsLoading={setIsLoading}
             />
 
             <Desicion
