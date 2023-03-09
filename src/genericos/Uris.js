@@ -1,10 +1,13 @@
 //PLANTAS
 export const PLANTAS_GET = "plantas";
 export const PLANTAS_GET_COMBO = "plantas/list";
+
 // AREAS
 export const PLANTAS_AREAS = "areas/plantas";
+
 // LINEAS
 export const LINEAS_AREAS ="lineas/areas";
+
 // MAQUINAS
 export const MAQUINAS_GET_COMBO ="maquinas/list";
 
@@ -15,6 +18,7 @@ export const BITACORA_REPORTE = "reportes/bitacora";
 
 //DESPERDICIO 
 export const DESPERDICIO_REPORTE = "reportes/desperdicio";
+export const DESPERDICIO_TABLE ="desperdicio/table/rechazos";
 
 // LISTADO DE PAROS 
 export const LISTADO_DE_PAROS_POST_FILTER = "paros/filter";
@@ -35,6 +39,5 @@ export const ENVIAR_PARTE2_PRODUCTOS = "productos/config/velocidades";
 // UTILERIAS 
 export const GET_FECHAS_FOR_LIVE_SCREEN = "utilerias/getFechasForLiveScreen";
 
-// DESPERDICIOS
-
-export const DESPERDICIO_TABLE ="desperdicio/table/rechazos";
+// PRODUCTOS
+export const DATOS_TABLA = "productos/table/filter";

@@ -170,7 +170,7 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
                 {envioIncorrecto && <MensajeAdvertencia>{mensaje}</MensajeAdvertencia>}
             </div>
             <div className='mt-5 flex'>
-                <Button label="Cancelar" className="p-button-rounded" onClick={hideDialog}/>
+                <Button label="Cancelar" className="p-button-rounded" onClick={hideDialog} />
                 <Button label="Siguiente" className="p-button-rounded" onClick={enviarParte1} />
             </div>
         </div>

@@ -16,7 +16,7 @@ const Crear = ({
     product, productDialog,
     hideDialog, updateField,
     objetoParte2, setObjetoParte2,
-    setProducts, lazyState
+    setProducts, lazyState, setIsLoading
 }) => {
     //--------------------| Crear objeto para componente 2 |--------------------
     const [tieneMaquinas, setTieneMaquinas] = useState(false)
@@ -36,9 +36,9 @@ const Crear = ({
 
     //--> Crea tabla de componente 2
     useEffect(() => {
-        console.log(informacion)
         // Tiene informacion
         if (informacion.lineasAsignadas) {
+            console.log(informacion)
             let arregloLM = []
             // Si no tiene informacion de las lineas
             if (!informacion.lineasAsignadas[0].config) {
@@ -94,7 +94,8 @@ const Crear = ({
             header={titulos.VentanaCrear} 
             modal 
             className="p-fluid" 
-            onHide={hideDialog}
+            // onHide={hideDialog}
+            onHide={m1 ? hideDialog : () => { }}
         >
             {m1 && (
                 <Step1
@@ -118,6 +119,7 @@ const Crear = ({
 
                     lazyState={lazyState}
                     setProducts={setProducts}
+                    setIsLoading={setIsLoading}
                 />
             )}
         </Dialog>

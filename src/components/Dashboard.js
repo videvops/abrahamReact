@@ -1,9 +1,12 @@
 import React from "react";
+import NuevoUsuario from './nuevoUsuario/NuevoUsuario'
+
 
 const Dashboard = () => {
     return (
         <div>
-            Dashboard
+            {/* Dashboard */}
+            <NuevoUsuario />
         </div>
     );
 };
