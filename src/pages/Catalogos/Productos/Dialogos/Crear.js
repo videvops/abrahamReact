@@ -40,7 +40,7 @@ const Crear = ({
         if (informacion.lineasAsignadas) {
             console.log(informacion)
             let arregloLM = []
-            // Si no tiene informacion de las lineas
+            // Linea sin configuracion
             if (!informacion.lineasAsignadas[0].config) {
                 arregloLM.push({
                     id: informacion.lineasAsignadas[0].id,
@@ -51,7 +51,9 @@ const Crear = ({
                     factorConversionO: 0,
                     habilitado:"false"
                 })
-            } else {
+            }
+            // Linea configurada
+            else {
                 arregloLM.push({
                     id: informacion.lineasAsignadas[0].id,
                     tipo: "linea",
@@ -62,11 +64,24 @@ const Crear = ({
                     habilitado:`${informacion.lineasAsignadas[0].config.habilitado}`
                 })
             }
-            //--> Si hay maquinas configuradas
+            //--> Maquinas configuradas
             if (informacion.lineasAsignadas[0].maquinasConfig) {
-                console.log("Maquinas configuradas")
+                console.log("Informacion maquinas config", informacion.lineasAsignadas[0].maquinasConfig)
+                let j = 0
+                while (j < informacion.lineasAsignadas[0].maquinasConfig.length) {
+                    arregloLM.push({
+                        id: informacion.lineasAsignadas[0].maquinasConfig[j].id,
+                        tipo: "maquina",
+                        nombre: informacion.lineasAsignadas[0].maquinasConfig[j].nombre,
+                        velocidadEstandar: informacion.lineasAsignadas[0].maquinasConfig[j].velocidadEstandar,
+                        factorConversionI: informacion.lineasAsignadas[0].maquinasConfig[j].factorConversionI,
+                        factorConversionO: informacion.lineasAsignadas[0].maquinasConfig[j].factorConversionO,
+                        habilitado:`${informacion.lineasAsignadas[0].maquinasConfig[j].habilitado}`
+                    })
+                    j++
+                }
             }
-            //--> Si hay maquinas sin configurar
+            //--> Maquinas sin configurar
             if (informacion.lineasAsignadas[0].maquinasNoConfig.length>0) {
                 let i = 0
                 while (i < informacion.lineasAsignadas[0].maquinasNoConfig.length) {
@@ -83,7 +98,11 @@ const Crear = ({
                 }
             }
             setObjetoParte2(arregloLM)
-        } // eslint-disable-next-line
+        }
+        return () => {
+            setObjetoParte2([])
+        }
+        // eslint-disable-next-line
     }, [informacion])
 
 //--------------------| Valor que regresara |--------------------

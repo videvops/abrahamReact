@@ -8,7 +8,7 @@ import { AppMenu } from "../AppMenu";
 import { AppConfig } from "../AppConfig";
 
 
-import Dashboard from "../components/Dashboard";
+import Dashboard from "../pages/Dashboard";
 import IndicadoresTurno from "../pages/IndicadoresTurno";
 import StatusLineas from "../pages/StatusLineas";
 

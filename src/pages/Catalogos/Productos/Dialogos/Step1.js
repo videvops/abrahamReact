@@ -15,6 +15,9 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
     const [plantasDisponibles, setPlantasDisponibles] = useState([])
     useEffect(() => {
         Axios.get(getRoute + "/plantas/list").then(res => setPlantasDisponibles(res.data))
+        return () => {
+            setPlantasDisponibles([])
+        }
     }, [])
     //---> Areas
     const [areasDisponibles, setAreasDisponibles] = useState([])
@@ -22,27 +25,34 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
         if(product.idPlanta!==''){
             Axios.get(getRoute + `/areas/planta/${product.idPlanta}`).then(res => setAreasDisponibles(res.data))
         }
+        return () => {
+            setAreasDisponibles([])
+        }
     }, [product.idPlanta])
     //---> Lineas
     const [lineasDisponibles, setLineasDisponibles] = useState([])
     useEffect(() => {
         if (edicion.idProducto) {
-            // console.log("Es edicion")
+            // Editar producto
             if (product.idArea !== '') {
                 Axios.get(getRoute + `/lineas/producto/area/${product.idArea}/producto/${edicion.idProducto}`).then(res => {
-                    setLineasDisponibles(res.data)
                     console.log(res.data)
+                    setLineasDisponibles(res.data)
                 })
             }
         } else {
-            // console.log("No es edicion")
+            // Crear producto
             if (product.idArea !== '') {
                 Axios.get(getRoute + `/lineas/area/${product.idArea}`).then(res => {
                     console.log(res.data)
                     setLineasDisponibles(res.data)
                 })
             }
-        }// eslint-disable-next-line
+        }
+        return () => {
+            setLineasDisponibles([])
+        }
+        // eslint-disable-next-line
     }, [product.idArea])
 
 //--------------------| Validar campos  |--------------------
@@ -68,12 +78,14 @@ const Step1 = ({ edicion, hideDialog, product, updateField, mostrarM2, setTieneM
     const enviarDatos = async (datos) => {
         // const respuesta = await Axios.post(getRoute+"/productos", datos)
         const respuesta = await Axios.post(`${getRoute}/${ENVIAR_PARTE1_PRODUCTOS}`, datos)
+        console.log(respuesta)
         setIdProduto(respuesta.data.id)
         setTieneMaquinas(respuesta.data.hayMaquinas)
     }
     const actualizarDatos = async (datos) => {
         // const datosEditados = await Axios.put(getRoute+`/productos/${edicion.idProducto}`, datos)
         const datosEditados = await Axios.put(`${getRoute}/${ENVIAR_PARTE1_PRODUCTOS}/${edicion.idProducto}`, datos)
+        console.log(datosEditados)
         setIdProduto(datosEditados.data.id)
         setTieneMaquinas(datosEditados.data.hayMaquinas)
     }

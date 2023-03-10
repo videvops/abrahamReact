@@ -97,7 +97,7 @@ const TablaProductos = ({
                             onChange={(e) => setNumPagina(e.target.value)}
                         />
                     </span>
-                    {options.first} - {options.last} de {options.totalRecords}
+                    {options.first} - {options.last} de {options.totalRecords} registros
                 </div>
             )
         }
