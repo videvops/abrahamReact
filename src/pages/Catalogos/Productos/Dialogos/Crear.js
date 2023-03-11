@@ -111,9 +111,7 @@ const Crear = ({
             visible={productDialog} 
             style={{ width: `${m1 ? 450 : 900}px` }} 
             header={titulos.VentanaCrear} 
-            modal 
-            className="p-fluid" 
-            // onHide={hideDialog}
+            modal className="p-fluid" 
             onHide={m1 ? hideDialog : () => { }}
         >
             {m1 && (

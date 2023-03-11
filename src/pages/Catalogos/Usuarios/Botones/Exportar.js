@@ -9,23 +9,21 @@ const Exportar = (products) => {
                 const doc = new jsPDF.default(0, 0);
 
                 doc.autoTable({
-                    columns:[                                       // Columnas
+                    columns:[                                       // CAMBIAR...
                         { header: 'ID', dataKey: 'id' },
-                        { header: 'Nombre', dataKey: 'nombre' },
-                        { header: 'Apellido Paterno', dataKey: 'apellidoPaterno' },
-                        { header: 'Apellido Materno', dataKey: 'apellidoMaterno' },
-                        { header: 'Direccion', dataKey: 'direccion' },
-                        { header: 'Rol', dataKey: 'rol' },
-                        { header: 'Empleado', dataKey: 'empleado' },
+                        { header: 'Linea', dataKey: 'linea' },
+                        { header: 'Descripcion', dataKey: 'area' },
+                        { header: 'Estatus', dataKey: 'estatus' },
+                        { header: 'Fecha de Creacion', dataKey: 'fechaCreacion' },
                     ],
                     body:products,                                  // Registros de BD
                     margin:{top:35},
                     didDrawPage:function(data){
-                    doc.text("Catalogo Usuarios", 20, 30);           // Encabezado
+                    doc.text("Catalogo Lineas", 20, 30);            // CAMBIAR...
                 }})
 
                 const fecha=new Date().getTime()                    // Fecha en tiempo real
-                doc.save(`Usuarios_export_${fecha}.pdf`);            // template string
+                doc.save(`Lineas_export_${fecha}.pdf`);             // template string  /   CAMBIAR...
             })
         })
     }
@@ -37,7 +35,7 @@ const Exportar = (products) => {
             const worksheet = xlsx.utils.json_to_sheet(products);
             const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
             const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-            saveAsExcelFile(excelBuffer, 'Usuarios');
+            saveAsExcelFile(excelBuffer, 'Lineas');                 // CAMBIAR...
         });
     }
 

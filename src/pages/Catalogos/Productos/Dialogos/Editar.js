@@ -136,9 +136,8 @@ const Editar = ({ modalEditar, setModalEditar, edicion, actualizarEdicion, setEd
     return (
         <Dialog
             visible={modalEditar} 
-            style={{ width: `${componente1 ? 350 : 850}px` }}
+            style={{ width: `${componente1 ? 350 : 850}px` }} className="p-fluid" 
             header="Editar registro"
-            className="p-fluid" 
             onHide={cerrarTodo}
             footer={componente1 ? botonesStep1 : botonesStep2}
         >

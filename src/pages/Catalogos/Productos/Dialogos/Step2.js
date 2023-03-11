@@ -9,6 +9,7 @@ import { InputNumber } from 'primereact/inputnumber';
 
 import { DATOS_TABLA, ENVIAR_PARTE2_PRODUCTOS } from '../../../../genericos/Uris';
 import Environment from '../../../../Environment';
+import Spinner from '../../../../components/loader/Spinner';
 const getRoute = Environment()
 
 const Step2 = ({
@@ -72,22 +73,26 @@ const Step2 = ({
     return (
         <>
             {tieneMaquinas ? (
-                <div>
-                    <DataTable value={objetoParte2} editMode="row" dataKey="id" onRowEditComplete={onRowEditComplete} responsiveLayout="scroll">
-                        <Column field="id" header="ID" style={{ width: '20%' }} />
-                        <Column field="tipo" header="Tipo" style={{ width: '20%' }} />
-                        <Column field="nombre" header="Nombre" editor={(options) => textEditor(options)} style={{ width: '20%' }}/>
-                        <Column field="velocidadEstandar" header="Velocidad Estándar" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
-                        <Column field="factorConversionI" header="Factor de Conversión Input" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
-                        <Column field="factorConversionO" header="Factor de Conversión Output" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
-                        <Column field="habilitado" header="¿Habilitado?" editor={(options) => dropEditor(options)} style={{ width: '20%' }}/>
-                        <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}/>
-                    </DataTable>
-                    <div className='mt-5 flex justify-content-end'>
-                        <Button label="Atras" className="w-2 p-button-rounded" onClick={mostrarM1} disabled />
-                        <Button label="Enviar" className="w-2 p-button-rounded" onClick={enviarParte2}/>
+                objetoParte2.length > 0 ? (
+                    <div>
+                        <DataTable value={objetoParte2} editMode="row" dataKey="id" onRowEditComplete={onRowEditComplete} responsiveLayout="scroll">
+                            <Column field="id" header="ID" style={{ width: '20%' }} />
+                            <Column field="tipo" header="Tipo" style={{ width: '20%' }} />
+                            <Column field="nombre" header="Nombre" editor={(options) => textEditor(options)} style={{ width: '20%' }}/>
+                            <Column field="velocidadEstandar" header="Velocidad Estándar" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
+                            <Column field="factorConversionI" header="Factor de Conversión Input" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
+                            <Column field="factorConversionO" header="Factor de Conversión Output" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
+                            <Column field="habilitado" header="¿Habilitado?" editor={(options) => dropEditor(options)} style={{ width: '20%' }}/>
+                            <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}/>
+                        </DataTable>
+                        <div className='mt-5 flex justify-content-end'>
+                            <Button label="Atras" className="w-2 p-button-rounded" onClick={mostrarM1} disabled />
+                            <Button label="Enviar" className="w-2 p-button-rounded" onClick={enviarParte2}/>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <Spinner />
+                )
             ) : (
                     <div>
                         <p>La linea seleccionada no cuenta con maquinas</p>
