@@ -33,8 +33,8 @@ const Consultas =  ({filtros}) =>{
         try{
             const res = await Axios.post(`${getRoute}/${GET_FECHAS_FOR_LIVE_SCREEN}`,objIntervalos);
             const obj = {
-                fechaInicio:"2022-11-21 08:01:00",//res.data.fechaInicio
-                fechaFin:"2022-11-26 17:00:34",//res.data.fechaFin,
+                fechaInicio:res.data.fechaInicio,//"2022-11-21 08:01:00", 
+                fechaFin:res.data.fechaFin,//"2022-11-26 17:00:34",//
                 linea:id
             }
             setDatosDeConsulta(obj)
