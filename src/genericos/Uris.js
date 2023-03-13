@@ -41,3 +41,6 @@ export const GET_FECHAS_FOR_LIVE_SCREEN = "utilerias/getFechasForLiveScreen";
 
 // PRODUCTOS
 export const DATOS_TABLA = "productos/table/filter";
+
+// REPORTES 
+export const REPORTE_MONITOR_LINEA ="reportes/monitorLinea";
