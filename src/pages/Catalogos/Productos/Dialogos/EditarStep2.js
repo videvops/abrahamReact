@@ -4,6 +4,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { InputNumber } from 'primereact/inputnumber';
+import Spinner from '../../../../components/loader/Spinner';
 
 // const EditarStep2 = ({ edicion,setEdicion }) => {
 const EditarStep2 = ({ registrosEditados, setRegistrosEditados }) => {
@@ -55,18 +56,22 @@ const EditarStep2 = ({ registrosEditados, setRegistrosEditados }) => {
 //--------------------| Valor que regresara  |--------------------
     return (
         <div>
-            <div>
-                <DataTable value={registrosEditados} editMode="row" onRowEditComplete={onRowEditComplete} responsiveLayout="scroll">
-                    <Column field="id" header="ID"  style={{ width: '20%' }}/>
-                    <Column field="tipo" header="Tipo" style={{ width: '20%' }}/>
-                    <Column field="nombre" header="Nombre" editor={(options) => textEditor(options)} style={{ width: '20%' }}/>
-                    <Column field="velocidadEstandar" header="Velocidad Estándar" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
-                    <Column field="factorConversionI" header="Factor de Conversión Input" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
-                    <Column field="factorConversionO" header="Factor de Conversión Output" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
-                    <Column field="habilitado" header="¿Habilitado?" editor={(options) => dropEditor(options)} style={{ width: '20%' }}/>
-                    <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}/>
-                </DataTable>
-            </div>
+            {registrosEditados.length > 0 ? (
+                <div>
+                    <DataTable value={registrosEditados} editMode="row" onRowEditComplete={onRowEditComplete} responsiveLayout="scroll">
+                        <Column field="id" header="ID"  style={{ width: '20%' }}/>
+                        <Column field="tipo" header="Tipo" style={{ width: '20%' }}/>
+                        <Column field="nombre" header="Nombre" editor={(options) => textEditor(options)} style={{ width: '20%' }}/>
+                        <Column field="velocidadEstandar" header="Velocidad Estándar" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
+                        <Column field="factorConversionI" header="Factor de Conversión Input" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
+                        <Column field="factorConversionO" header="Factor de Conversión Output" editor={(options) => numEditor(options)} style={{ width: '20%' }}/>
+                        <Column field="habilitado" header="¿Habilitado?" editor={(options) => dropEditor(options)} style={{ width: '20%' }}/>
+                        <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}/>
+                    </DataTable>
+                </div>
+            ): (
+                    <Spinner />
+            )}
         </div>
     )
 }

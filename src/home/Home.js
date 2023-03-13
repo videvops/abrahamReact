@@ -7,11 +7,9 @@ import { AppTopbar } from "../AppTopbar";
 import { AppMenu } from "../AppMenu";
 import { AppConfig } from "../AppConfig";
 
-
-import Dashboard from "../components/Dashboard";
+import Dashboard from "../pages/Dashboard";
 import IndicadoresTurno from "../pages/IndicadoresTurno";
 import StatusLineas from "../pages/StatusLineas";
-
 
 //----------------| Catalogos |----------------
 import ListadoParos from "../components/listadoParo/ListadoParos";
@@ -23,6 +21,7 @@ import CatalogoProducto from "../pages/Catalogos/Productos/CatalogoProducto";
 import CatalogoMaquinas from "../pages/Catalogos/Maquinas/CatalogoMaquinas";
 import CatalogoModoFalla from "../pages/Catalogos/ModoFalla/CatalogoModoFalla"
 import CatalogoVariables from "../pages/Catalogos/VariablesDelProceso/CatalogoVariables";
+import CatalogoUsuarios from "../pages/Catalogos/Usuarios/CatalogoUsuarios";
 import MonitorDeLineas from "../components/monitorDeLineas/MonitorDeLineas";
 import VariablesDelProceso from "../components/variablesDelProceso/VariablesDelProceso"
 import Desperdicio from  '../components/desperdicio/Desperdicio'
@@ -79,13 +78,9 @@ const Home = ({ setLogueado }) => {
         setRipple(e.value);
     };
 
-    const onLayoutModeChange = (mode) => {
-        setLayoutMode(mode);
-    };
+    const onLayoutModeChange = (mode) => { setLayoutMode(mode) }
 
-    const onColorModeChange = (mode) => {
-        setLayoutColorMode(mode);
-    };
+    const onColorModeChange = (mode) => { setLayoutColorMode(mode) }
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -122,9 +117,7 @@ const Home = ({ setLogueado }) => {
         event.preventDefault();
     };
 
-    const onSidebarClick = () => {
-        menuClick = true;
-    };
+    const onSidebarClick = () => { menuClick = true }
 
     const onMobileTopbarMenuClick = (event) => {
         mobileTopbarMenuClick = true;
@@ -153,9 +146,7 @@ const Home = ({ setLogueado }) => {
             setMobileMenuActive(false);
         }
     };
-    const isDesktop = () => {
-        return window.innerWidth >= 992;
-    };
+    const isDesktop = () => { return window.innerWidth >= 992 }
 
     const menu = [
         {
@@ -201,7 +192,7 @@ const Home = ({ setLogueado }) => {
             icon: "pi pi-fw pi-search ",
             items: [
                 {
-                    label: "Catalogo",
+                    label: "Catalogos",
                     icon: "pi pi-fw pi-database text-blue-500",
                     // CAMBIAR....
                     items: [
@@ -213,7 +204,7 @@ const Home = ({ setLogueado }) => {
                         // { label: "Roles", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoRoles" },
                         // { label: "TipoParo", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTipoParo" },
                         { label: "Turnos", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoTurnos" },
-                        // { label: "Usuarios", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoUsuarios" },
+                        { label: "Usuarios", icon: "pi pi-fw pi-table text-blue-500", to: "/catalogoUsuarios" },
                         {label: "Modo de Falla",icon: "pi pi-fw pi-table text-blue-500", to:"/catalogoModoFalla"},
                         {label:"Variables del Proceso", icon:"pi pi-fw pi-table text-blue-500", to:"/catalogoVariables"}
                     ],
@@ -288,7 +279,7 @@ const Home = ({ setLogueado }) => {
                     {/* <Route path="/catalogoRoles" component={CatalogoRoles} /> */}
                     <Route path="/catalogoModoFalla" component={CatalogoModoFalla} />
                     <Route path="/catalogoTurnos" component={CatalogoTurnos} />
-                    {/* <Route path="/catalogoUsuarios" component={CatalogoUsuarios} /> */}
+                    <Route path="/catalogoUsuarios" component={CatalogoUsuarios} />
                     <Route path="/catalogoMaquinas" component={CatalogoMaquinas} />
                     <Route path="/desperdicio" component={Desperdicio} />
                     <Route path="/monitorDeLineas" component= {MonitorDeLineas}/>

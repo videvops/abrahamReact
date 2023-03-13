@@ -17,7 +17,7 @@ const EditarStep1 = ({ edicion, actualizarEdicion, lineaSeleccionada, setLineaSe
                 />
             </div>
             <div className="field">
-                <label htmlFor="producto">Nombre del Producto</label>
+                <label htmlFor="producto">SKU</label>
                 <InputText 
                     id="producto"
                     value={edicion.producto}

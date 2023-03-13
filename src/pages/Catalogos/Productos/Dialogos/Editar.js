@@ -58,11 +58,24 @@ const Editar = ({ modalEditar, setModalEditar, edicion, actualizarEdicion, setEd
                     habilitado:`${datosLinea[0].config.habilitado}`
                 })
             }
-            //--> Si hay maquinas configuradas
+            //--> Maquinas configuradas
             if (datosLinea[0].maquinasConfig) {
-                console.log("Maquinas configuradas")
+                console.log("Informacion maquinas config", datosLinea[0].maquinasConfig)
+                let j = 0
+                while (j < datosLinea[0].maquinasConfig.length) {
+                    arregloLM.push({
+                        id: datosLinea[0].maquinasConfig[j].id,
+                        tipo: "maquina",
+                        nombre: datosLinea[0].maquinasConfig[j].nombre,
+                        velocidadEstandar: datosLinea[0].maquinasConfig[j].velocidadEstandar,
+                        factorConversionI: datosLinea[0].maquinasConfig[j].factorConversionI,
+                        factorConversionO: datosLinea[0].maquinasConfig[j].factorConversionO,
+                        habilitado:`${datosLinea[0].maquinasConfig[j].habilitado}`
+                    })
+                    j++
+                }
             }
-            //--> Si hay maquinas sin configurar
+            //--> Maquinas sin configurar
             if (datosLinea[0].maquinasNoConfig.length>0) {
                 let i = 0
                 while (i < datosLinea[0].maquinasNoConfig.length) {
@@ -81,7 +94,11 @@ const Editar = ({ modalEditar, setModalEditar, edicion, actualizarEdicion, setEd
             }
             // console.log(arregloLM)
             setRegistrosEditados(arregloLM)
-        }// eslint-disable-next-line
+        }
+        return () => {
+            setRegistrosEditados([])
+        }
+        // eslint-disable-next-line
     }, [lineaSeleccionada])
 
     const enviarParte2 = () => {
@@ -119,9 +136,8 @@ const Editar = ({ modalEditar, setModalEditar, edicion, actualizarEdicion, setEd
     return (
         <Dialog
             visible={modalEditar} 
-            style={{ width: `${componente1 ? 350 : 850}px` }}
+            style={{ width: `${componente1 ? 350 : 850}px` }} className="p-fluid" 
             header="Editar registro"
-            className="p-fluid" 
             onHide={cerrarTodo}
             footer={componente1 ? botonesStep1 : botonesStep2}
         >

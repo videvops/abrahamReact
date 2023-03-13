@@ -1,5 +1,5 @@
 import React from "react";
-import NuevoUsuario from './nuevoUsuario/NuevoUsuario'
+import NuevoUsuario from '../components/nuevoUsuario/NuevoUsuario'
 
 
 const Dashboard = () => {
