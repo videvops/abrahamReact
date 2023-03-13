@@ -50,7 +50,7 @@ const BitacoraTbl = () =>{
 
 
     useEffect(() => {
-        // console.log("bitacora")
+        console.log("bitacora")
         loadLazyData();
     },[lazyParams]);
 
@@ -93,7 +93,7 @@ const BitacoraTbl = () =>{
      }
 
     const  loadLazyData =  () => {
-        // console.log(" loadLazyData useeffect")
+        console.log(" loadLazyData useeffect")
         setLoading(true)
         if (loadLazyTimeout) {
             clearTimeout(loadLazyTimeout);
@@ -108,11 +108,10 @@ const BitacoraTbl = () =>{
             // console.log('lazyparams after adding dates')
             console.log(lazyParams)
             try{
-                 
                 servicioBitacora.baseUrl=servicioBitacora.baseUrl+BITACORA_POST_TABLE_FILTER
                 const JSobj = JSON.parse(JSON.stringify(lazyParams));
                 const data = await servicioBitacora.create(JSobj);
-
+                console.log(data)
                 getBitacora(data)
                 setLoading(false)
         
