@@ -48,9 +48,9 @@ const TablaListParos = ({ filtro }) => {
     let loadLazyTimeout = null;
 
     useEffect(() => {
-        // console.log("ejecutar")
+        console.log("Listado de paros")
         loadLazyData();
-    },[lazyParams,filtro]);
+    },[lazyParams]);
 
 
     const enviarFiltro= async(request)=>{   
@@ -90,6 +90,7 @@ const TablaListParos = ({ filtro }) => {
 
     const  loadLazyData =  () => {
         // setLoading(true)
+        console.log(filtro)
         if (loadLazyTimeout) {
             clearTimeout(loadLazyTimeout);
         }

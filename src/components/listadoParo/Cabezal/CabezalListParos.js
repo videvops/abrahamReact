@@ -8,9 +8,8 @@ import { formatearFecha } from '../../helpers/funciones'
 import { MensajeFiltro } from '../../../pages/Catalogos/ComponentsCat/Mensajes/Mensajes'
 import Environment from "../../../Environment";
 import { Toast } from 'primereact/toast';
-import { constrainPoint } from '@fullcalendar/core'
 
-const CabezalListParos = ({ setChartFiltros}) => {
+const CabezalListParos = ({ setChartFiltros,setRegistros,setIsLoading}) => {
 //--------------------| MultiSelect de Plantas  |--------------------
     //---> Obtener registros de back-end
 
@@ -65,14 +64,14 @@ const CabezalListParos = ({ setChartFiltros}) => {
     const [dialogo, setDialogo] = useState(false)              // Para mostrar dialogo
     const [esValido, setEsValido] = useState(true)
     //---> Enviar datos de back-end a otro componente
-    const enviarDatos = (datos) => {
-        // setRegistros([{data:"data"}])
-        // await Axios.post(`${getRoute}/paros/filter`, datos).then(res=>{
-            // setRegistros(res.data.registros)
+    const enviarDatos = async (datos) => {
+        setRegistros([{data:"data"}])
+        await Axios.post(`${getRoute}/paros/filter`, datos).then(res=>{
+            setRegistros(res.data.registros)
             setChartFiltros(datos)
-            // setIsLoading(false)
-        // })
-        // .catch(e=>console.log(e))
+            setIsLoading(false)
+        })
+        .catch(e=>console.log(e))
     }
     //---> Validara antes de mandar el filtro
     const enviarFiltro = () => {
@@ -85,7 +84,7 @@ const CabezalListParos = ({ setChartFiltros}) => {
         }
         const nuevaFechaInicio = formatearFecha(fechaInicio)
         const nuevaFechaFin = formatearFecha(fechaFin)
-        const objeto = { page: 0, total: 10, todasLineas: false, maquinas: [...maquinas], fechaInc: nuevaFechaInicio, fechaFin: nuevaFechaFin }
+        const objeto = { page: 0, total: 10, maquinas: [...maquinas], fechaInc: nuevaFechaInicio, fechaFin: nuevaFechaFin }
         enviarDatos(objeto)
         setEsValido(true)
         setDialogo(false)

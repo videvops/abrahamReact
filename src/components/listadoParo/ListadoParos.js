@@ -11,10 +11,10 @@ import { SelecconaFiltros } from '../mensajes/Mensajes';
 
 const ListadoParos = () => {
     
-    const [registros, setRegistros] = useState([]) ;
+    const [registros, setRegistros] = useState([{}]) ;
     const [chartFiltros, setChartFiltros] =useState([]);
     const [value, setValue]=useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const headers  = [
         {label: 'Grafica Modos de Falla'},
@@ -49,6 +49,8 @@ const ListadoParos = () => {
         <div>
             <CabezalListParos 
                 setChartFiltros={setChartFiltros}
+                setRegistros={setRegistros}
+                setIsLoading={setIsLoading}
             />
             {registros.length >0 ? (
                 <>
