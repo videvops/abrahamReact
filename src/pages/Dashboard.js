@@ -1,12 +1,16 @@
-import React from "react";
-import NuevoUsuario from '../components/nuevoUsuario/NuevoUsuario'
+import React, { useState } from "react";
+import { Button } from 'primereact/button';
+import Registrado from "./Catalogos/Usuarios/Dialogos/Registrado";
+// import NuevoUsuario from '../components/nuevoUsuario/NuevoUsuario'
 
 
 const Dashboard = () => {
+    const [mostrar, setMostrar] = useState(true)
     return (
         <div>
             {/* Dashboard */}
-            <NuevoUsuario />
+            {/* <NuevoUsuario /> */}
+            <Registrado usuario="persona 1" mostrar={mostrar} setMostrar={setMostrar} />
         </div>
     );
 };

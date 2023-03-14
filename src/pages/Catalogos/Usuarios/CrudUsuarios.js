@@ -1,38 +1,43 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+
 import TablaUsuarios from './Tabla/TablaUsuarios';
 import Exportar from './Botones/Exportar';
 import EliminarUno from './Dialogos/EliminarUno';
 import EliminarVarios from './Dialogos/EliminarVarios';
 import CrearModificar from './Dialogos/CrearModificar';
 import { leftToolbarTemplate } from '../ComponentsCat/Botones/AgregarEliminar'
-import { LineaService } from '../../../service/LineaService';
 import { usuarioVacio } from './Objetos/UsuarioVacio';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
+import { Service } from '../../../service/Service';
 import Spinner from '../../../components/loader/Spinner';
 import ErrorSistema from '../../../components/error/ErrorSistema';
 
+import Environment from '../../../Environment'
+const getRoute = Environment();
+
 const CrudUsuarios = ({titulos, notificaciones}) => {
-//--------------------| Importacion de metodos axios |--------------------
-    const lineaService = new LineaService();
+//--------------------| Inicializacion |--------------------
+    const usuarioService = new Service()
+    usuarioService.baseUrl = `${getRoute}/usuarios`
     const [products, setProducts] = useState([]);
     //--------------------| Funciones de Crud |--------------------
     //--> Crear nuevo producto
     const createProduct = (product) => {
-        lineaService.create(product).
-            then(() => lineaService.readAll().then(res => setProducts(res))).
+        usuarioService.create(product).
+            then(() => usuarioService.readAll().then(res => setProducts(res))).
             catch(e => console.log(e))
     }
     //--> Actualizar producto
     const updateProduct = (product) => {
-        lineaService.update(product).
-            then(() => lineaService.readAll().then(res => setProducts(res))).
+        usuarioService.update(product).
+            then(() => usuarioService.readAll().then(res => setProducts(res))).
             catch(e => console.log(e))
     }
     //--> Eliminar producto
     const deleteProduct = (id) => {
-        lineaService.delete(id).
-            then(() => lineaService.readAll().then(res => setProducts(res)).
+        usuarioService.delete(id).
+            then(() => usuarioService.readAll().then(res => setProducts(res)).
                 catch(e => console.log(e)))
     }
 
@@ -82,17 +87,17 @@ const CrudUsuarios = ({titulos, notificaciones}) => {
         });
     };
     //------> Agregar nuevo registro
-    const saveProduct = async() => {
+    const saveProduct = () => {
         if (!product.id) {
+            console.log("Creacion")
+            console.log(product)
             createProduct(product);
             toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.creacion}`, life: 3000 });
         } else {
-            updateProduct(product);
-            toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
+            // updateProduct(product);
+            // toast.current.show({ severity: 'success', summary: 'Atencion!', detail: `${notificaciones.modificacion}`, life: 3000 });
         }
         setProduct(usuarioVacio);
-        const data = await lineaService.readAll()
-        setProducts(data)
         setProductDialog(false);
     }
     //------> Eliminar 1 producto
@@ -115,8 +120,8 @@ const CrudUsuarios = ({titulos, notificaciones}) => {
     }
     //------> Editar producto
     const _editProduct = (product) => {
-        setProduct({...product});
-        setProductDialog(true);
+        setProduct({...product})
+        setProductDialog(true)
     }
 
 //--------------------| Botones en pantalla |--------------------
@@ -131,16 +136,13 @@ const CrudUsuarios = ({titulos, notificaciones}) => {
         return (
             <>
                 <Button 
-                icon="pi pi-pencil" 
-                className="p-button-rounded p-button-success mr-2" 
-                onClick={() => _editProduct(rowData)} 
-                />
-
+                    icon="pi pi-pencil" 
+                    className="p-button-rounded p-button-success mr-2" 
+                    onClick={() => _editProduct(rowData)} />
                 <Button 
-                icon="pi pi-trash" 
-                className="p-button-rounded p-button-warning" 
-                onClick={() => confirmDeleteProduct(rowData)} 
-                />
+                    icon="pi pi-trash" 
+                    className="p-button-rounded p-button-warning" 
+                    onClick={() => confirmDeleteProduct(rowData)} />
             </>
         );
     }
@@ -150,11 +152,11 @@ const CrudUsuarios = ({titulos, notificaciones}) => {
     const [error,setError]=useState(null)
     //---> Obtendra los datos del back-end
     useEffect(()=>{
-        const cargarDatos=async()=>{
+        const cargarDatos = async () => {
             setIsLoading(true)
             setError(null)
             try{
-                const data=await lineaService.readAll()
+                const data = await usuarioService.readAll()
                 setProducts(data)  
             } catch(error){
                 setError(error.message)
@@ -168,12 +170,11 @@ const CrudUsuarios = ({titulos, notificaciones}) => {
     },[]); // eslint-disable-line react-hooks/exhaustive-deps    
 
     //--------------------| Abilitar o inhabilitar boton |--------------------
-    useEffect(()=>{
-        if(product.id){                        // Tiene existe el ID
-            setTieneId(false)
-        }else{                                  // Sino tiene ID
-            setTieneId(true)
-        }
+    useEffect(() => {
+        // Edicion
+        if (product.nombreCompleto) { setTieneId(false) }
+        // Creacion
+        else { setTieneId(true) }
     },[product])
 
     //--------------------| Valor que regresara |--------------------

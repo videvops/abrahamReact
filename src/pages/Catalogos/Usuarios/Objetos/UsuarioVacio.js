@@ -2,7 +2,8 @@
 export let usuarioVacio = {
     id: null,
     nombre: '',
-    apellidoCompleto: '',
-    idPlanta: null,
-    idRol:null
-};
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    idRol:null,
+    idPlanta: null
+}

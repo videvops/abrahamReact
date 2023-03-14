@@ -112,25 +112,19 @@ const TablaUsuarios = ({ BotonesCabezal, ExportarRegistros, dt, products, select
                     filterDisplay="row"
                 >
                     <Column selectionMode="multiple" headerStyle={{ width:"5%", minWidth:'3rem' }} exportable={false}/>
-                    <Column field="nombre" header="Nombre" sortable filter filterPlaceholder="Buscar"
+                    <Column field="nombreCompleto" header="Nombre Completo" sortable filter filterPlaceholder="Buscar"
                         style={{ width: "25%", minWidth: '7rem', textAlign: 'center' }} />
                     <Column
-                        field="apellidoCompleto" header="Apellidos" sortable filter filterPlaceholder="Buscar"
+                        field="rol" header="Rol" sortable filter filterPlaceholder="Buscar"
                         style={{ width: "20%", minWidth: '7rem', textAlign: 'center' }} />
                     <Column
-                        field="rol" header="Rol" sortable filter filterPlaceholder="Buscar"
+                        field="estatus" header="Estatus" sortable filter filterPlaceholder="Buscar"
                         style={{ width: "10%", minWidth: '7rem', textAlign: 'center' }} />
                     <Column
-                        field="planta" header="Planta" sortable filter filterPlaceholder="Buscar"
+                        field="fechaCreacion" header="Fecha de creación" sortable filter filterPlaceholder="Buscar"
                         style={{ width: "15%", minWidth: '7rem', textAlign: 'center' }} />
                     <Column
-                        field="estatus" header="Estatus" sortable filter filterPlaceholder="Buscar"
-                        style={{ width: "15%", minWidth: '7rem', textAlign: 'center' }} />
-                    <Column
-                        field="fechaCreacion" header="Fecha de Creación" sortable filter filterPlaceholder="Buscar"
-                        style={{ width: "20%", minWidth: '3rem', textAlign: 'center' }} />
-                    <Column
-                        field="creadoPor" header="CreadoPor" sortable filter filterPlaceholder="Buscar"
+                        field="creadoPor" header="Creado por" sortable filter filterPlaceholder="Buscar"
                         style={{ width: "15%", minWidth: '7rem', textAlign: 'center' }} />
                     <Column header="Editar" body={actionBodyTemplate} exportable={false} style={{ width: "15%", minWidth: '3rem' }} />
                 </DataTable>

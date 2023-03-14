@@ -36,36 +36,56 @@ const CrearModificar = ({
     const [datosInvalidos, setDatosInvalidos] = useState(false)     // Validar envio
     const [mensaje, setMensaje] = useState("")                      // Mensaje para envio
     const [texto, setTexto] = useState("")                          // Mensaje para input
-    const expresion=/^[a-zA-Z0-9._-\s]{1,40}$/;                     // Todo menos ','
+    const [estiloAP, setEstiloAP] = useState("")
+    const [estiloAM, setEstiloAM] = useState("")
+    const expresion=/^([a-zA-Z0-9\sÁÉÍÓÚáéíóúÑñ]+)$/                // Acentos y letra 'ñ'
     //--> Validar input
-    const Verificar=(texto)=>{
+    const ValidarNombre=(texto)=>{
         if (!expresion.test(texto) || Object.values(texto).includes(" ")){
-            setValidarNombre("p-invalid")   // Input rojo
-            setTexto("Campo invalido")      // Texto de advertencia de input
-            setBoton(true);                 // Validacion para input invalido
+            setValidarNombre("p-invalid")
+            setTexto("Campo invalido")
+            setBoton(true)
         }else{
             setValidarNombre("")
             setTexto("")
             setBoton(false)
         }
     }
-    //--> Validar datos antes de envio
+    const ValidarAP=(texto)=>{
+        if (!expresion.test(texto) || Object.values(texto).includes(" ")){
+            setEstiloAP("p-invalid")
+            setTexto("Campo invalido")
+            setBoton(true)
+        }else{
+            setEstiloAP("")
+            setTexto("")
+            setBoton(false)
+        }
+    }
+    const ValidarAM = (texto) => {
+        if (!expresion.test(texto) || Object.values(texto).includes(" ")){
+            setEstiloAM("p-invalid")
+            setTexto("Campo invalido")
+            setBoton(true)
+        }else{
+            setEstiloAM("")
+            setTexto("")
+            setBoton(false)
+        }
+    }
+
     const enviarDatos = () => {
         if (Object.values(product).includes("")) {
             setMensaje("Todos los campos son obligatorios")
             setDatosInvalidos(true)
-            setTimeout(() => {
-                setDatosInvalidos(false)
-            }, 3000);
+            setTimeout(() => { setDatosInvalidos(false) }, 3000)
             return
         }
         else {
             if (boton) {
-                setMensaje("El nombre no es valido")
+                setMensaje("Algún campo no es valido")
                 setDatosInvalidos(true)
-                setTimeout(() => {
-                    setDatosInvalidos(false)
-                }, 3000);
+                setTimeout(() => {setDatosInvalidos(false)}, 3000)
                 return
             }
         }
@@ -117,20 +137,34 @@ const CrearModificar = ({
                     value={product.nombre}
                     onChange={(e) => {
                         updateField(e.target.value, "nombre")
-                        Verificar(e.target.value)
+                        ValidarNombre(e.target.value)
                     }} 
-                    required autoFocus className={validarNombre} maxLength="30" />
-                {boton && <TextoAdvertencia>{texto}</TextoAdvertencia>}
+                    required autoFocus className={validarNombre} maxLength="10" />
+                {validarNombre && <TextoAdvertencia>{texto}</TextoAdvertencia>}
             </div>
             <div className="field">
-                <label htmlFor="apellidos">Apellidos</label>
+                <label htmlFor="apellidoP">Apellido Paterno</label>
                 <InputText 
-                    id="apellidos"
-                    value={product.apellidoCompleto}
+                    id="apellidoP"
+                    value={product.apellidoPaterno}
                     onChange={(e) => {
-                        updateField(e.target.value, "apellidoCompleto")
+                        updateField(e.target.value, "apellidoPaterno")
+                        ValidarAP(e.target.value)
                     }} 
-                    required autoFocus maxLength="30" />
+                    required autoFocus className={estiloAP} maxLength="10" />
+                {estiloAP && <TextoAdvertencia>{texto}</TextoAdvertencia>}
+            </div>
+            <div className="field">
+                <label htmlFor="apellidoM">Apellido Materno</label>
+                <InputText 
+                    id="apellidoM"
+                    value={product.apellidoMaterno}
+                    onChange={(e) => {
+                        updateField(e.target.value, "apellidoMaterno")
+                        ValidarAM(e.target.value)
+                    }} 
+                    required autoFocus className={estiloAM} maxLength="10" />
+                {estiloAM && <TextoAdvertencia>{texto}</TextoAdvertencia>}
             </div>
             {datosInvalidos && <MensajeAdvertencia>{mensaje}</MensajeAdvertencia>}
         </Dialog>
